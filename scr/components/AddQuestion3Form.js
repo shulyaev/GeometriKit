@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage, Image, Alert, Dimensions, ScrollView, TextInput, KeyboardAvoidingView } from 'react-native';
 import Icon1 from '@expo/vector-icons/Ionicons';
 import { Button, Input } from './common';
+import MultiSelectEX from './common/MultiSelectEX'
 import { ImagePicker, Permissions } from 'expo';
 import axios from 'axios';
 import Draw from './Draw';
@@ -11,7 +12,7 @@ let _this = null;
 export default class AddQuestion3Form extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: 'הוספת רמז',
+            title: 'יצירת שאלה',
             headerRight: (
                 <Icon1
                     style={{ paddingRight: 15, color: "#fff" }}
@@ -110,9 +111,11 @@ export default class AddQuestion3Form extends Component {
                     onChangeText= {(title) => this.setState({title})}
                     placeholder='תן שם לשאלה'
                 />
-                <View>
+                <MultiSelectEX updateSelectedSubjects={(toUpdate) => {this.setState({selectedSubjects: toUpdate})}} subjects={this.state.allSubjects}/>
+                {/* <View>
                     {this.state.allSubjects.map(subject => <Button key={subject.subjectID} onPress={() => this.setState({selectedSubjects: [...this.state.selectedSubjects, subject.subjectID]})}>{subject.subjectName}</Button>)}
-                </View>
+                </View> */}
+
             </ScrollView>
         );
     }

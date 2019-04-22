@@ -14,6 +14,7 @@ import QuestionForm from './scr/components/QuestionForm';
 import AddQuestion1Form from './scr/components/AddQuestion1Form';
 import AddQuestion2Form from './scr/components/AddQuestion2Form';
 import AddQuestion3Form from './scr/components/AddQuestion3Form';
+import AssignQuestionToClass from './scr/components/AssignQuestionToClass';
 
 
 
@@ -24,7 +25,8 @@ const studentStackNavigator = createStackNavigator({
   HamburgerMenu: { screen: HamburgerMenu},
   AddQuestion1Form: {screen: AddQuestion1Form},
   AddQuestion2Form: {screen: AddQuestion2Form},
-  AddQuestion3Form: {screen: AddQuestion3Form}
+  AddQuestion3Form: {screen: AddQuestion3Form},
+  AssignQuestionToClass: {screen: AssignQuestionToClass}
 },
 {
   initialRouteName: 'TopicList',
