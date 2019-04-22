@@ -45,10 +45,10 @@ export default class AddQuestion3Form extends Component {
             allSubjects: [],
             selectedSubjects: [],
             title: '',
-            bookName: '',
-            page: '',
-            questionNumber: '',
-            authorID: ''
+            bookName: 'ספר',
+            page: '122',
+            questionNumber: '17',
+            authorID: '111111111'
         };
         this.index = 0;
     }
@@ -81,18 +81,24 @@ export default class AddQuestion3Form extends Component {
     };
 
     saveQuestion(){
-        var question = {
-            picture: this.state.photo,
+        axios.post('http://geometrikit-ws.cfapps.io/api/insertquestion', {
+            //picture: this.state.photo,
             content: this.state.text,
-            hints: this.state.hints,
-            subjects: this.state.selectedSubjects,
-            title: this.state.title,
+            picture: this.state.photo,
+            //hints: this.state.hints,
+            //subjects: this.state.selectedSubjects,
+            //title: this.state.title,
             bookName: this.state.bookName,
             page: this.state.page,
             questionNumber: this.state.questionNumber,
-            authorID: this.state.authorID
-        };
-        console.log(JSON.stringify(question));
+            authorID: this.state.authorID,
+            rank: '1',
+            subjectID: '2',
+            classID: '3'
+          })
+          .then((response) => {
+            console.log(response);
+          });
         Alert.alert('שאלה נוספה בהצלחה');
     }
 
