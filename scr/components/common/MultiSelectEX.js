@@ -35,10 +35,12 @@ export default class MultiSelectEX extends Component {
             itemTextColor="#000"
             displayKey="subjectName"
             searchInputStyle={{ color: '#CCC', textAlign: 'right', fontSize: 20 }}
-            submitButtonColor="#48d22b"
+            submitButtonColor="#f44444"
             submitButtonText="אשר"
           />
-          <TouchableOpacity onPress={() => {console.log(this.props.subjects)}}><Text>asdasdasdasd</Text></TouchableOpacity>
+          <View>
+            {this.multiSelect && this.multiSelect.getSelectedItemsExt(selectedItems)}
+          </View>
         </View>
       )
    }

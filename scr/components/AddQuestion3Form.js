@@ -81,24 +81,18 @@ export default class AddQuestion3Form extends Component {
     };
 
     saveQuestion(){
-        axios.post('http://geometrikit-ws.cfapps.io/api/insertquestion', {
-            //picture: this.state.photo,
+        axios.post('http://geometrikit-ws.cfapps.io/api/testlog', {
             content: this.state.text,
             picture: this.state.photo,
-            //hints: this.state.hints,
-            //subjects: this.state.selectedSubjects,
+            hints: this.state.hints,
+            subjects: this.state.selectedSubjects,
             //title: this.state.title,
             bookName: this.state.bookName,
             page: this.state.page,
             questionNumber: this.state.questionNumber,
-            authorID: this.state.authorID,
-            rank: '1',
-            subjectID: '2',
-            classID: '3'
-          })
-          .then((response) => {
-            console.log(response);
-          });
+            authorID: this.state.authorID
+          }
+        );
         Alert.alert('שאלה נוספה בהצלחה');
     }
 
