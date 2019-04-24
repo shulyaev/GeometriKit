@@ -81,7 +81,7 @@ export default class AddQuestion3Form extends Component {
     };
 
     saveQuestion(){
-        axios.post('http://geometrikit-ws.cfapps.io/api/testlog', {
+        axios.post('http://geometrikit-ws.cfapps.io/api/insertquestion', {
             content: this.state.text,
             picture: this.state.photo,
             hints: this.state.hints,
@@ -115,6 +115,7 @@ export default class AddQuestion3Form extends Component {
                 {/* <View>
                     {this.state.allSubjects.map(subject => <Button key={subject.subjectID} onPress={() => this.setState({selectedSubjects: [...this.state.selectedSubjects, subject.subjectID]})}>{subject.subjectName}</Button>)}
                 </View> */}
+                <TouchableOpacity onPress={() => console.log(this.state.hints)}><Text>CHECK</Text></TouchableOpacity>
 
             </ScrollView>
         );

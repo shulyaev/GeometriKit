@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage, Image, Alert, Dimensions, ScrollView, TextInput, KeyboardAvoidingView } from 'react-native';
 import Icon1 from '@expo/vector-icons/Ionicons';
 import { Button } from './common';
+import HintPreview from './common/HintPreview';
 import { ImagePicker, Permissions } from 'expo';
-import Draw from './Draw';
+
+let _this = null;
 
 export default class AddQuestion2Form extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -18,7 +20,7 @@ export default class AddQuestion2Form extends Component {
                 />
             ),
             headerLeft: (
-                <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => navigation.navigate('AddQuestion3Form', {text: navigation.getParam('text', 'X'), photo: navigation.getParam('photo', 'X'), hints: navigation.getParam('hints', 'X')})}>
+                <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => navigation.navigate('AddQuestion3Form', {text: navigation.getParam('text', 'X'), photo: navigation.getParam('photo', 'X'), hints: _this.hintsToPass(_this.state.hints)})}>
                     <Text style={{paddingLeft: 15, color: '#fff', paddingTop: 17, fontSize: 25}}>
                         הבא
                     </Text>
@@ -42,6 +44,10 @@ export default class AddQuestion2Form extends Component {
             hint: ""
         };
         this.index = 0;
+    }
+
+    componentDidMount () {
+        _this = this;
     }
 
     selectPicture = async () => {
@@ -87,12 +93,63 @@ export default class AddQuestion2Form extends Component {
                             value={this.state.hint}
                             placeholder='הקלד כאן את הרמז'
                         />
-                        <Button onPress = {() => {this.props.navigation.setParams({hints: [...this.state.hints, {type: 'text', content: this.state.hint}]}); this.setState({hints: [...this.state.hints, {type: 'text', content: this.state.hint}]}); this.setState({hint: ''}); Alert.alert('רמז נוסף בהצלחה')}}>שמור רמז</Button>
+                        <Button onPress = {() => {
+                            this.setState({hints: [...this.state.hints, {key: this.index++, type: 'text', content: this.state.hint, shortContent: this.shortTextCreate(this.state.hint)}]});
+                            this.setState({hint: ''});}}
+                        >
+                            שמור רמז
+                        </Button>
                     </View>
         if (this.state.hintType === 'voice')
             return <Text>אפשקות זו אינה זמינה</Text>
         if (this.state.hintType === 'image')
             return <Text>אפשקות זו אינה זמינה</Text>
+    };
+
+    shortTextCreate = (str) => {
+        if (str.includes("\n")){
+            for( var i = 0; i < str.length; i++){ 
+                if ( str[i] === "\n") {
+                    str = str.replace("\n", " ");
+                }
+            }
+        }
+        
+        if (str.length > 20){
+            return str.substring(0,20) + "...";
+        }
+        return str;
+    }
+
+    hintsToPass = (hnt) => {
+        hnt.forEach(h => {
+            delete h["key"];
+            delete h["shortContent"];
+        });
+        return hnt;
+    };
+
+    renderHintsPreview = () => {
+        return this.state.hints.map(c => {
+            if (c.type === "text"){
+                console.log(c.shortContent);
+                return (
+                    <HintPreview hintID={c.key} removeHint={this.removeHint} shortContent={c.shortContent}></HintPreview>
+                )
+            }
+        });
+    };
+
+    removeHint = (key) => {
+        for( var i = 0; i < this.state.hints.length; i++) { 
+            if ( this.state.hints[i].key === key) {
+                var temp = this.state.hints;
+                temp.splice(i, 1);
+                this.setState({hints: temp});
+                break;
+            }
+        }
+        console.log(temp);
     };
 
     render() {
@@ -111,7 +168,8 @@ export default class AddQuestion2Form extends Component {
                 </View>
                 <View>
                     {this.renderContent()}
-                </View> 
+                </View>
+                {this.renderHintsPreview()}
             </ScrollView>
         );
     }
