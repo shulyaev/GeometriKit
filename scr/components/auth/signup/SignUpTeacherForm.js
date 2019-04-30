@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, View, AsyncStorage } from 'react-native';
+import { Alert, View, AsyncStorage, Picker } from 'react-native';
 import axios from 'axios';
 import Icon from '@expo/vector-icons/Ionicons'
 import { Input, Button } from '../../common';
@@ -22,10 +22,13 @@ export default class SignUpTeacherForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      username: '',
+      userName: '',
       password: '',
       firstName: '',
-      lastName: ''
+      lastName: '',
+      schoolID: '1',
+      profilePicture: 'X',
+      schoolList: [{schoolID: '1', schoolName: 'מבאות הנגב'}, {schoolID: '2', schoolName: 'מקיף א׳'}]
     }
   }
 
@@ -34,7 +37,7 @@ export default class SignUpTeacherForm extends Component {
       <View style={{ flex: 1, justifyContent: 'center' }}>
         <Input
           placeholder='שם משתמש'
-          onChangeText={(username) => this.setState({ username })}
+          onChangeText={(userName) => this.setState({ userName })}
         />
         <Input
           placeholder='סיסמא'
@@ -49,6 +52,15 @@ export default class SignUpTeacherForm extends Component {
           placeholder='שם משפחה'
           onChangeText={(lastName) => this.setState({ lastName })}
         />
+        <Picker
+          selectedValue = {this.state.schoolID}
+          onValueChange = {(itemValue) => this.setState({schoolID: itemValue})}
+          itemStyle={{color: 'black', backgroundColor: 'rgba(200, 200, 200, 0.4)', marginHorizontal: 20, marginVertical: 5, height: 100, borderRadius: 20, fontSize: 15}}
+        >
+          {this.state.schoolList.map((s) => {
+            return <Picker.Item key={s.schoolID} label={s.schoolName} value={s.schoolID}/>
+          })}
+        </Picker>
         <Button onPress={this.signup}>
           הרשם
           </Button>
@@ -57,13 +69,20 @@ export default class SignUpTeacherForm extends Component {
   }
 
   signup = () => {
-    axios.get('http://geometrikit-ws.cfapps.io/api/register', { headers: { "username": `${this.state.username}`, "password": `${this.state.password}`, "fname": `${this.state.firstName}`, "lname": `${this.state.lastName}` } })
-      .then((response) => {
+    axios.post('http://geometrikit-ws.cfapps.io/api/register', {
+      userName: this.state.userName,
+      password: this.state.password,
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      permissionID: "1",
+      schoolID: this.state.schoolID,
+      profilePicture: this.state.profilePicture
+    }).then((response) => {
         if (response.data.masssege !== 'success!') {
           Alert.alert('שם משתשמש שבחרת כבר קיים במערכת');
         } else {
           AsyncStorage.setItem('user', this.state.username);
-          this.props.navigation.navigate('StudentMenu');
+          this.props.navigation.navigate('TeacherMenu');
         }
       })
       .done();
