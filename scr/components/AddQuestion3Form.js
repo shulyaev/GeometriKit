@@ -22,7 +22,7 @@ export default class AddQuestion3Form extends Component {
                 />
             ),
             headerLeft: (
-                <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => {_this.saveQuestion();navigation.navigate('HamburgerMenu')}}>
+                <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => {_this.saveQuestion();navigation.navigate('TeacherHome')}}>
                     <Text style={{paddingLeft: 15, color: '#fff', paddingTop: 17, fontSize: 25}}>
                         סיום
                     </Text>
@@ -112,11 +112,6 @@ export default class AddQuestion3Form extends Component {
                     placeholder='תן שם לשאלה'
                 />
                 <MultiSelectEX updateSelectedSubjects={(toUpdate) => {this.setState({selectedSubjects: toUpdate})}} subjects={this.state.allSubjects}/>
-                {/* <View>
-                    {this.state.allSubjects.map(subject => <Button key={subject.subjectID} onPress={() => this.setState({selectedSubjects: [...this.state.selectedSubjects, subject.subjectID]})}>{subject.subjectName}</Button>)}
-                </View> */}
-                <TouchableOpacity onPress={() => console.log(this.state.hints)}><Text>CHECK</Text></TouchableOpacity>
-
             </ScrollView>
         );
     }

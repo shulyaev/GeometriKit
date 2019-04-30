@@ -1,26 +1,38 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Dimensions from 'Dimensions';
 
 export default class HintPreview extends Component {
-    state = {
-        removeHint: this.props.removeHint,
-        hintID: this.props.hintID,
-        shortContent: this.props.shortContent
-    };
+    renderContent = () => {
+        if (this.props.type === "text"){
+            return (<View
+                        style={styles.viewStyle}
+                    >
+                        <TouchableOpacity onPress={() => {this.props.removeHint(this.props.id)}}><Text style={styles.buttonStyle}>X</Text></TouchableOpacity>
+                        <Text style={styles.textStyle}>
+                            {this.props.shortContent}
+                        </Text>
+                    </View>
+            );
+        } else if (this.props.type === "image"){
+            return (
+                    <View
+                        style={styles.viewStyle}
+                    >
+                        <TouchableOpacity onPress={() => {this.props.removeHint(this.props.id)}}><Text style={styles.buttonStyle}>X</Text></TouchableOpacity>
+                        <Image source={{uri: this.props.shortContent}} style={{ width: Dimensions.get('window').width / 1.3, height: Dimensions.get('window').width / 3, marginTop: 10, marginBottom: 10}}/>
+                    </View>
+            );
+        }
+    }
     
     render() {
       return (
-        <View
-            style={styles.viewStyle}
-        >
-            <TouchableOpacity onPress={() => {this.state.removeHint(this.state.hintID)}}><Text style={styles.buttonStyle}>X</Text></TouchableOpacity>
-            <Text style={styles.textStyle}>
-                {this.state.shortContent}
-            </Text>
+        <View>
+            {this.renderContent()}
         </View>
       );
-   }
+    }
 }
 
 
@@ -35,7 +47,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: '#f44444',
         marginVertical: 5,
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     textStyle: {
         flex: 1,

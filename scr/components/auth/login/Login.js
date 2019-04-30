@@ -17,15 +17,16 @@ export default class Login extends Component {
         password: '',
         groupID: ''
       }
-    }
-
-    componentWillMount(){
       this._loadInitialState().done();
     }
+
     _loadInitialState = async () => {
       var value = await AsyncStorage.getItem('userData');
       if (value !== null) {
-        this.props.navigation.navigate('StudentMenu');
+        if (JSON.parse(value).permissionID === "2")
+          this.props.navigation.navigate('StudentMenu');
+        if (JSON.parse(value).permissionID === "1")
+          this.props.navigation.navigate('TeacherMenu');
       }
     }
 
@@ -57,13 +58,20 @@ export default class Login extends Component {
         .then((response) => {
           if (response.data.status === 'false') {
               Alert.alert('שם משתשמש או סיסמא שגויים');
-          } else {
+          } else if (response.data.permissionID === '1'){
               AsyncStorage.setItem('userData', JSON.stringify(response.data) );
               AsyncStorage.setItem('groupID', response.data.groupID );
               AsyncStorage.setItem('userID', response.data.userID );
               this.props.navigation.navigate('StudentMenu'); 
+          } else if (response.data.permissionID === '2'){
+            AsyncStorage.setItem('userData', JSON.stringify(response.data) );
+            AsyncStorage.setItem('groupID', response.data.groupID );
+            AsyncStorage.setItem('userID', response.data.userID );
+            this.props.navigation.navigate('TeacherMenu'); 
           }
         })
         .done();
     }
   }
+
+  

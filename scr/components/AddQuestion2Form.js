@@ -4,6 +4,8 @@ import Icon1 from '@expo/vector-icons/Ionicons';
 import { Button } from './common';
 import HintPreview from './common/HintPreview';
 import { ImagePicker, Permissions } from 'expo';
+import Icon2 from '@expo/vector-icons/Feather';
+import {ButtonGroup} from 'react-native-elements';
 
 let _this = null;
 
@@ -41,9 +43,21 @@ export default class AddQuestion2Form extends Component {
             text: this.props.navigation.getParam('text', 'X'),
             hintType: "text",
             hints: [],
-            hint: ""
+            hint: "",
+            selectedIndex: 0
         };
         this.index = 0;
+        this.updateIndex = this.updateIndex.bind(this);
+    }
+
+    updateIndex (selectedIndex) {
+        if (selectedIndex == '0'){
+            this.setState({selectedIndex: selectedIndex, hintType: 'text'});
+        } else if (selectedIndex == '1'){
+            this.setState({selectedIndex: selectedIndex, hintType: 'image'});
+        } else if (selectedIndex == '2'){
+            this.setState({selectedIndex: selectedIndex, hintType: 'voice'});
+        }
     }
 
     componentDidMount () {
@@ -58,23 +72,19 @@ export default class AddQuestion2Form extends Component {
         });
  
         if (!cancelled) {
-            this.setState({ photo: `data:${type};base64,${base64}` });
-            // axios.post('http://geometrikit-ws.cfapps.io/api/insert_question', {headers: {"image": `${this.state.photo}`, "text": "text of question", "subject": "s1", "hint1": "hint1",  "hint2": "hint2", "hint3": "hint3"}});
-            // axios.get('http://geometrikit-ws.cfapps.io/api/get_qustion', {headers: {"selectorType": "subject", "selector": "s1"}})
-            // .then((response) => {
-            //     this.setState({getPhoto: response.data.image});
-            //     //alert(`${response.data.image}`);
-            // })
-            // .done();
+            this.setState({hints: [...this.state.hints, {id: this.index++, type: 'image', content: `data:${type};base64,${base64}`, shortContent: `data:${type};base64,${base64}`}]});
         }
     };
 
     takePicture = async () => {
         await Permissions.askAsync(Permissions.CAMERA);
-        const { base64, type } = await ImagePicker.launchCameraAsync({
+        const { cancelled, base64, type } = await ImagePicker.launchCameraAsync({
           base64: true,
         });
-        this.setState({ photo: `data:${type};base64,${base64}` });
+
+        if (!cancelled) {
+            this.setState({hints: [...this.state.hints, {id: this.index++, type: 'image', content: `data:${type};base64,${base64}`, shortContent: `data:${type};base64,${base64}`}]});
+        }
     };
 
     renderContent = () => {
@@ -94,15 +104,30 @@ export default class AddQuestion2Form extends Component {
                             placeholder='הקלד כאן את הרמז'
                         />
                         <Button onPress = {() => {
-                            this.setState({hints: [...this.state.hints, {key: this.index++, type: 'text', content: this.state.hint, shortContent: this.shortTextCreate(this.state.hint)}]});
+                            this.setState({hints: [...this.state.hints, {id: this.index++, type: 'text', content: this.state.hint, shortContent: this.shortTextCreate(this.state.hint)}]});
                             this.setState({hint: ''});}}
                         >
                             שמור רמז
                         </Button>
                     </View>
-        if (this.state.hintType === 'voice')
-            return <Text>אפשקות זו אינה זמינה</Text>
         if (this.state.hintType === 'image')
+            return <View>
+                        <View style={{flexDirection: 'row'}}>   
+                            <TouchableOpacity onPress={this.selectPicture.bind(this)}>
+                                <Icon2
+                                    name="paperclip"
+                                    size={25}
+                                />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={this.takePicture.bind(this)}>
+                                <Icon2
+                                    name="camera"
+                                    size={25}
+                                />
+                            </TouchableOpacity>
+                    </View> 
+            </View>
+        if (this.state.hintType === 'voice')
             return <Text>אפשקות זו אינה זמינה</Text>
     };
 
@@ -123,54 +148,64 @@ export default class AddQuestion2Form extends Component {
 
     hintsToPass = (hnt) => {
         hnt.forEach(h => {
-            delete h["key"];
+            delete h["id"];
             delete h["shortContent"];
         });
         return hnt;
     };
 
     renderHintsPreview = () => {
-        return this.state.hints.map(c => {
-            if (c.type === "text"){
-                console.log(c.shortContent);
-                return (
-                    <HintPreview hintID={c.key} removeHint={this.removeHint} shortContent={c.shortContent}></HintPreview>
-                )
-            }
+        console.log(this.state.hints);
+        return this.state.hints.map((c) => {
+            return (
+                <HintPreview id={c.id} type={c.type} removeHint={this.removeHint} shortContent={c.shortContent}/>
+            )
         });
     };
 
-    removeHint = (key) => {
+    removeHint = (id) => {
         for( var i = 0; i < this.state.hints.length; i++) { 
-            if ( this.state.hints[i].key === key) {
+            if (this.state.hints[i].id === id) {
                 var temp = this.state.hints;
                 temp.splice(i, 1);
                 this.setState({hints: temp});
                 break;
             }
         }
-        console.log(temp);
     };
 
+    selection (selected) {
+        if (selected === '0'){
+            this.setState({hintType: 'text'});
+        } else if (selected === '1'){
+            this.setState({hintType: 'image'});
+        } else if (selected === '2'){
+            this.setState({hintType: 'voice'});
+        }
+            
+    }
+
     render() {
+        const buttons = ['רמז מילולי', 'רמז ויזואלי', 'רמז קולי'];
+
         return (
-            <ScrollView style={styles.container}>
-                <View>   
-                    <Button onPress = {() => this.setState({hintType: 'text'})}>
-                        רמז מילולי
-                    </Button>
-                    <Button onPress = {() => this.setState({hintType: 'voice'})}>
-                        רמז קולי
-                    </Button>
-                    <Button onPress = {() => this.setState({hintType: 'image'})}>
-                        רמז ויזואלי
-                    </Button>
+            <View style={styles.container}>
+                <View>
+                    <ButtonGroup
+                        onPress={this.updateIndex}
+                        selectedIndex={this.state.selectedIndex}
+                        buttons={buttons}
+                        containerStyle={{height: 40}}
+                        selectedButtonStyle={{borderColor: '#f44444',backgroundColor: '#f44444'}}
+                    />
                 </View>
                 <View>
                     {this.renderContent()}
                 </View>
-                {this.renderHintsPreview()}
-            </ScrollView>
+                <ScrollView>
+                    {this.renderHintsPreview()}
+                </ScrollView>
+            </View>
         );
     }
 }

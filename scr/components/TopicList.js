@@ -46,18 +46,18 @@ export default class TopicList extends Component {
 
   render() {
     return (
-      <View></View>
-      // <FlatList
-      //   data={this.state.subjects}
-      //   style={styles.containerNew}
-      //   renderItem={({ item }) =>
-      //     <TouchableOpacity style={[styles.GridViewContainer, { backgroundColor: item.color }]} onPress={this.GetGridViewItem.bind(this, item)}>
-      //       <Image source={{ uri: item.picture}} style={{ flex: 4, width: Dimensions.get('window').width / 3.5, margin: 5 }}/>
-      //       <Text style={styles.GridViewTextLayout}> {item.subjectName} </Text>
-      //     </TouchableOpacity>}
-      //   numColumns={numColumns}
-      //   keyExtractor={(item, index) => index.toString()}
-      // />
+      // <View></View>
+      <FlatList
+        data={this.state.subjects}
+        style={styles.containerNew}
+        renderItem={({ item }) =>
+          <TouchableOpacity style={[styles.GridViewContainer, { backgroundColor: item.color }]} onPress={this.GetGridViewItem.bind(this, item)}>
+            <Image source={{ uri: item.picture}} style={{ flex: 4, width: Dimensions.get('window').width / 3.5, margin: 5 }}/>
+            <Text style={styles.GridViewTextLayout}> {item.subjectName} </Text>
+          </TouchableOpacity>}
+        numColumns={numColumns}
+        keyExtractor={(item, index) => index.toString()}
+      />
     );
   }
 }
