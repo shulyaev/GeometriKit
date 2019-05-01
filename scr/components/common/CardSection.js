@@ -15,7 +15,7 @@ const styles = {
             padding: 5,
             backgroundColor: '#fff',
             borderColor: '#ddd',
-            flexDirection: 'row'
+            flexDirection: 'row',
     }
 };
 

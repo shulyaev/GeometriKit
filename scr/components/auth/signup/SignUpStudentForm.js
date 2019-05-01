@@ -78,7 +78,7 @@ export default class SignUpStudentForm extends Component {
       schoolID: this.state.schoolID,
       profilePicture: this.state.profilePicture
     }).then((response) => {
-        if (response.data.masssege !== 'success!') {
+        if (response.data.status !== 'true') {
           Alert.alert('שם משתשמש שבחרת כבר קיים במערכת');
         } else {
           AsyncStorage.setItem('user', this.state.username);

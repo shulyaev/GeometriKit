@@ -9,7 +9,7 @@ const numColumns = 2;
 export default class TopicList extends Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'גיאומתריקיט',
+      title: 'גיאומטריקיט',
       headerRight: (
         <Icon
           style={{ paddingRight: 15, color: "#fff" }}
@@ -25,14 +25,15 @@ export default class TopicList extends Component {
     super(props);
     this.state = {
       groupID: '',
-      subjects: []
+      subjects: [],
+      filtered: false,
     }
   }
 
   componentWillMount(){
     AsyncStorage.getItem('groupID').then((value) => {
       this.setState({groupID: value });
-      axios.get(`http://geometrikit-ws.cfapps.io/api/getsubjects?classID=${this.state.groupID}&groupID=${this.state.groupID}`)
+      axios.get(`http://geometrikit-ws.cfapps.io/api/getsubjects?filtered=${this.state.filtered}classID=${this.state.groupID}&groupID=${this.state.groupID}`)
       .then((response) => {
         this.setState({subjects: response.data})
       })

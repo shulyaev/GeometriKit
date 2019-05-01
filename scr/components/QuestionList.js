@@ -26,7 +26,7 @@ export default class QuestionList extends Component {
         this.state = {
             groupID: this.props.navigation.getParam('groupID', 'X'),
             subjectID: this.props.navigation.getParam('subjectID', 'X'),
-            filtered: true,
+            filtered: false,
             questions: []
         }
     }

@@ -74,11 +74,11 @@ export default class SignUpTeacherForm extends Component {
       password: this.state.password,
       firstName: this.state.firstName,
       lastName: this.state.lastName,
-      permissionID: "1",
+      permissionID: "2",
       schoolID: this.state.schoolID,
       profilePicture: this.state.profilePicture
     }).then((response) => {
-        if (response.data.masssege !== 'success!') {
+        if (response.data.status !== 'true') {
           Alert.alert('שם משתשמש שבחרת כבר קיים במערכת');
         } else {
           AsyncStorage.setItem('user', this.state.username);

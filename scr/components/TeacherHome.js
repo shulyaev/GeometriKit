@@ -5,6 +5,7 @@ import {
     TouchableOpacity,
     AsyncStorage
 } from 'react-native';
+import { Button } from './common';
 
 class TeacherHome extends Component {
     constructor(props) {
@@ -16,15 +17,18 @@ class TeacherHome extends Component {
     render() { 
         return ( 
             <View>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('AddQuestion1Form')}>                    
-                    <Text>ADD QUESTIONNNNNNNNN</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.props.navigation.navigate('AssignQuestionToClass')}>                    
-                    <Text>ASSIGN CLASSSSSSSSSSSSSSS</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => { AsyncStorage.removeItem('userData'); this.props.navigation.navigate('Auth') }}>                    
-                    <Text>התנתק</Text>
-                </TouchableOpacity>
+                <Button onPress={() => this.props.navigation.navigate('AddQuestion1Form')}>
+                    הוסף שאלה
+                </Button>
+                <Button onPress={() => this.props.navigation.navigate('AssignQuestionToClass')}>
+                    שייך שאלה
+                </Button>
+                <Button onPress={() => this.props.navigation.navigate('CreateGroup')}>
+                    צור קבוצה
+                </Button>
+                <Button onPress={() => { AsyncStorage.removeItem('userData'); this.props.navigation.navigate('Auth') }}>
+                    התנתק
+                </Button>
             </View>
         );
     }

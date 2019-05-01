@@ -7,7 +7,7 @@ import { Button } from './common';
 export default class HamburgerMenu extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: 'גיאומתריקיט',
+            title: 'גיאומטריקיט',
             headerRight: (
                 <Icon
                     style={{ paddingRight: 15, color: "#fff" }}
@@ -23,7 +23,7 @@ export default class HamburgerMenu extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            username: ' ',
+            username: '',
             photo: null,
             getPhoto: null
         }
@@ -48,10 +48,15 @@ export default class HamburgerMenu extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={{ fontSize: 30 }}>
+                {/* <Text style={{ fontSize: 30 }}>
                     {this.state.username}
                 </Text>
-                <Image source={{ uri: `data:image/jpg;base64,${this.state.photo}`}} style={{ height: 80, width: 80, borderRadius: 40 }}/>
+                <Image source={{ uri: `data:image/jpg;base64,${this.state.photo}`}} style={{ height: 80, width: 80, borderRadius: 40 }}/> */}
+                <TouchableOpacity onPress={() => { this.props.navigation.navigate('Theorems') }}>                    
+                    <Text>
+                        theorems
+                    </Text>
+                </TouchableOpacity>
                 <TouchableOpacity onPress={() => { AsyncStorage.removeItem('userData'); this.props.navigation.navigate('Auth') }}>                    
                     <Text>התנתק</Text>
                 </TouchableOpacity>

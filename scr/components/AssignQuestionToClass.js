@@ -40,9 +40,9 @@ export default class AssignQuestionToClass extends Component {
         super(props);
         this.state = {
             selectedClasses : [],
-            allClasses: [{classID: '1', grade: 'ט', classNum: '4', schoolName: 'םןו', assigned: false},
-                        {classID: '2', grade: 'י', classNum: '5', schoolName: 'לחי', assigned: true},
-                        {classID: '3', grade: 'יא', classNum: '6', schoolName: 'מנה', assigned: false}]
+            allClasses: [{groupID: '1', grade: 'ט', questionnaire: '4', schoolName: 'םןו', assigned: false},
+                        {groupID: '2', grade: 'י', questionnaire: '5', schoolName: 'לחי', assigned: true},
+                        {groupID: '3', grade: 'יא', questionnaire: '6', schoolName: 'מנה', assigned: false}]
         }
     }
 
@@ -54,22 +54,22 @@ export default class AssignQuestionToClass extends Component {
         // .done();
         this.state.allClasses.forEach(element => {
             if (element.assigned){
-              this.state.selectedClasses.push(element.classID);
+              this.state.selectedClasses.push(element.groupID);
             }    
           });
         _this = this;
     }
 
-    updateSelectedClasses = (classID) => {
-        if (this.state.selectedClasses.includes(classID)){
+    updateSelectedClasses = (groupID) => {
+        if (this.state.selectedClasses.includes(groupID)){
           for( var i = 0; i < this.state.selectedClasses.length; i++){ 
-            if ( this.state.selectedClasses[i] === classID) {
+            if ( this.state.selectedClasses[i] === groupID) {
               this.state.selectedClasses.splice(i, 1); 
               break;
             }
           }
         } else {
-          this.state.selectedClasses.push(classID);
+          this.state.selectedClasses.push(groupID);
         }
       }
 
@@ -82,10 +82,10 @@ export default class AssignQuestionToClass extends Component {
             <ScrollView>
                  {this.state.allClasses.map(c =>
                     <MyCheckBox
-                        key={c.classID}
-                        classID={c.classID}
+                        key={c.groupID}
+                        groupID={c.groupID}
                         grade={c.grade}
-                        classNum={c.classNum}
+                        questionnaire={c.questionnaire}
                         schoolName={c.schoolName}
                         checked={c.assigned}
                         updateSelectedClasses={this.updateSelectedClasses}

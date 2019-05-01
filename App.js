@@ -16,12 +16,15 @@ import AddQuestion2Form from './scr/components/AddQuestion2Form';
 import AddQuestion3Form from './scr/components/AddQuestion3Form';
 import AssignQuestionToClass from './scr/components/AssignQuestionToClass';
 import TeacherHome from './scr/components/TeacherHome';
+import CreateGroup from './scr/components/CreateGroup';
+import Theorems from './scr/components/Theorems';
 
 const studentStackNavigator = createStackNavigator({
   TopicList: { screen: TopicList},
   QuestionList: { screen: QuestionList},
   QuestionForm: { screen: QuestionForm},
-  HamburgerMenu: { screen: HamburgerMenu}
+  HamburgerMenu: { screen: HamburgerMenu},
+  Theorems: { screen: Theorems},
 },
 {
   initialRouteName: 'TopicList',
@@ -41,7 +44,8 @@ const teacherStackNavigator = createStackNavigator({
   AddQuestion1Form: {screen: AddQuestion1Form},
   AddQuestion2Form: {screen: AddQuestion2Form},
   AddQuestion3Form: {screen: AddQuestion3Form},
-  AssignQuestionToClass: {screen: AssignQuestionToClass}
+  AssignQuestionToClass: {screen: AssignQuestionToClass},
+  CreateGroup: {screen: CreateGroup},
 },
 {
   initialRouteName: 'TeacherHome',

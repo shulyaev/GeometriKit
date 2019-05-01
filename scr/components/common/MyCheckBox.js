@@ -5,8 +5,8 @@ import { CheckBox } from 'react-native-elements'
 export default class MyCheckBox extends Component {
     state = {
         checked: this.props.checked,
-        classID: this.props.classID,
-        title: `כיתה ${this.props.grade}' ${this.props.classNum} ${this.props.schoolName}, תשע"ט`
+        groupID: this.props.groupID,
+        title: `כיתה ${this.props.grade}', ${this.props.questionnaire} יח"ל, ${this.props.schoolName}, תשע"ט`
     }
     
     render() {
@@ -16,7 +16,7 @@ export default class MyCheckBox extends Component {
             iconRight
             right
             checked={this.state.checked}
-            onPress={() => {this.setState({checked: !this.state.checked}); this.props.updateSelectedClasses(this.state.classID)}}
+            onPress={() => {this.setState({checked: !this.state.checked}); this.props.updateSelectedClasses(this.state.groupID)}}
         />
       );
    }
