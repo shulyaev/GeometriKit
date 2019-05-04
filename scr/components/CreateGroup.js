@@ -33,7 +33,6 @@ export default class CreateGroup extends Component {
     _loadInitialState = async () => {
         var value = await AsyncStorage.getItem('userData');
           this.setState({teacherID: JSON.parse(value).userID})
-          this.setState({schoolID: JSON.parse(value).schoolID})
       }
     
     render() {
@@ -68,8 +67,7 @@ export default class CreateGroup extends Component {
     // axios.post('http://geometrikit-ws.cfapps.io/api/creategroup', {
     //     grade: this.state.grade,
     //     questionnaire: this.state.questionnaire,
-    //     teacherID: this.state.teacherID,
-    //     schoolID: this.state.schoolID
+    //     teacherID: this.state.teacherID
     //   }
     // );
     Alert.alert('קבוצה נוספה בהצלחה');

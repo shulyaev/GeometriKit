@@ -53,7 +53,7 @@ export default class TopicList extends Component {
         style={styles.containerNew}
         renderItem={({ item }) =>
           <TouchableOpacity style={[styles.GridViewContainer, { backgroundColor: item.color }]} onPress={this.GetGridViewItem.bind(this, item)}>
-            <Image source={{ uri: item.picture}} style={{ flex: 4, width: Dimensions.get('window').width / 3.5, margin: 5 }}/>
+            <Image source={{ uri: item.picture}} style={{ flex: 1.9, width: Dimensions.get('window').width / 4.4, margin: 5 }}/>
             <Text style={styles.GridViewTextLayout}> {item.subjectName} </Text>
           </TouchableOpacity>}
         numColumns={numColumns}

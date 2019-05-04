@@ -108,7 +108,7 @@ export default class QuestionForm extends Component {
                     </Text>
                 </ScrollView>
                 <TouchableOpacity
-                    onPress={() => console.log('clicked')}
+                    onPress={() => this.props.navigation.navigate("Theorems")}
                     style={{position: 'absolute', left: 15, bottom: 100, shadowColor: '#000', shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.5, shadowRadius: 5}}
                 >
                     <Image source={statements} style={{ height: 60, width: 60}}/>

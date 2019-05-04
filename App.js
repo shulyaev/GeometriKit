@@ -18,6 +18,7 @@ import AssignQuestionToClass from './scr/components/AssignQuestionToClass';
 import TeacherHome from './scr/components/TeacherHome';
 import CreateGroup from './scr/components/CreateGroup';
 import Theorems from './scr/components/Theorems';
+import AssignToGroup from './scr/components/AssignToGroup';
 
 const studentStackNavigator = createStackNavigator({
   TopicList: { screen: TopicList},
@@ -25,6 +26,7 @@ const studentStackNavigator = createStackNavigator({
   QuestionForm: { screen: QuestionForm},
   HamburgerMenu: { screen: HamburgerMenu},
   Theorems: { screen: Theorems},
+  AssignToGroup: { screen: AssignToGroup},
 },
 {
   initialRouteName: 'TopicList',

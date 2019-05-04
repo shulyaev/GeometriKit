@@ -71,6 +71,14 @@ export default class AssignQuestionToClass extends Component {
         } else {
           this.state.selectedClasses.push(groupID);
         }
+        var newArr = [];
+        this.state.allClasses.forEach(e => {
+            if (e.groupID === groupID){
+                e.assigned = !e.assigned;
+            }
+            newArr.push(e)
+        });
+        this.setState({allClasses: newArr});
       }
 
     saveAssignment(){

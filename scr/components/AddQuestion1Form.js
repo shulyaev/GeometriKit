@@ -5,7 +5,7 @@ import Icon2 from '@expo/vector-icons/Feather';
 import hints from '../images/hints.png'
 import statements from '../images/statements.png'
 import axios from 'axios';
-import { Button } from './common';
+import { Button, Key ,MathKeyboard} from './common';
 import { ImagePicker, Permissions } from 'expo';
 
 export default class AddQuestion1Form extends Component {
@@ -46,7 +46,6 @@ export default class AddQuestion1Form extends Component {
     selectPicture = async () => {
         await Permissions.askAsync(Permissions.CAMERA_ROLL);
         const { cancelled, base64, type } = await ImagePicker.launchImageLibraryAsync({
-            aspect: 1,
             base64: true
         });
  
@@ -65,16 +64,26 @@ export default class AddQuestion1Form extends Component {
 
     takePicture = async () => {
         await Permissions.askAsync(Permissions.CAMERA);
-        const { base64, type } = await ImagePicker.launchCameraAsync({
+        const { cancelled, base64, type } = await ImagePicker.launchCameraAsync({
           base64: true,
         });
-        this.setState({ photo: `data:${type};base64,${base64}` });
-        this.props.navigation.setParams({photo: this.state.photo});
+        if (!cancelled) {
+            this.setState({ photo: `data:${type};base64,${base64}` });
+            this.props.navigation.setParams({photo: this.state.photo});
+            // axios.post('http://geometrikit-ws.cfapps.io/api/insert_question', {headers: {"image": `${this.state.photo}`, "text": "text of question", "subject": "s1", "hint1": "hint1",  "hint2": "hint2", "hint3": "hint3"}});
+            // axios.get('http://geometrikit-ws.cfapps.io/api/get_qustion', {headers: {"selectorType": "subject", "selector": "s1"}})
+            // .then((response) => {
+            //     this.setState({getPhoto: response.data.image});
+            //     //alert(`${response.data.image}`);
+            // })
+            // .done();
+        }
       };
 
     render() {
         return (
             <ScrollView style={styles.container}>
+                <MathKeyboard onPress={(k)=>{this.props.navigation.setParams({text: this.state.text + k}); this.setState({text: this.state.text + k});}}/>
                 <TextInput
                     style={{
                         textAlign: "right",

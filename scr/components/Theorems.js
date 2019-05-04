@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, Picker, AsyncStorage, Alert } from 'react-native';
+import { ScrollView, Text, Picker, AsyncStorage, Alert } from 'react-native';
 import Icon from '@expo/vector-icons/Ionicons'
 import { Card, CardSection } from './common';
 
@@ -39,7 +39,7 @@ export default class CreateGroup extends Component {
 
     render() {
       return (
-        <View>
+        <ScrollView>
             {this.state.theorems.map((t) => {
                 return <Card key={t.theoremID}>
                             <CardSection>
@@ -54,7 +54,7 @@ export default class CreateGroup extends Component {
                             </CardSection>
                         </Card>
             })}
-        </View>
+        </ScrollView>
       );
    }
 }

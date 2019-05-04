@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage, Image, Alert, Dimensions, ScrollView, TextInput, KeyboardAvoidingView } from 'react-native';
 import Icon1 from '@expo/vector-icons/Ionicons';
-import { Button } from './common';
+import { Button, MathKeyboard} from './common';
 import HintPreview from './common/HintPreview';
 import { ImagePicker, Permissions } from 'expo';
 import Icon2 from '@expo/vector-icons/Feather';
 import {ButtonGroup} from 'react-native-elements';
+
 
 let _this = null;
 
@@ -90,6 +91,7 @@ export default class AddQuestion2Form extends Component {
     renderContent = () => {
         if (this.state.hintType === "text")
             return <View>
+                        <MathKeyboard onPress={(k)=>this.setState({hint: this.state.hint + k})}/>
                         <TextInput
                             style={{
                                 textAlign: "right",

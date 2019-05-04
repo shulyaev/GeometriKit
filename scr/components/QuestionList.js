@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, View, Text, TouchableOpacity, AsyncStorage, FlatList, Dimensions, Alert } from 'react-native';
+import { Image, StyleSheet, View, Text, TouchableOpacity, AsyncStorage, FlatList, Dimensions, Alert } from 'react-native';
 import Icon from '@expo/vector-icons/Ionicons';
 import axios from 'axios';
 
@@ -58,6 +58,7 @@ export default class QuestionList extends Component {
                 style={styles.containerNew}
                 renderItem={({ item }) =>
                     <TouchableOpacity style={[styles.GridViewContainer, { backgroundColor: item.color }]} onPress={this.GetGridViewItem.bind(this, item)}>
+                        <Image source={{ uri: item.picture}} style={{ flex: 1.9, width: Dimensions.get('window').width / 4.4, margin: 5 }}/>
                         <Text style={styles.GridViewTextLayout}>{item.bookName}{"\n"}עמוד {item.page}, שאלה {item.questionNumber}</Text>
                     </TouchableOpacity>}
                 numColumns={numColumns}
