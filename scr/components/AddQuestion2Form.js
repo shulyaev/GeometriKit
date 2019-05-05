@@ -130,7 +130,7 @@ export default class AddQuestion2Form extends Component {
                     </View> 
             </View>
         if (this.state.hintType === 'voice')
-            return <Text>אפשקות זו אינה זמינה</Text>
+            return <Text>אפשרות זו אינה זמינה</Text>
     };
 
     shortTextCreate = (str) => {
@@ -181,13 +181,13 @@ export default class AddQuestion2Form extends Component {
 
         return (
             <View style={styles.container}>
-                <View>
+                <View style>
                     <ButtonGroup
                         onPress={this.updateIndex}
                         selectedIndex={this.state.selectedIndex}
                         buttons={buttons}
                         containerStyle={{height: 40}}
-                        selectedButtonStyle={{borderColor: '#f44444',backgroundColor: '#f44444'}}
+                        selectedButtonStyle={{borderColor: 'grey',backgroundColor: 'grey'}}
                     />
                 </View>
                 <View>
