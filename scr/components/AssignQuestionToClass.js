@@ -22,7 +22,7 @@ export default class AssignQuestionToClass extends Component {
                 />
             ),
             headerLeft: (
-                <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => {_this.saveAssignment();navigation.navigate('HamburgerMenu')}}>
+                <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => {_this.saveAssignment();navigation.navigate('TeacherHome')}}>
                     <Text style={{paddingLeft: 15, color: '#fff', paddingTop: 17, fontSize: 25}}>
                         סיום
                     </Text>

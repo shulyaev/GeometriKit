@@ -8,3 +8,5 @@ export * from './TopicListRow';
 export * from './Tile';
 export * from './Key';
 export * from './MathKeyboard'
+export * from './TeacherView'
+export * from './ClassView'

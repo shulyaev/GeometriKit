@@ -176,17 +176,6 @@ export default class AddQuestion2Form extends Component {
         }
     };
 
-    selection (selected) {
-        if (selected === '0'){
-            this.setState({hintType: 'text'});
-        } else if (selected === '1'){
-            this.setState({hintType: 'image'});
-        } else if (selected === '2'){
-            this.setState({hintType: 'voice'});
-        }
-            
-    }
-
     render() {
         const buttons = ['רמז מילולי', 'רמז ויזואלי', 'רמז קולי'];
 

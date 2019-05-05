@@ -90,9 +90,7 @@ export default class AddQuestion1Form extends Component {
                         fontSize: 25
                     }}
                     editable = {true}
-                    maxLength = {40}
                     multiline={true}
-                    numberOfLines={4}
                     onChangeText={(text) => {this.setState({text}); this.props.navigation.setParams({text});}}
                     value={this.state.text}
                     placeholder='הקלד כאן את השאלה'

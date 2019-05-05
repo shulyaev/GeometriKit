@@ -19,6 +19,7 @@ import TeacherHome from './scr/components/TeacherHome';
 import CreateGroup from './scr/components/CreateGroup';
 import Theorems from './scr/components/Theorems';
 import AssignToGroup from './scr/components/AssignToGroup';
+import TeacherQuestionListView from './scr/components/TeacherQuestionListView';
 
 const studentStackNavigator = createStackNavigator({
   TopicList: { screen: TopicList},
@@ -48,12 +49,13 @@ const teacherStackNavigator = createStackNavigator({
   AddQuestion3Form: {screen: AddQuestion3Form},
   AssignQuestionToClass: {screen: AssignQuestionToClass},
   CreateGroup: {screen: CreateGroup},
+  TeacherQuestionListView: {screen: TeacherQuestionListView},
 },
 {
   initialRouteName: 'TeacherHome',
   defaultNavigationOptions: {
     headerStyle: {
-      backgroundColor: '#f44444',
+      backgroundColor: 'grey',
     },
     headerTintColor: '#fff',
     headerTitleStyle: {

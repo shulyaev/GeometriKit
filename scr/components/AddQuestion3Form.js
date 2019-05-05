@@ -48,9 +48,15 @@ export default class AddQuestion3Form extends Component {
             bookName: 'ספר',
             page: '122',
             questionNumber: '17',
-            authorID: '111111111'
+            authorID: ''
         };
         this.index = 0;
+        this._loadInitialState().done();
+    }
+
+    _loadInitialState = async () => {
+        var value = await AsyncStorage.getItem('userData');
+            this.setState({authorID: JSON.parse(value).userID})
     }
 
     componentDidMount () {
