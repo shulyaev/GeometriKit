@@ -11,14 +11,23 @@ import { Button, TeacherView, ClassView } from './common';
 import axios from 'axios';
 import {ButtonGroup} from 'react-native-elements';
 import hints from '../images/hints.png'
-import Icon from '@expo/vector-icons/Ionicons';
+import Icon from '@expo/vector-icons/AntDesign';
+import Icon1 from '@expo/vector-icons/Ionicons';
 
 class TeacherHome extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
-          headerRight: null
+            headerRight: (
+                <Icon
+                    style={{ paddingRight: 15, color: "#fff" }}
+                    onPress={() => { AsyncStorage.removeItem('userData'); navigation.navigate('Auth') }}
+                    name="logout"
+                    size={30}
+                />
+            ),
+            headerLeft: null
         };
-      };
+    };
 
     constructor(props) {
         super(props);
@@ -67,9 +76,6 @@ class TeacherHome extends Component {
                             {this.state.subjects.map((s) => {
                                 return <TeacherView key={s.subjectID} subject={s.subjectName} image={s.picture} onPress={()=>this.props.navigation.navigate('TeacherQuestionListView', { subjectID: s.subjectID, subjectName: s.subjectName, teacherID: this.state.teacherID, filtered: this.state.filtered })}/>
                             })}
-                            <Button onPress={() => this.props.navigation.navigate('AssignQuestionToClass')}>
-                                שייך שאלה
-                            </Button>
                             <Button onPress={() => { AsyncStorage.removeItem('userData'); this.props.navigation.navigate('Auth') }}>
                                 התנתק
                             </Button>
@@ -114,7 +120,6 @@ class TeacherHome extends Component {
                 />
                 {this.renderContent()}
             </View>
-            
         );
     }
 }

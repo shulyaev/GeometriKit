@@ -22,7 +22,7 @@ export default class AssignQuestionToClass extends Component {
                 />
             ),
             headerLeft: (
-                <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => {_this.saveAssignment();navigation.navigate('TeacherHome')}}>
+                <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => {_this.saveAssignment();navigation.goBack()}}>
                     <Text style={{paddingLeft: 15, color: '#fff', paddingTop: 17, fontSize: 25}}>
                         סיום
                     </Text>
@@ -47,11 +47,14 @@ export default class AssignQuestionToClass extends Component {
     }
 
     componentDidMount () {
-        // axios.get(`http://geometrikit-ws.cfapps.io/api/getallsubjects`)
-        // .then((response) => {
-        //   this.setState({allSubjects: response.data})
-        // })
-        // .done();
+        // axios.post('http://geometrikit-ws.cfapps.io/api/getAssignedClasses', {
+        //     questionID: this.props.navigation.getParam('questionID', '1'),
+        //     teacherID: this.props.navigation.getParam('teacherID', 'X'),
+        //   }
+        // ).then((response) => {
+        //     this.setState({allClasses: response.data})
+        // }).done();
+        
         this.state.allClasses.forEach(element => {
             if (element.assigned){
               this.state.selectedClasses.push(element.groupID);
@@ -82,7 +85,13 @@ export default class AssignQuestionToClass extends Component {
       }
 
     saveAssignment(){
-        //save to DB function
+        // axios.post('http://geometrikit-ws.cfapps.io/api/updateAssignedClasses', {
+        //     questionID: this.props.navigation.getParam('questionID', 'X'),
+        //     groupID: this.props.navigation.getParam('questionID', 'X'),
+        //   }
+        // ).then((response) => {
+        //     this.setState({allClasses: response.data})
+        // }).done();
     }
 
     render() {

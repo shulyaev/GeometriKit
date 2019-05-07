@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage, Image, Alert, Dimensions, ScrollView, TextInput, KeyboardAvoidingView } from 'react-native';
-import Icon1 from '@expo/vector-icons/Ionicons';
+import Icon1 from '@expo/vector-icons/MaterialIcons';
 import Icon2 from '@expo/vector-icons/Feather';
 import hints from '../images/hints.png'
 import statements from '../images/statements.png'
@@ -16,19 +16,19 @@ export default class AddQuestion1Form extends Component {
                 <Icon1
                     style={{ paddingRight: 15, color: "#fff" }}
                     onPress={() => navigation.goBack()}
-                    name="ios-arrow-forward"
+                    name="arrow-forward"
                     size={30}
                 />
             ),
             headerLeft: (
-                <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => navigation.navigate('AddQuestion2Form', {text: navigation.getParam('text', 'X'), photo: navigation.getParam('photo', 'X')})}>
-                    <Text style={{paddingLeft: 15, color: '#fff', paddingTop: 17, fontSize: 25}}>
+                <TouchableOpacity style={{paddingLeft: 15, flexDirection: 'row'}} onPress={() => navigation.navigate('AddQuestion2Form', {text: navigation.getParam('text', 'X'), photo: navigation.getParam('photo', 'X')})}>
+                    <Text style={{color: '#fff', fontSize: 25}}>
                         הבא
                     </Text>
                     <Icon1
-                        style={{ paddingLeft: 10, paddingBottom: 53, color: "#fff" }}
-                        name="ios-checkmark"
-                        size={53}
+                        style={{ color: "#fff" }}
+                        name="check"
+                        size={30}
                     />
                 </TouchableOpacity>
             ),
@@ -52,13 +52,6 @@ export default class AddQuestion1Form extends Component {
         if (!cancelled) {
             this.setState({ photo: `data:${type};base64,${base64}` });
             this.props.navigation.setParams({photo: this.state.photo});
-            // axios.post('http://geometrikit-ws.cfapps.io/api/insert_question', {headers: {"image": `${this.state.photo}`, "text": "text of question", "subject": "s1", "hint1": "hint1",  "hint2": "hint2", "hint3": "hint3"}});
-            // axios.get('http://geometrikit-ws.cfapps.io/api/get_qustion', {headers: {"selectorType": "subject", "selector": "s1"}})
-            // .then((response) => {
-            //     this.setState({getPhoto: response.data.image});
-            //     //alert(`${response.data.image}`);
-            // })
-            // .done();
         }
     };
 
@@ -70,13 +63,6 @@ export default class AddQuestion1Form extends Component {
         if (!cancelled) {
             this.setState({ photo: `data:${type};base64,${base64}` });
             this.props.navigation.setParams({photo: this.state.photo});
-            // axios.post('http://geometrikit-ws.cfapps.io/api/insert_question', {headers: {"image": `${this.state.photo}`, "text": "text of question", "subject": "s1", "hint1": "hint1",  "hint2": "hint2", "hint3": "hint3"}});
-            // axios.get('http://geometrikit-ws.cfapps.io/api/get_qustion', {headers: {"selectorType": "subject", "selector": "s1"}})
-            // .then((response) => {
-            //     this.setState({getPhoto: response.data.image});
-            //     //alert(`${response.data.image}`);
-            // })
-            // .done();
         }
       };
 

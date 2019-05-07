@@ -10,7 +10,7 @@ import {ButtonGroup} from 'react-native-elements';
 
 let _this = null;
 
-export default class AddQuestion2Form extends Component {
+export default class AddHint extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
             title: 'הוספת רמז',
@@ -23,9 +23,9 @@ export default class AddQuestion2Form extends Component {
                 />
             ),
             headerLeft: (
-                <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => navigation.navigate('AddQuestion3Form', {text: navigation.getParam('text', 'X'), photo: navigation.getParam('photo', 'X'), hints: _this.hintsToPass(_this.state.hints)})}>
+                <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => {navigation.state.params.addNewHints(_this.hintsToPass(_this.state.hints)); navigation.goBack()}}>
                     <Text style={{paddingLeft: 15, color: '#fff', paddingTop: 17, fontSize: 25}}>
-                        הבא
+                        סיים והוסף
                     </Text>
                     <Icon1
                         style={{ paddingLeft: 10, paddingBottom: 53, color: "#fff" }}
@@ -40,8 +40,6 @@ export default class AddQuestion2Form extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            photo: this.props.navigation.getParam('photo', 'X'),
-            text: this.props.navigation.getParam('text', 'X'),
             hintType: "text",
             hints: [],
             hint: "",

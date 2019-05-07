@@ -29,9 +29,9 @@ export default class HamburgerMenu extends Component {
         this.state = {
             firstName: '',
             lastName: '',
-            grade: 'י',
-            questionnaire: '4',
-            schoolName: 'מבואות הנגב'
+            grade: '',
+            questionnaire: '',
+            schoolName: ''
         }
         this._loadInitialState().done();
     }
@@ -40,31 +40,14 @@ export default class HamburgerMenu extends Component {
         var value = await AsyncStorage.getItem('userData');
         this.setState({firstName: JSON.parse(value).firstName});
         this.setState({lastName: JSON.parse(value).lastName});
-    }
-
-    componentDidMount () {
-        // AsyncStorage.getItem('userData').then((data) => {
-        //     this.setState({ 'username': JSON.parse(data).userName })
-        // }).done();
-        // = async () => this.setState({ 'username': JSON.parse(await AsyncStorage.getItem('userData')).userName })
-        axios.get(`http://geometrikit-ws.cfapps.io/api/auth?username=username&password=password`)
-        .then((response) => {
-          if (response.data.status === 'false') {
-            console.log("false");
-          } else {
-            console.log(response.data);
-          }
-        })
-        .done();
+        this.setState({schoolName: JSON.parse(value).schoolName});
+        // this.setState({grade: JSON.parse(value).grade});
+        // this.setState({questionnaire: JSON.parse(value).questionnaire});
     }
 
     render() {
         return (
             <View style={styles.container}>
-                {/* <Text style={{ fontSize: 30 }}>
-                    {this.state.username}
-                </Text>
-                <Image source={{ uri: `data:image/jpg;base64,${this.state.photo}`}} style={{ height: 80, width: 80, borderRadius: 40 }}/> */}
                 <View style={{flex:1, backgroundColor: '#f44444', flexDirection: 'row'}}>
                     <View style={{flex: 4, flexDirection: 'column', justifyContent: 'flex-start', alignContent: 'flex-end'}}>
                         <Text style={{fontSize: 30, textAlign: 'right', color: 'white', marginRight: 35, marginTop: 10, fontWeight: 'bold'}}>{this.state.firstName + ' ' + this.state.lastName}</Text>

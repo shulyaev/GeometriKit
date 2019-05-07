@@ -20,6 +20,8 @@ import CreateGroup from './scr/components/CreateGroup';
 import Theorems from './scr/components/Theorems';
 import AssignToGroup from './scr/components/AssignToGroup';
 import TeacherQuestionListView from './scr/components/TeacherQuestionListView';
+import TeacherQuestionView from './scr/components/TeacherQuestionView';
+import AddHint from './scr/components/AddHint';
 
 const studentStackNavigator = createStackNavigator({
   TopicList: { screen: TopicList},
@@ -37,7 +39,9 @@ const studentStackNavigator = createStackNavigator({
     },
     headerTintColor: '#fff',
     headerTitleStyle: {
-      fontSize: 25
+      fontSize: 25,
+      textAlign: 'center',
+      flex: 1
     },
   }
 })
@@ -50,6 +54,8 @@ const teacherStackNavigator = createStackNavigator({
   AssignQuestionToClass: {screen: AssignQuestionToClass},
   CreateGroup: {screen: CreateGroup},
   TeacherQuestionListView: {screen: TeacherQuestionListView},
+  TeacherQuestionView: {screen: TeacherQuestionView},
+  AddHint: {screen: AddHint},
 },
 {
   initialRouteName: 'TeacherHome',
@@ -59,7 +65,9 @@ const teacherStackNavigator = createStackNavigator({
     },
     headerTintColor: '#fff',
     headerTitleStyle: {
-      fontSize: 25
+      fontSize: 25,
+      textAlign: 'center',
+      flex: 1
     },
   }
 })

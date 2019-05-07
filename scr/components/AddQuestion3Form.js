@@ -45,9 +45,9 @@ export default class AddQuestion3Form extends Component {
             allSubjects: [],
             selectedSubjects: [],
             title: '',
-            bookName: 'ספר',
-            page: '122',
-            questionNumber: '17',
+            bookName: 'שפ הספר',
+            page: '0',
+            questionNumber: '0',
             authorID: ''
         };
         this.index = 0;

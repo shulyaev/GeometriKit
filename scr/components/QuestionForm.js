@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage, Image, Alert, Dimensions, ScrollView } from 'react-native';
-import Icon from '@expo/vector-icons/Ionicons';
+import Icon from '@expo/vector-icons/MaterialIcons';
 import hints from '../images/hints.png'
 import statements from '../images/statements.png'
 import axios from 'axios';
@@ -14,16 +14,16 @@ export default class QuestionForm extends Component {
                 <Icon
                     style={{ paddingRight: 15, color: "#fff" }}
                     onPress={() => navigation.goBack()}
-                    name="ios-arrow-forward"
+                    name="arrow-forward"
                     size={30}
                 />
             ),
             headerLeft: (
                 <Icon
-                    style={{ paddingLeft: 15, paddingBottom: 53, color: "#fff" }}
+                    style={{ paddingLeft: 15, color: "#fff" }}
                     onPress={() => Alert.alert('כל הכבוד', '', [{ text: 'חזור', onPress: () => navigation.goBack()}],{cancelable: false})}
-                    name="ios-checkmark"
-                    size={53}
+                    name="check"
+                    size={30}
                 />
             ),
         };
@@ -71,8 +71,6 @@ export default class QuestionForm extends Component {
     }
 
     showHint = (hint) => {
-        console.log(hint);
-        console.log("sdfsdfsdfsd");
         switch(hint.type) {
             case 'text':
                 Alert.alert(hint.content);

@@ -50,11 +50,23 @@ class TeacherQuestionListView extends Component {
     render() { 
 
         return (
-            <View style={{flex: 1}}>
+            <ScrollView style={{flex: 1}}>
                 {this.state.questions.map((q) => {
-                                return <TeacherView key={q.questionID} subject={`${q.bookName}\nעמוד ${q.page}, שאלה ${q.questionNumber}`} image={q.picture} onPress={()=>{(alert("clicked"))}}/>
-                            })}
-            </View>      
+                    return <TeacherView
+                                key={q.questionID}
+                                subject={`${q.bookName}\nעמוד ${q.page}, שאלה ${q.questionNumber}`}
+                                image={q.picture}
+                                onPress={()=>{this.props.navigation.navigate('TeacherQuestionView', { questionID: q.questionID,
+                                                                                                bookName: q.bookName,
+                                                                                                page: q.page,
+                                                                                                questionNumber: q.questionNumber,
+                                                                                                color: q.color,
+                                                                                                content: q.content,
+                                                                                                picture: q.picture,
+                                                                                                enabled: q.authorID === this.state.teacherID
+                            })}}/>
+                    })}
+            </ScrollView>      
         );
     }
 }
