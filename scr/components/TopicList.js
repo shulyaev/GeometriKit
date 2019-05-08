@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { ScrollView, StyleSheet, View, Text, TouchableOpacity, AsyncStorage, FlatList, Dimensions, Alert, Image } from 'react-native';
+import { ActivityIndicator, StyleSheet, View, Text, TouchableOpacity, AsyncStorage, FlatList, Dimensions, Alert, Image } from 'react-native';
 import Icon from '@expo/vector-icons/Ionicons';
 import axios from 'axios';
 import { TopicListRow, Tile } from './common';
+import {scaleVertical} from '../scale';
 
 const numColumns = 2;
 
@@ -27,6 +28,7 @@ export default class TopicList extends Component {
       groupID: '',
       subjects: [],
       filtered: false,
+      loading: true,
     }
   }
 
@@ -35,7 +37,10 @@ export default class TopicList extends Component {
       this.setState({groupID: value });
       axios.get(`http://geometrikit-ws.cfapps.io/api/getsubjects?filtered=${this.state.filtered}classID=${this.state.groupID}&groupID=${this.state.groupID}`)
       .then((response) => {
-        this.setState({subjects: response.data})
+        this.setState({subjects: response.data, loading: false})
+      })
+      .catch((error) => {
+        alert(error.response);
       })
       .done();
     });
@@ -45,20 +50,35 @@ export default class TopicList extends Component {
     this.props.navigation.navigate('QuestionList', { subjectID: item.subjectID, subjectName: item.subjectName, color: item.color, groupID: this.state.groupID })
   }
 
+  renderContent = () => {
+    if (this.state.loading){
+        return (
+            <View style={{justifyContent: 'center', flex: 1}}>
+                <ActivityIndicator size="large" color="#f44444" />
+            </View>
+        )
+    } else {
+        return (
+          <FlatList
+          data={this.state.subjects}
+          style={styles.containerNew}
+          renderItem={({ item }) =>
+            <TouchableOpacity style={[styles.GridViewContainer, { backgroundColor: item.color }]} onPress={this.GetGridViewItem.bind(this, item)}>
+              <Image source={{ uri: item.picture}} style={{ flex: 1.9, width: Dimensions.get('window').height / 7, margin: 5 }}/>
+              <Text style={styles.GridViewTextLayout}> {item.subjectName} </Text>
+            </TouchableOpacity>}
+          numColumns={numColumns}
+          keyExtractor={(item, index) => index.toString()}
+          />
+        )
+    }
+  }
+
   render() {
     return (
-      // <View></View>
-      <FlatList
-        data={this.state.subjects}
-        style={styles.containerNew}
-        renderItem={({ item }) =>
-          <TouchableOpacity style={[styles.GridViewContainer, { backgroundColor: item.color }]} onPress={this.GetGridViewItem.bind(this, item)}>
-            <Image source={{ uri: item.picture}} style={{ flex: 1.9, width: Dimensions.get('window').width / 4.4, margin: 5 }}/>
-            <Text style={styles.GridViewTextLayout}> {item.subjectName} </Text>
-          </TouchableOpacity>}
-        numColumns={numColumns}
-        keyExtractor={(item, index) => index.toString()}
-      />
+      <View style={{flex: 1}}>
+        {this.renderContent()}
+      </View>
     );
   }
 }
@@ -80,11 +100,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    height: Dimensions.get('window').height / 5,
+    height: Dimensions.get('window').height / 4.3,
     margin: 5
   },
   GridViewTextLayout: {
-    fontSize: 20,
+    fontSize: scaleVertical(2.3),
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#fff',

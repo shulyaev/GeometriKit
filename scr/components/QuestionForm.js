@@ -65,40 +65,39 @@ export default class QuestionForm extends Component {
             questionID: this.state.questionID
           }
         ).then((response) => {
-            console.log(response.data);
             this.setState({hints: response.data})
         });
     }
 
     showHint = (hint) => {
-        switch(hint.type) {
-            case 'text':
-                Alert.alert(hint.content);
-                break;
-            case 'image':
-                this.setState({picture: hint.content})
-                break;
-            case 'voice':
-                break;
-            default:
-                Alert.alert("שגיאה בזימון רמז, אנא נסה שוב");
-        }
-    }
-
-    indexInc () {
         if (this.index >= this.state.hints.length){
             this.index = 0;
             this.setState({picture: this.props.navigation.getParam('picture', 'X')})
+            Alert.alert("אזלו כל הרמזים לשאלה זו");
+        } else {
+            switch(hint.type) {
+                case 'text':
+                    this.setState({picture: this.props.navigation.getParam('picture', 'X')})
+                    Alert.alert(hint.content);
+                    break;
+                case 'image':
+                    this.setState({picture: hint.content})
+                    break;
+                case 'voice':
+                    break;
+                default:
+                    Alert.alert("שגיאה בזימון רמז, אנא נסה שוב");
+            }
+            ++this.index
         }
-
-        return ++this.index - 1
+        
     }
 
     render() {
         return (
             <View style={styles.container}>
                 <View style={{height: Dimensions.get('window').height / 1.7, justifyContent: 'center', alignItems: 'center'}}>
-                    <Image source={{ uri: this.state.picture}} style={{ height: this.state.picHeight, width: this.state.picWidth, borderRadius: 10 }}/>
+                    <Image source={{ uri: this.state.picture}} style={{ height: this.state.picHeight, width: this.state.picWidth, borderRadius: 10, marginTop: 20 }}/>
                 </View>
                 <ScrollView contentContainerStyle={{alignSelf: 'flex-end', width: Dimensions.get('window').width * 0.8}}>
                     <Text style={{ fontSize: 25, color: 'black', textAlign: 'right', padding: 20}}>
@@ -112,7 +111,7 @@ export default class QuestionForm extends Component {
                     <Image source={statements} style={{ height: 60, width: 60}}/>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={() => this.showHint(this.state.hints[this.indexInc()])}
+                    onPress={() => this.showHint(this.state.hints[this.index])}
                     style={{position: 'absolute', left: 15, bottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.5, shadowRadius: 5}}
                 >
                     <Image source={hints} style={{ height: 60, width: 60}}/>

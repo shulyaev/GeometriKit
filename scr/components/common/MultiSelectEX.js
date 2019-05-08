@@ -35,7 +35,7 @@ export default class MultiSelectEX extends Component {
             itemTextColor="#000"
             displayKey="subjectName"
             searchInputStyle={{ color: '#CCC', textAlign: 'right', fontSize: 20 }}
-            submitButtonColor="#f44444"
+            submitButtonColor="grey"
             submitButtonText="אשר"
           />
           <View>

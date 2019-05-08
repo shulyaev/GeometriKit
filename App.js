@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {StyleSheet, View, Text, TouchableOpacity, AsyncStorage, Image } from 'react-native';
+import {StyleSheet, I18nManager, Text, TouchableOpacity, AsyncStorage, Image } from 'react-native';
 import { createSwitchNavigator, createAppContainer, createDrawerNavigator, createBottomTabNavigator, createStackNavigator} from 'react-navigation';
-import Icon from '@expo/vector-icons/Ionicons';
 import Login from './scr/components/auth/login/Login';
 import SignUpPermissionSelection from './scr/components/auth/signup/SignUpPermissionSelection';
 import SignUpTeacherVerification from './scr/components/auth/signup/SignUpTeacherVerification';
@@ -99,6 +98,10 @@ const AppSwitchNavigator = createSwitchNavigator({
 })
 
 export default class App extends Component {
+  constructor(props){
+    super(props);
+    I18nManager.allowRTL(false);
+  }
   render() {
     return (
       <Application />
@@ -116,97 +119,3 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   }
 });
-
-// export default class App extends Component {
-//   render() {
-//     return (
-//       <AppContainer />
-//     );
-//   }
-// }
-
-// class WelcomeScreen extends Component {
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <Button title="Login" onPress={() => this.props.navigation.navigate('Dashboard')} />
-//         <Button title="Sign Up" onPress={() => alert('button pressed')} />
-//       </View>
-//     );
-//   }
-// }
-
-// class DashboardScreen extends Component {
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <Text>DashboardScreen</Text>
-//       </View>
-//     );
-//   }
-// }
-
-// class Feed extends Component {
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <Text>Feed</Text>
-//       </View>
-//     );
-//   }
-// }
-
-// class Profile extends Component {
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <Text>Profile</Text>
-//       </View>
-//     );
-//   }
-// }
-
-// class Settings extends Component {
-//   render() {
-//     return (
-//       <View style={styles.container}>
-//         <Text>Setting</Text>
-//       </View>
-//     );
-//   }
-// }
-
-// const DashboardTabNavigator = createBottomTabNavigator({
-//   Feed,
-//   Profile,
-//   Settings
-// },{
-//   navigationOptions: ({navigation}) => {
-//     const { routeName } = navigation.state.routes
-//     [navigation.state.index];
-//     return {
-//       headerTitle: routeName
-//     };
-//   }
-// })
-
-// const DashboardStackNavigator = createStackNavigator({
-//   DashboardTabNavigator: DashboardTabNavigator
-// },{
-//   defaultNavigationOptions: ({navigation}) => {
-//     return {
-//       headerLeft: <Text onPress={()=>navigation.openDrawer()}>===</Text>
-//     };
-//   }
-// })
-
-// const AppDrawerNavigator = createDrawerNavigator({
-//   Dashboard: { screen: DashboardStackNavigator }
-// })
-
-// const AppSwitchNavigator = createSwitchNavigator({
-//   Welcome: { screen: WelcomeScreen },
-//   Dashboard: { screen: AppDrawerNavigator }
-// });
-
-// const AppContainer = createAppContainer(AppSwitchNavigator);

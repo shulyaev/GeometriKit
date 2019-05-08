@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage, Image, Alert, Dimensions, ScrollView } from 'react-native';
 import Icon from '@expo/vector-icons/Ionicons';
-import hints from '../images/hints.png'
+import assignToClass from '../images/assignToClass.png'
 import statements from '../images/statements.png'
 import axios from 'axios';
 import { Button } from './common';
@@ -86,7 +86,6 @@ export default class TeacherQuestionView extends Component {
             questionID: this.state.questionID
           }
         ).then((response) => {
-            console.log(response.data);
             this.setState({hints: response.data})
         });
     }
@@ -144,7 +143,7 @@ export default class TeacherQuestionView extends Component {
                             onPress={() => this.props.navigation.navigate('AssignQuestionToClass', {questionID: this.props.navigation.getParam('questionID', 'X')})}
                             style={{position: 'absolute', left: 15, bottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.5, shadowRadius: 5}}
                         >
-                            <Image source={hints} style={{ height: 60, width: 60}}/>
+                            <Image source={assignToClass} style={{ height: 60, width: 60}}/>
                         </TouchableOpacity>
                     </View>
                     <View contentContainerStyle={{alignSelf: 'flex-end', width: Dimensions.get('window').width * 0.8}}>

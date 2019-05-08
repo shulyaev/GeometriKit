@@ -4,14 +4,14 @@ import Dimensions from 'Dimensions';
 
 const Button = (props) => {
     const { buttonStyle, textStyle } = style;
-    const { onPress, children } = props;
+    const { onPress, children, borderColor="#f44444", textColor="#f44444", backgroundColor="#fff" } = props;
 
     return (
         <TouchableOpacity
             onPress={onPress}
-            style={buttonStyle}
+            style={[buttonStyle, {borderColor, backgroundColor}]}
         >
-            <Text style={textStyle}>
+            <Text style={[textStyle, {color: textColor}]}>
                 {children}
             </Text>
         </TouchableOpacity>

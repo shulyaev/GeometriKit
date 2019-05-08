@@ -68,8 +68,9 @@ export default class AddQuestion1Form extends Component {
 
     render() {
         return (
-            <ScrollView style={styles.container}>
+            <View style={styles.container}>
                 <MathKeyboard onPress={(k)=>{this.props.navigation.setParams({text: this.state.text + k}); this.setState({text: this.state.text + k});}}/>
+                <ScrollView style={styles.container}>
                 <TextInput
                     style={{
                         textAlign: "right",
@@ -96,7 +97,8 @@ export default class AddQuestion1Form extends Component {
                     </TouchableOpacity>
                 </View> 
                 <Image source={{uri: this.state.photo}} style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').width}}/>
-            </ScrollView>
+                </ScrollView>
+            </View>
         );
     }
 }

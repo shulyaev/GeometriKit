@@ -10,9 +10,10 @@ import {
 import { Button, TeacherView, ClassView } from './common';
 import axios from 'axios';
 import {ButtonGroup} from 'react-native-elements';
-import hints from '../images/hints.png'
+import addQuestion from '../images/addQuestion.png'
+import addGroup from '../images/addGroup.png'
 import Icon from '@expo/vector-icons/AntDesign';
-import Icon1 from '@expo/vector-icons/Ionicons';
+import {scaleVertical} from '../scale';
 
 class TeacherHome extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -76,15 +77,12 @@ class TeacherHome extends Component {
                             {this.state.subjects.map((s) => {
                                 return <TeacherView key={s.subjectID} subject={s.subjectName} image={s.picture} onPress={()=>this.props.navigation.navigate('TeacherQuestionListView', { subjectID: s.subjectID, subjectName: s.subjectName, teacherID: this.state.teacherID, filtered: this.state.filtered })}/>
                             })}
-                            <Button onPress={() => { AsyncStorage.removeItem('userData'); this.props.navigation.navigate('Auth') }}>
-                                התנתק
-                            </Button>
                         </ScrollView>
                         <TouchableOpacity
                             onPress={() => this.props.navigation.navigate('AddQuestion1Form')}
                             style={{position: 'absolute', left: 15, bottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.5, shadowRadius: 5}}
                         >
-                            <Image source={hints} style={{ height: 60, width: 60}}/>
+                            <Image source={addQuestion} style={{ height: 60, width: 60}}/>
                         </TouchableOpacity>
                     </View>
         } else if (this.state.selectedIndex == '1') {
@@ -100,7 +98,7 @@ class TeacherHome extends Component {
                             onPress={() => this.props.navigation.navigate('CreateGroup')}
                             style={{position: 'absolute', left: 15, bottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.5, shadowRadius: 5}}
                         >
-                            <Image source={hints} style={{ height: 60, width: 60}}/>
+                            <Image source={addGroup} style={{ height: 60, width: 60}}/>
                         </TouchableOpacity>
                    </View>
         }

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet, View, Text, TouchableOpacity, AsyncStorage, FlatList, Dimensions, Alert } from 'react-native';
-import Icon from '@expo/vector-icons/Ionicons';
+import { Image, StyleSheet, View, Text, TouchableOpacity, ActivityIndicator, FlatList, Dimensions, Alert } from 'react-native';
+import Icon from '@expo/vector-icons/MaterialIcons';
 import axios from 'axios';
+import {scaleVertical} from '../scale';
 
 const numColumns = 2;
 
@@ -13,7 +14,7 @@ export default class QuestionList extends Component {
                 <Icon
                     style={{ paddingRight: 15, color: "#fff" }}
                     onPress={() => navigation.goBack()}
-                    name="ios-arrow-forward"
+                    name="arrow-forward"
                     size={30}
                 />
             ),
@@ -27,14 +28,18 @@ export default class QuestionList extends Component {
             groupID: this.props.navigation.getParam('groupID', 'X'),
             subjectID: this.props.navigation.getParam('subjectID', 'X'),
             filtered: false,
-            questions: []
+            questions: [],
+            loading: true
         }
     }
 
     componentDidMount () {
         axios.get(`http://geometrikit-ws.cfapps.io/api/getquestions?filtered=${this.state.filtered}&groupID=${this.state.groupID}&subjectID=${this.state.subjectID}`)
         .then((response) => {
-          this.setState({questions: response.data})
+          this.setState({questions: response.data, loading: false})
+        })
+        .catch((error) => {
+            alert(error.response);
         })
         .done();
     }
@@ -51,19 +56,35 @@ export default class QuestionList extends Component {
         })
     }
 
+    renderContent = () => {
+        if (this.state.loading){
+            return (
+                <View style={{justifyContent: 'center', flex: 1}}>
+                    <ActivityIndicator size="large" color={this.props.navigation.getParam('color', '#f44444')} />
+                </View>
+            )
+        } else {
+            return (
+                <FlatList
+                    data={this.state.questions}
+                    style={styles.containerNew}
+                    renderItem={({ item }) =>
+                        <TouchableOpacity style={[styles.GridViewContainer, { backgroundColor: item.color }]} onPress={this.GetGridViewItem.bind(this, item)}>
+                            <Image source={{ uri: item.picture}} style={{ flex: 1.9, width: Dimensions.get('window').height / 7, margin: 5 }}/>
+                            <Text style={styles.GridViewTextLayout}>{item.bookName}{"\n"}עמוד {item.page}, שאלה {item.questionNumber}</Text>
+                        </TouchableOpacity>}
+                    numColumns={numColumns}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+            )
+        }
+    }
+
     render() {
         return (
-            <FlatList
-                data={this.state.questions}
-                style={styles.containerNew}
-                renderItem={({ item }) =>
-                    <TouchableOpacity style={[styles.GridViewContainer, { backgroundColor: item.color }]} onPress={this.GetGridViewItem.bind(this, item)}>
-                        <Image source={{ uri: item.picture}} style={{ flex: 1.9, width: Dimensions.get('window').width / 4.4, margin: 5 }}/>
-                        <Text style={styles.GridViewTextLayout}>{item.bookName}{"\n"}עמוד {item.page}, שאלה {item.questionNumber}</Text>
-                    </TouchableOpacity>}
-                numColumns={numColumns}
-                keyExtractor={(item, index) => index.toString()}
-            />
+            <View style={{flex: 1}}>
+                {this.renderContent()}
+            </View>
         );
     }
 }
@@ -93,11 +114,11 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-end',
         alignItems: 'center',
-        height: 150,
+        height: Dimensions.get('window').height / 4.3,
         margin: 5
     },
     GridViewTextLayout: {
-        fontSize: 20,
+        fontSize: scaleVertical(2.3),
         fontWeight: 'bold',
         textAlign: 'center',
         color: '#fff',

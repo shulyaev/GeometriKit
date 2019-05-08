@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { ScrollView, Text, Picker, AsyncStorage, Alert } from 'react-native';
+import { ScrollView, ActivityIndicator, Text, View, AsyncStorage, Alert } from 'react-native';
 import Icon from '@expo/vector-icons/Ionicons'
 import { Card, CardSection } from './common';
+import axios from 'axios';
 
 export default class CreateGroup extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -22,39 +23,63 @@ export default class CreateGroup extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            theorems: [{theoremID: '1', theoremName: "דגדכדגכגדכ dfsfsdf גדכדגכג", content: 'דגכדגכדגכדגכגדכ'},
-                        {theoremID: '2', theoremName: "דגכגדכגדכ", content: 'דגכדגכגדכגדכ'},
-                        {theoremID: '3', theoremName: "דגכדגכגדכ", content: 'דגכדגכגדכגדכ'}]
+            theorems: [],
+            loading: true
         }
+        this.last = []
     }
 
     componentDidMount(){
-        // axios.get(`http://geometrikit-ws.cfapps.io/api/gettheorems`)
-        // .then((response) => {
-        //   this.setState({theorems: response.data})
-        //   }
-        // )
-        // .done();
+      axios.post('http://geometrikit-ws.cfapps.io/api/getTheorems', {
+      }).then((response) => {
+          this.setState({theorems: response.data, loading: false})
+      })
+      .done();
+    }
+
+    renderContent = () => {
+      if (this.state.loading){
+          return (
+              <View style={{justifyContent: 'center', flex: 1}}>
+                  <ActivityIndicator size="large" color="#f44444" />
+              </View>
+          )
+      } else {
+          return (
+            <ScrollView>
+              {this.state.theorems.map((t) => {
+                if (!this.last.includes(t.theoremName)){
+                  this.last.push(t.theoremName)
+                  return (<Card key={t.theoremID}>
+                            <CardSection>
+                              <Text style={{fontWeight: 'bold', fontSize: 20, flex: 1}}>
+                                {t.theoremName}
+                              </Text>
+                            </CardSection>
+                            {this.state.theorems.map((c) => {
+                              if (this.last[this.last.length -1] === c.theoremName){
+                                return (
+                                  <CardSection key={c.theoremID}>
+                                    <Text style={{fontSize: 14, flex: 1}}>
+                                      {c.content}
+                                    </Text>
+                                  </CardSection>
+                                )
+                              }
+                            })}
+                          </Card>)
+                }             
+              })}
+            </ScrollView>
+          )
+      }
     }
 
     render() {
       return (
-        <ScrollView>
-            {this.state.theorems.map((t) => {
-                return <Card key={t.theoremID}>
-                            <CardSection>
-                                <Text style={{fontWeight: 'bold', fontSize: 20}}>
-                                    {t.theoremName}
-                                </Text>
-                            </CardSection>
-                            <CardSection>
-                                <Text>
-                                    {t.content}
-                                </Text>
-                            </CardSection>
-                        </Card>
-            })}
-        </ScrollView>
+        <View style={{flex: 1}}>
+          {this.renderContent()}
+        </View>
       );
    }
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage, Image, Alert, Dimensions, ScrollView, TextInput, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, Keyboard, Text, TouchableOpacity, AsyncStorage, TouchableWithoutFeedback, Alert, Dimensions, ScrollView, TextInput, KeyboardAvoidingView } from 'react-native';
 import Icon1 from '@expo/vector-icons/Ionicons';
 import { Button, Input } from './common';
 import MultiSelectEX from './common/MultiSelectEX'
@@ -112,13 +112,15 @@ export default class AddQuestion3Form extends Component {
 
     render() {
         return (
-            <ScrollView style={styles.container}>
-                <Input
-                    onChangeText= {(title) => this.setState({title})}
-                    placeholder='תן שם לשאלה'
-                />
-                <MultiSelectEX updateSelectedSubjects={(toUpdate) => {this.setState({selectedSubjects: toUpdate})}} subjects={this.state.allSubjects}/>
-            </ScrollView>
+            <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
+                <ScrollView style={styles.container}>
+                    <Input
+                        onChangeText= {(title) => this.setState({title})}
+                        placeholder='תן שם לשאלה'
+                    />
+                    <MultiSelectEX updateSelectedSubjects={(toUpdate) => {this.setState({selectedSubjects: toUpdate})}} subjects={this.state.allSubjects}/>
+                </ScrollView>
+            </TouchableWithoutFeedback>
         );
     }
 }

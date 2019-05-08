@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, View, Text, TouchableOpacity, AsyncStorage, Picker } from 'react-native';
+import { Alert, View, TouchableWithoutFeedback, Keyboard, TouchableOpacity, AsyncStorage, Picker } from 'react-native';
 import axios from 'axios';
 import Icon from '@expo/vector-icons/Ionicons'
 import { Input, Button } from '../../common';
@@ -34,37 +34,39 @@ export default class SignUpStudentForm extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1, justifyContent: 'center' }}>
-        <Input
-          placeholder='שם משתמש'
-          onChangeText={(userName) => this.setState({ userName })}
-        />
-        <Input
-          placeholder='סיסמא'
-          onChangeText={(password) => this.setState({ password })}
-          secureTextEntry
-        />
-        <Input
-          placeholder='שם פרטי'
-          onChangeText={(firstName) => this.setState({ firstName })}
-        />
-        <Input
-          placeholder='שם משפחה'
-          onChangeText={(lastName) => this.setState({ lastName })}
-        />
-        <Picker
-          selectedValue = {this.state.schoolID}
-          onValueChange = {(itemValue) => this.setState({schoolID: itemValue})}
-          itemStyle={{color: 'black', backgroundColor: 'rgba(200, 200, 200, 0.4)', marginHorizontal: 20, marginVertical: 5, height: 100, borderRadius: 20, fontSize: 15}}
-        >
-          {this.state.schoolList.map((s) => {
-            return <Picker.Item key={s.schoolID} label={s.schoolName} value={s.schoolID}/>
-          })}
-        </Picker>
-        <Button onPress={() => this.signup()}>
-          הרשם
-        </Button>
-      </View>
+      <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+          <Input
+            placeholder='שם משתמש (באנגלית)'
+            onChangeText={(userName) => this.setState({ userName })}
+          />
+          <Input
+            placeholder='סיסמא'
+            onChangeText={(password) => this.setState({ password })}
+            secureTextEntry
+          />
+          <Input
+            placeholder='שם פרטי (בעברית)'
+            onChangeText={(firstName) => this.setState({ firstName })}
+          />
+          <Input
+            placeholder='שם משפחה (בעברית)'
+            onChangeText={(lastName) => this.setState({ lastName })}
+          />
+          <Picker
+            selectedValue = {this.state.schoolID}
+            onValueChange = {(itemValue) => this.setState({schoolID: itemValue})}
+            itemStyle={{color: 'black', backgroundColor: 'rgba(200, 200, 200, 0.4)', marginHorizontal: 20, marginVertical: 5, height: 100, borderRadius: 20, fontSize: 15}}
+          >
+            {this.state.schoolList.map((s) => {
+              return <Picker.Item key={s.schoolID} label={s.schoolName} value={s.schoolID}/>
+            })}
+          </Picker>
+          <Button onPress={() => this.signup()}>
+            הרשם
+          </Button>
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 

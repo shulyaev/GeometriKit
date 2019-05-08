@@ -98,9 +98,7 @@ export default class AddQuestion2Form extends Component {
                                 fontSize: 25
                             }}
                             editable = {true}
-                            maxLength = {40}
                             multiline={true}
-                            numberOfLines={4}
                             onChangeText={(hint) => this.setState({hint})}
                             value={this.state.hint}
                             placeholder='הקלד כאן את הרמז'
@@ -108,6 +106,9 @@ export default class AddQuestion2Form extends Component {
                         <Button onPress = {() => {
                             this.setState({hints: [...this.state.hints, {id: this.index++, type: 'text', content: this.state.hint, shortContent: this.shortTextCreate(this.state.hint)}]});
                             this.setState({hint: ''});}}
+                            borderColor="grey"
+                            backgroundColor="grey"
+                            textColor="white"
                         >
                             שמור רמז
                         </Button>
@@ -127,8 +128,8 @@ export default class AddQuestion2Form extends Component {
                                     size={25}
                                 />
                             </TouchableOpacity>
-                    </View> 
-            </View>
+                        </View> 
+                    </View>
         if (this.state.hintType === 'voice')
             return <Text>אפשרות זו אינה זמינה</Text>
     };

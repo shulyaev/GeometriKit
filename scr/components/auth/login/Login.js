@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, View, AsyncStorage } from 'react-native';
+import {Alert, View, AsyncStorage, Keyboard, TouchableWithoutFeedback, ActivityIndicator } from 'react-native';
 import axios from 'axios';
 import userIcon from '../../../images/user.png'
 import keyIcon from '../../../images/key.png'
@@ -15,7 +15,8 @@ export default class Login extends Component {
       this.state = {
         username: '',
         password: '',
-        groupID: ''
+        groupID: '',
+        loading: false
       }
       this._loadInitialState().done();
     }
@@ -30,45 +31,68 @@ export default class Login extends Component {
       }
     }
 
+    renderButtons = () => {
+      if (this.state.loading) {
+        return (
+          <ActivityIndicator size="large" color="#f44444" />
+        )
+      } else {
+        return (
+          <View>
+            <Button onPress={this.login}>
+              התחבר/י
+            </Button>
+            <Button onPress={() => this.props.navigation.navigate('SignUp')}>
+              הרשמה
+            </Button>
+          </View>
+        )
+      }
+    }
+
     render() {
       return (
-        <View style={{flex: 1, justifyContent: 'center'}}>
-          <Input
-            onChangeText= {(username) => this.setState({username})}
-            placeholder='שם משתמש'
-            imageSource={userIcon}
-          />
-          <Input
-            onChangeText= {(password) => this.setState({password})}
-            placeholder='סיסמא'
-            secureTextEntry
-            imageSource={keyIcon}
-          />
-          <Button onPress={this.login}>
-            התחבר/י
-          </Button>
-          <Button onPress={() => this.props.navigation.navigate('SignUp')}>
-            הרשמה
-          </Button>
-        </View>
+        <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
+          <View style={{flex: 1, justifyContent: 'center'}}>
+            <Input
+              onChangeText= {(username) => this.setState({username})}
+              placeholder='שם משתמש'
+              imageSource={userIcon}
+            />
+            <Input
+              onChangeText= {(password) => this.setState({password})}
+              placeholder='סיסמא'
+              secureTextEntry
+              imageSource={keyIcon}
+            />
+            {this.renderButtons()}
+          </View>
+        </TouchableWithoutFeedback>
       );
     }
     login = () => {
+      this.setState({loading: true})
       axios.get(`http://geometrikit-ws.cfapps.io/api/auth?username=${this.state.username}&password=${this.state.password}`)
         .then((response) => {
           if (response.data.status === 'false') {
-              Alert.alert('שם משתשמש או סיסמא שגויים');
+            this.setState({loading: false});
+            Alert.alert('שם משתשמש או סיסמא שגויים');
           } else if (response.data.permissionID === '1'){
             AsyncStorage.setItem('userData', JSON.stringify(response.data) );
             AsyncStorage.setItem('groupID', response.data.groupID );
             AsyncStorage.setItem('userID', response.data.userID );
+            this.setState({loading: false});
             this.props.navigation.navigate('StudentMenu'); 
           } else if (response.data.permissionID === '2'){
             AsyncStorage.setItem('userData', JSON.stringify(response.data) );
             AsyncStorage.setItem('groupID', response.data.groupID );
             AsyncStorage.setItem('userID', response.data.userID );
+            this.setState({loading: false});
             this.props.navigation.navigate('TeacherMenu'); 
           }
+        })
+        .catch((error) => {
+          alert(error.response);
         })
         .done();
     }
