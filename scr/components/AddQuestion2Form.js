@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage, Image, Alert, D
 import Icon1 from '@expo/vector-icons/Ionicons';
 import { Button, MathKeyboard} from './common';
 import HintPreview from './common/HintPreview';
-import { ImagePicker, Permissions } from 'expo';
+import { ImagePicker, Permissions, ImageManipulator } from 'expo';
 import Icon2 from '@expo/vector-icons/Feather';
 import {ButtonGroup} from 'react-native-elements';
 
@@ -67,24 +67,33 @@ export default class AddQuestion2Form extends Component {
 
     selectPicture = async () => {
         await Permissions.askAsync(Permissions.CAMERA_ROLL);
-        const { cancelled, base64, type } = await ImagePicker.launchImageLibraryAsync({
-            aspect: 1,
-            base64: true
+        const { cancelled, uri, type, height, width } = await ImagePicker.launchImageLibraryAsync({
+            quality: 1,
         });
  
         if (!cancelled) {
-            this.setState({hints: [...this.state.hints, {id: this.index++, type: 'image', content: `data:${type};base64,${base64}`, shortContent: `data:${type};base64,${base64}`}]});
+            const manipResult = await ImageManipulator.manipulateAsync(
+                uri, 
+                [{ resize: { height: height /4, width: width /4} }],
+                { compress: 0.1, base64: true }
+            );
+            this.setState({hints: [...this.state.hints, {id: this.index++, type: 'image', content: `data:${type};base64,${manipResult.base64}`, shortContent: `data:${type};base64,${manipResult.base64}`}]});
         }
     };
 
     takePicture = async () => {
         await Permissions.askAsync(Permissions.CAMERA);
-        const { cancelled, base64, type } = await ImagePicker.launchCameraAsync({
-          base64: true,
+        const { cancelled, uri, type, height, width } = await ImagePicker.launchCameraAsync({
+            quality: 1,
         });
 
         if (!cancelled) {
-            this.setState({hints: [...this.state.hints, {id: this.index++, type: 'image', content: `data:${type};base64,${base64}`, shortContent: `data:${type};base64,${base64}`}]});
+            const manipResult = await ImageManipulator.manipulateAsync(
+                uri, 
+                [{ resize: { height: height /4, width: width /4} }],
+                { compress: 0.1, base64: true }
+            );
+            this.setState({hints: [...this.state.hints, {id: this.index++, type: 'image', content:`data:${type};base64,${manipResult.base64}`, shortContent: `data:${type};base64,${manipResult.base64}`}]});
         }
     };
 

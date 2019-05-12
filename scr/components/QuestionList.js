@@ -38,8 +38,14 @@ export default class QuestionList extends Component {
         .then((response) => {
           this.setState({questions: response.data, loading: false})
         })
-        .catch((error) => {
-            alert(error.response);
+        .catch(() => {
+            Alert.alert(
+              '',
+              "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",
+              [
+                {text: 'נסה שוב', onPress: () => this.componentDidMount()},
+              ],
+              {cancelable: false},);
         })
         .done();
     }

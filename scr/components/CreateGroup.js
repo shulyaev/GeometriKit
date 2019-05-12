@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, Text, Picker, AsyncStorage, Alert } from 'react-native';
-import Icon from '@expo/vector-icons/Ionicons'
+import Icon from '@expo/vector-icons/Ionicons';
 import { Button } from './common';
+import axios from 'axios';
 
 export default class CreateGroup extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -47,7 +48,6 @@ export default class CreateGroup extends Component {
             <Picker.Item label="י'" value="י"/>
             <Picker.Item label="יא'" value="יא"/>
         </Picker>
-
         <Picker
           selectedValue = {this.state.questionnaire}
           onValueChange = {(itemValue) => this.setState({questionnaire: itemValue})}
@@ -64,12 +64,27 @@ export default class CreateGroup extends Component {
    }
 
    save = () => {
-    // axios.post('http://geometrikit-ws.cfapps.io/api/creategroup', {
-    //     grade: this.state.grade,
-    //     questionnaire: this.state.questionnaire,
-    //     teacherID: this.state.teacherID
-    //   }
-    // );
-    Alert.alert('קבוצה נוספה בהצלחה');
+    axios.post('http://geometrikit-ws.cfapps.io/api/createGroup', {
+        grade: this.state.grade,
+        questionnaire: this.state.questionnaire,
+        teacherID: this.state.teacherID
+      }
+    ).then((response) => {
+      if (response.data.Status == "true") {
+        Alert.alert('קבוצה נוספה בהצלחה');
+      } else {
+        Alert.alert('','תקלה בלתי צפויה\nהקבוצה לא נוצרה!');
+      }
+    })
+    .catch(() => {
+      Alert.alert(
+        '',
+        "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",
+        [
+          {text: 'נסה שוב', onPress: () => this.componentDidMount()},
+        ],
+        {cancelable: false},);
+    })
+    .done();;
    }
 }

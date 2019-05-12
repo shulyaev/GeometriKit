@@ -28,9 +28,42 @@ export default class SignUpStudentForm extends Component {
       lastName: '',
       schoolID: '1',
       profilePicture: 'X',
-      schoolList: [{schoolID: '1', schoolName: 'מבאות הנגב'}, {schoolID: '2', schoolName: 'מקיף א׳'}]
+      schoolList: []
     }
+    this.errorList = '';
   }
+
+  componentDidMount(){
+    axios.post('http://geometrikit-ws.cfapps.io/api/getSchools', {
+    }).then((response) => {
+        this.setState({schoolList: response.data})
+    })
+    .catch(() => {
+      Alert.alert(
+        '',
+        "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",
+        [
+          {text: 'נסה שוב', onPress: () => this.componentDidMount()},
+        ],
+        {cancelable: false},);
+    })
+    .done();
+  }
+
+  validateEmail = (userName) => {
+    var re = /^[a-z0-9A-Z]{6,15}$/;
+    return re.test(userName);
+  };
+  validateName = (name) => {
+    var re = /^[- \u0590-\u05fe]{2,100}$/;
+    return re.test(name);
+  };
+  validatePassword = (password) => {
+    if (password.length <= 3){
+      return false
+    }
+    return true;
+  };
 
   render() {
     return (
@@ -71,7 +104,17 @@ export default class SignUpStudentForm extends Component {
   }
 
   signup = () => {
-    axios.post('http://geometrikit-ws.cfapps.io/api/register', {
+    this.errorList = '';
+    if (!this.validateEmail(this.state.userName)) {
+      this.errorList = this.errorList + '◄שם משתמש מכיל תווים לא חוקיים או אינו באורך 6-15 תווים\n';
+    } if (!this.validateName(this.state.firstName)) {
+      this.errorList = this.errorList + '◄שם פרטי אינו בערית או מכיל תווים לא חוקיים\n';
+    } if (!this.validateName(this.state.lastName)) {
+      this.errorList = this.errorList + '◄שם משפחה אינו בערית או מכיל תווים לא חוקיים\n';
+    } if (!this.validatePassword(this.state.password)) {
+      this.errorList = this.errorList + '◄סיסמא חייבת להכיל 8 תווים לפחות\n';
+    } if (this.errorList === '') {
+      axios.post('http://geometrikit-ws.cfapps.io/api/register', {
       userName: this.state.userName,
       password: this.state.password,
       firstName: this.state.firstName,
@@ -81,12 +124,16 @@ export default class SignUpStudentForm extends Component {
       profilePicture: this.state.profilePicture
     }).then((response) => {
         if (response.data.status !== 'true') {
-          Alert.alert('שם משתשמש שבחרת כבר קיים במערכת');
+          Alert.alert('','שם משתשמש שבחרת כבר קיים במערכת');
         } else {
-          AsyncStorage.setItem('user', this.state.username);
+          AsyncStorage.setItem('userData', JSON.stringify(response.data) );
           this.props.navigation.navigate('StudentMenu');
         }
-      })
-      .done();
+      }).catch(() =>{
+          Alert.alert('',"תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר");
+      }).done();
+    } else {
+      Alert.alert('', this.errorList)
+    }
   }
 }

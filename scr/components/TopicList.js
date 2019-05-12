@@ -6,6 +6,7 @@ import { TopicListRow, Tile } from './common';
 import {scaleVertical} from '../scale';
 
 const numColumns = 2;
+let _this = null;
 
 export default class TopicList extends Component {
   static navigationOptions = ({ navigation }) => {
@@ -14,11 +15,11 @@ export default class TopicList extends Component {
       headerRight: (
         <Icon
           style={{ paddingRight: 15, color: "#fff" }}
-          onPress={() => navigation.navigate('HamburgerMenu')}
+          onPress={() => navigation.navigate('HamburgerMenu', { onValueChange: ((filtered)=>{_this.setState({filtered});}).bind(_this),  updateSubjects: (()=>{_this.componentDidMount()}).bind(_this),value: (()=>{return _this.state.filtered}).bind(_this), groupID: _this.state.groupID})}
           name="md-menu"
           size={30}
         />
-      ),
+      ),  
     };
   };
 
@@ -32,15 +33,23 @@ export default class TopicList extends Component {
     }
   }
 
-  componentWillMount(){
-    AsyncStorage.getItem('groupID').then((value) => {
-      this.setState({groupID: value });
-      axios.get(`http://geometrikit-ws.cfapps.io/api/getsubjects?filtered=${this.state.filtered}classID=${this.state.groupID}&groupID=${this.state.groupID}`)
+  componentDidMount(){
+    this.setState({loading: true});
+    _this = this;
+    AsyncStorage.getItem('userData').then((value) => {
+      this.setState({groupID: JSON.parse(value).groupID });
+      axios.get(`http://geometrikit-ws.cfapps.io/api/getsubjects?filtered=${this.state.filtered}&groupID=${this.state.groupID}`)
       .then((response) => {
         this.setState({subjects: response.data, loading: false})
       })
-      .catch((error) => {
-        alert(error.response);
+      .catch(() => {
+        Alert.alert(
+          '',
+          "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",
+          [
+            {text: 'נסה שוב', onPress: () => this.componentDidMount()},
+          ],
+          {cancelable: false},);
       })
       .done();
     });

@@ -66,6 +66,14 @@ export default class QuestionForm extends Component {
           }
         ).then((response) => {
             this.setState({hints: response.data})
+        }).catch(() => {
+            Alert.alert(
+              '',
+              "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",
+              [
+                {text: 'נסה שוב', onPress: () => this.componentDidMount()},
+              ],
+              {cancelable: false},);
         });
     }
 
@@ -106,7 +114,7 @@ export default class QuestionForm extends Component {
                 </ScrollView>
                 <TouchableOpacity
                     onPress={() => this.props.navigation.navigate("Theorems")}
-                    style={{position: 'absolute', left: 15, bottom: 100, shadowColor: '#000', shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.5, shadowRadius: 5}}
+                    style={{position: 'absolute', left: 15, bottom: 100, shadowColor: '#000', borderColor: "#f44444",borderWidth: 3, borderRadius: 60,shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.5, shadowRadius: 5}}
                 >
                     <Image source={statements} style={{ height: 60, width: 60}}/>
                 </TouchableOpacity>

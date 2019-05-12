@@ -6,7 +6,7 @@ import hints from '../images/hints.png'
 import statements from '../images/statements.png'
 import axios from 'axios';
 import { Button, Key ,MathKeyboard} from './common';
-import { ImagePicker, Permissions } from 'expo';
+import { ImagePicker, Permissions, ImageManipulator } from 'expo';
 
 export default class AddQuestion1Form extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -45,26 +45,37 @@ export default class AddQuestion1Form extends Component {
 
     selectPicture = async () => {
         await Permissions.askAsync(Permissions.CAMERA_ROLL);
-        const { cancelled, base64, type } = await ImagePicker.launchImageLibraryAsync({
-            base64: true
+        const { cancelled, uri, type, height, width } = await ImagePicker.launchImageLibraryAsync({
+            quality: 1,
         });
- 
         if (!cancelled) {
-            this.setState({ photo: `data:${type};base64,${base64}` });
+            const manipResult = await ImageManipulator.manipulateAsync(
+                uri, 
+                [{ resize: { height: height /4, width: width /4} }],
+                { compress: 0.1, base64: true }
+              );
+            this.setState({ photo: `data:${type};base64,${manipResult.base64}`});
             this.props.navigation.setParams({photo: this.state.photo});
+            console.log(this.state.photo)
         }
     };
 
     takePicture = async () => {
         await Permissions.askAsync(Permissions.CAMERA);
-        const { cancelled, base64, type } = await ImagePicker.launchCameraAsync({
-          base64: true,
+        const { cancelled, uri, type, height, width } = await ImagePicker.launchCameraAsync({
+          quality: 1,
         });
         if (!cancelled) {
-            this.setState({ photo: `data:${type};base64,${base64}` });
+            const manipResult = await ImageManipulator.manipulateAsync(
+                uri, 
+                [{ resize: { height: height /4, width: width /4} }],
+                { compress: 0.1, base64: true }
+              );
+            this.setState({ photo: `data:${type};base64,${manipResult.base64}`});
             this.props.navigation.setParams({photo: this.state.photo});
+            console.log(this.state.photo)
         }
-      };
+    };
 
     render() {
         return (

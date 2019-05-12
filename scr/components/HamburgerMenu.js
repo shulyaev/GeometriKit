@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage, Image } from 'react-native';
+import { Switch, StyleSheet, View, Text, TouchableOpacity, AsyncStorage, Image } from 'react-native';
 import Icon from '@expo/vector-icons/Ionicons';
-import axios from 'axios';
-import { Button } from './common';
 import avatar from '../images/avatar.png'
 import assignToGroup from '../images/assignToGroup.png';
 import logout from '../images/logout.png';
@@ -15,7 +13,7 @@ export default class HamburgerMenu extends Component {
             headerRight: (
                 <Icon
                     style={{ paddingRight: 15, color: "#fff" }}
-                    onPress={() => navigation.goBack()}
+                    onPress={() => {navigation.state.params.updateSubjects();navigation.goBack()}}
                     name="ios-arrow-forward"
                     size={30}
                 />
@@ -31,18 +29,33 @@ export default class HamburgerMenu extends Component {
             lastName: '',
             grade: '',
             questionnaire: '',
-            schoolName: ''
+            schoolName: '',
+            studentID: '',
         }
         this._loadInitialState().done();
     }
 
     _loadInitialState = async () => {
         var value = await AsyncStorage.getItem('userData');
-        this.setState({firstName: JSON.parse(value).firstName});
-        this.setState({lastName: JSON.parse(value).lastName});
-        this.setState({schoolName: JSON.parse(value).schoolName});
+        this.setState({studentID: JSON.parse(value).userID, firstName: JSON.parse(value).firstName, lastName: JSON.parse(value).lastName, schoolName: JSON.parse(value).schoolName});
         // this.setState({grade: JSON.parse(value).grade});
         // this.setState({questionnaire: JSON.parse(value).questionnaire});
+    }
+
+
+    renderSwitch = () => {
+        if (this.props.navigation.getParam('groupID', 'X') != '' && this.props.navigation.getParam('groupID', 'X') != 'X'){
+            return (
+                <View style={{flexDirection: 'row', margin: 30, marginRight: 17}}>
+                    <Text style={{fontSize: 15, marginRight: 11}}>סינון שאלות</Text>
+                    <Switch
+                        onValueChange = {(value) => {this.props.navigation.state.params.onValueChange(value); this.setState({ state: this.state });}}
+                        value = {this.props.navigation.state.params.value()}
+                    />
+                </View>
+            )
+        }
+        
     }
 
     render() {
@@ -58,11 +71,12 @@ export default class HamburgerMenu extends Component {
                     </View>
                 </View>
                 <View style={{flex:5, alignItems: 'flex-end'}}>
+                    {this.renderSwitch()}
                     <TouchableOpacity style={{flexDirection: 'row', margin: 30}} onPress={() => { this.props.navigation.navigate('Theorems') }}>                    
                         <Text style={{fontSize: 15}}>משפטים</Text>
                         <Image style={{width: 25, height: 25, marginLeft: 20}} source={theorems}/>
                     </TouchableOpacity>
-                    <TouchableOpacity style={{flexDirection: 'row', margin: 30}} onPress={() => { this.props.navigation.navigate('AssignToGroup') }}>                    
+                    <TouchableOpacity style={{flexDirection: 'row', margin: 30}} onPress={() => { this.props.navigation.navigate('AssignToGroup', {studentID: this.state.studentID}) }}>                    
                         <Text style={{fontSize: 15}}>רישום לקבוצת לימוד</Text>
                         <Image style={{width: 25, height: 25, marginLeft: 20}} source={assignToGroup}/>
                     </TouchableOpacity>

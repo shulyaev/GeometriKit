@@ -91,11 +91,10 @@ export default class Login extends Component {
             this.props.navigation.navigate('TeacherMenu'); 
           }
         })
-        .catch((error) => {
-          alert(error.response);
+        .catch(() => {
+          this.setState({loading: false})
+          Alert.alert('',"תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר");
         })
         .done();
     }
   }
-
-  

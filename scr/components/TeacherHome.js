@@ -50,7 +50,7 @@ class TeacherHome extends Component {
 
     _loadInitialState = async () => {
         var value = await AsyncStorage.getItem('userData');
-            this.setState({teacherID: JSON.parse(value).userID, schoolName: JSON.parse(value).schoolName})
+            this.setState({teacherID: JSON.parse(value).userID, schoolName: JSON.parse(value).schoolName});
     }
 
     updateIndex (selectedIndex) {

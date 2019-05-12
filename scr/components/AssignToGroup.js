@@ -3,11 +3,12 @@ import { View, Text, ScrollView, Picker, AsyncStorage, Alert } from 'react-nativ
 import Icon from '@expo/vector-icons/Ionicons'
 import { Button } from './common';
 import MyCheckBox from './common/MyCheckBox';
+import axios from 'axios';
 
 export default class AssignToGroup extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
-          title: 'יצירת קבוצה',
+          title: 'הצטרפות לקבוצה',
           headerRight: (
             <Icon
               style={{ paddingRight: 15, color: "#fff" }}
@@ -24,23 +25,33 @@ export default class AssignToGroup extends Component {
         super(props);
         this.state = {
             groupID: '',
-            studentID: '',
-            groups: [{groupID: '1', grade: 'י', questionnaire: '5', teacherName: 'שדגשדג שדגשדג', assigned: false},
-            {groupID: '2', grade: 'יא', questionnaire: '4', teacherName: 'שדגשד גדשג ש ', assigned: false},
-            {groupID: '3', grade: 'א', questionnaire: '5', teacherName: 'שדגשדג דשג שדג', assigned: false},
-            {groupID: '4', grade: 'י', questionnaire: '4', teacherName: 'שדגשדג שדגשדג', assigned: true},
-            {groupID: '5', grade: 'ט', questionnaire: '5', teacherName: 'שדגשדגשד שדגשדג', assigned: false},]
+            groups: []
         }
-       
-        this._loadInitialState().done();
+        this.studentID = this.props.navigation.getParam('studentID', '0')
     }
 
-    _loadInitialState = async () => {
-        var value = await AsyncStorage.getItem('userData');
-          this.setState({studentID: JSON.parse(value).userID})
-      }
+    componentDidMount(){
+      axios.post('http://geometrikit-ws.cfapps.io/api/getGroups', {
+        userID: this.studentID
+      }).then((response) => {
+          this.setState({groups: response.data});
+          console.log(response.data)
+      })
+      .catch(() => {
+        Alert.alert(
+          '',
+          "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",
+          [
+            {text: 'נסה שוב', onPress: () => this.componentDidMount()},
+          ],
+          {cancelable: false}
+        
+          );
+      })  
+      .done();
+    }
 
-      updateSelectedGroup = (gID) => {
+    updateSelectedGroup = (gID) => {
         var newArr = [];
         this.state.groups.forEach(e => {
             if (e.groupID === gID){
@@ -53,7 +64,7 @@ export default class AssignToGroup extends Component {
         });
         this.setState({groupID: gID})
         this.setState({groups: newArr});
-      }
+    }
     
     render() {
       return (
