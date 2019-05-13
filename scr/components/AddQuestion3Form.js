@@ -5,7 +5,6 @@ import { Button, Input } from './common';
 import MultiSelectEX from './common/MultiSelectEX'
 import { ImagePicker, Permissions } from 'expo';
 import axios from 'axios';
-import Draw from './Draw';
 
 let _this = null;
 

@@ -35,7 +35,6 @@ export default class AssignToGroup extends Component {
         userID: this.studentID
       }).then((response) => {
           this.setState({groups: response.data});
-          console.log(response.data)
       })
       .catch(() => {
         Alert.alert(
