@@ -72,11 +72,19 @@ export default class AddQuestion2Form extends Component {
         });
  
         if (!cancelled) {
-            const manipResult = await ImageManipulator.manipulateAsync(
+            var ratio = 1;
+            if (height > 600 || width > 600){
+                if (height > width){
+                    ratio = height / 600;
+                } else {
+                    ratio = width / 600;
+                }
+            }
+            var manipResult = await ImageManipulator.manipulateAsync(
                 uri, 
-                [{ resize: { height: height /4, width: width /4} }],
-                { compress: 0.1, base64: true }
-            );
+                [{ resize: { height: height /ratio, width: width /ratio} }],
+                { compress: 0.5, base64: true }
+              );
             this.setState({hints: [...this.state.hints, {id: this.index++, type: 'image', content: `data:${type};base64,${manipResult.base64}`, shortContent: `data:${type};base64,${manipResult.base64}`}]});
         }
     };
@@ -88,12 +96,20 @@ export default class AddQuestion2Form extends Component {
         });
 
         if (!cancelled) {
-            const manipResult = await ImageManipulator.manipulateAsync(
+            var ratio = 1;
+            if (height > 600 || width > 600){
+                if (height > width){
+                    ratio = height / 600;
+                } else {
+                    ratio = width / 600;
+                }
+            }
+            var manipResult = await ImageManipulator.manipulateAsync(
                 uri, 
-                [{ resize: { height: height /4, width: width /4} }],
-                { compress: 0.1, base64: true }
-            );
-            this.setState({hints: [...this.state.hints, {id: this.index++, type: 'image', content:`data:${type};base64,${manipResult.base64}`, shortContent: `data:${type};base64,${manipResult.base64}`}]});
+                [{ resize: { height: height /ratio, width: width /ratio} }],
+                { compress: 0.5, base64: true }
+              );
+            this.setState({hints: [...this.state.hints, {id: this.index++, type: 'image', content: `data:${type};base64,${manipResult.base64}`, shortContent: `data:${type};base64,${manipResult.base64}`}]});
         }
     };
 

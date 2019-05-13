@@ -101,6 +101,7 @@ export default class App extends Component {
   constructor(props){
     super(props);
     I18nManager.allowRTL(false);
+    I18nManager.forceRTL(false);
   }
   render() {
     return (

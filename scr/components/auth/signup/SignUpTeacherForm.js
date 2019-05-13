@@ -26,7 +26,7 @@ export default class SignUpTeacherForm extends Component {
       password: '',
       firstName: '',
       lastName: '',
-      schoolID: '1',
+      schoolID: '',
       schoolList: []
     }
     this.errorList = '';
@@ -35,7 +35,7 @@ export default class SignUpTeacherForm extends Component {
   componentDidMount(){
     axios.post('http://geometrikit-ws.cfapps.io/api/getSchools', {
     }).then((response) => {
-        this.setState({schoolList: response.data})
+        this.setState({schoolList: response.data, schoolID: response.data[0].schoolID});
     })
     .done();
   }

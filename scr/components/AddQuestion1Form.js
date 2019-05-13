@@ -39,7 +39,9 @@ export default class AddQuestion1Form extends Component {
         super(props);
         this.state = {
             photo: undefined,
-            text: ""
+            text: "",
+            picWidth: 0,
+            picHeight: 0
         }
     }
 
@@ -49,14 +51,21 @@ export default class AddQuestion1Form extends Component {
             quality: 1,
         });
         if (!cancelled) {
-            const manipResult = await ImageManipulator.manipulateAsync(
+            var ratio = 1;
+            if (height > 600 || width > 600){
+                if (height > width){
+                    ratio = height / 600;
+                } else {
+                    ratio = width / 600;
+                }
+            }
+            var manipResult = await ImageManipulator.manipulateAsync(
                 uri, 
-                [{ resize: { height: height /4, width: width /4} }],
-                { compress: 0.1, base64: true }
+                [{ resize: { height: height /ratio, width: width /ratio} }],
+                { compress: 0.5, base64: true }
               );
             this.setState({ photo: `data:${type};base64,${manipResult.base64}`});
             this.props.navigation.setParams({photo: this.state.photo});
-            console.log(this.state.photo)
         }
     };
 
@@ -66,18 +75,33 @@ export default class AddQuestion1Form extends Component {
           quality: 1,
         });
         if (!cancelled) {
-            const manipResult = await ImageManipulator.manipulateAsync(
+            var ratio = 1;
+            if (height > 600 || width > 600){
+                if (height > width){
+                    ratio = height / 600;
+                } else {
+                    ratio = width / 600;
+                }
+            }
+            var manipResult = await ImageManipulator.manipulateAsync(
                 uri, 
-                [{ resize: { height: height /4, width: width /4} }],
-                { compress: 0.1, base64: true }
+                [{ resize: { height: height /ratio, width: width /ratio} }],
+                { compress: 0.5, base64: true }
               );
             this.setState({ photo: `data:${type};base64,${manipResult.base64}`});
             this.props.navigation.setParams({photo: this.state.photo});
-            console.log(this.state.photo)
         }
     };
 
     render() {
+        if (this.state.photo !== undefined){
+            Image.getSize(this.state.photo, (width, height) => {
+                const screenWidth = (Dimensions.get('window').width)
+                const scaleFactor = width / screenWidth
+                const imageHeight = height / scaleFactor
+                this.setState({picWidth: screenWidth, picHeight: imageHeight})
+            })
+        }
         return (
             <View style={styles.container}>
                 <MathKeyboard onPress={(k)=>{this.props.navigation.setParams({text: this.state.text + k}); this.setState({text: this.state.text + k});}}/>
@@ -107,7 +131,7 @@ export default class AddQuestion1Form extends Component {
                         />
                     </TouchableOpacity>
                 </View> 
-                <Image source={{uri: this.state.photo}} style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').width}}/>
+                <Image source={{uri: this.state.photo}} style={{ width: this.state.picWidth, height: this.state.picHeight}}/>
                 </ScrollView>
             </View>
         );

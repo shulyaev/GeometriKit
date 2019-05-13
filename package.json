@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^9.0.0",
-    "@terrylinla/react-native-sketch-canvas": "^0.8.0",
     "axios": "^0.18.0",
     "expo": "^32.0.0",
     "expo-image-picker": "^3.0.0",
@@ -16,10 +15,8 @@
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-native-elements": "^1.1.0",
     "react-native-multiple-select": "^0.4.4",
-    "react-native-sketch-draw": "^2.0.2",
     "react-native-vector-icons": "^6.4.2",
-    "react-navigation": "^3.1.5",
-    "validate.js": "^0.12.0"
+    "react-navigation": "^3.1.5"
   },
   "devDependencies": {
     "babel-preset-expo": "^5.0.0"
