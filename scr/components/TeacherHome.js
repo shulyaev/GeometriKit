@@ -38,11 +38,7 @@ class TeacherHome extends Component {
             subjects: [],
             selectedIndex: 2,
             teacherID: '',
-            groups: [{groupID: '1', grade: 'י', questionnaire: '5'},
-                    {groupID: '2', grade: 'יא', questionnaire: '4'},
-                    {groupID: '3', grade: 'א', questionnaire: '5'},
-                    {groupID: '4', grade: 'י', questionnaire: '4'},
-                    {groupID: '5', grade: 'ט', questionnaire: '5'},]
+            groups: []
         }
         this.updateIndex = this.updateIndex.bind(this);
         this._loadInitialState().done();
@@ -63,11 +59,22 @@ class TeacherHome extends Component {
     }
 
     componentDidMount(){
-            axios.get(`http://geometrikit-ws.cfapps.io/api/getsubjects?filtered=falseclassID=1&groupID=1`)
-            .then((response) => {
-                this.setState({subjects: response.data})
-            })
-            .done();
+        axios.get(`http://geometrikit-ws.cfapps.io/api/getsubjects?filtered=false&classID=1&groupID=1`)
+        .then((response) => {
+            this.setState({subjects: response.data})
+        })
+        .done();
+
+        axios.post('http://geometrikit-ws.cfapps.io/api/getTeacherGroups', {
+            teacherID: this.state.teacherID,
+        })
+        .then((response) => {
+            this.setState({groups: response.data})
+        })
+        .catch(() => {
+            Alert.alert('', "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר")
+        })
+        .done();
     }
 
     renderContent() {

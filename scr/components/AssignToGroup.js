@@ -25,15 +25,32 @@ export default class AssignToGroup extends Component {
         super(props);
         this.state = {
             groupID: '',
-            groups: []
+            groups: [],
+            questionnaire: '',
+            grade: '',
         }
+        this.userData = ''
         this.studentID = this.props.navigation.getParam('studentID', '0')
+        this._loadInitialState().done();
+    }
+
+    _loadInitialState = async () => {
+      var value = await AsyncStorage.getItem('userData');
+      this.userData = JSON.parse(value)
     }
 
     componentDidMount(){
       axios.post('http://geometrikit-ws.cfapps.io/api/getGroups', {
         userID: this.studentID
       }).then((response) => {
+          for (var i in response.data) {
+            if (response.data[i].assigned == 'true') {
+              response.data[i].assigned = true;
+              this.setState({groupID: response.data[i].groupID, questionnaire: response.data[i].questionnaire, grade: response.data[i].grade})
+            } else if (response.data[i].assigned == 'false') {
+              response.data[i].assigned = false;
+            }
+          }
           this.setState({groups: response.data});
       })
       .catch(() => {
@@ -54,6 +71,11 @@ export default class AssignToGroup extends Component {
         var newArr = [];
         this.state.groups.forEach(e => {
             if (e.groupID === gID){
+                if (!e.assigned){
+                  this.setState({groupID: gID, questionnaire: e.questionnaire, grade: e.grade})
+                } else if (e.assigned){
+                  this.setState({groupID: '', questionnaire: '', grade: ''})
+                }
                 e.assigned = !e.assigned;
             } else {
                 e.assigned = false;
@@ -61,7 +83,6 @@ export default class AssignToGroup extends Component {
 
             newArr.push(e)
         });
-        this.setState({groupID: gID})
         this.setState({groups: newArr});
     }
     
@@ -81,21 +102,32 @@ export default class AssignToGroup extends Component {
                     />
                 )}
             </ScrollView>
-            <Button onPress={() => {this.save(); this.props.navigation.navigate("HamburgerMenu");}}>
-            הצטרף
+            <Button onPress={() => {this.save(); this.props.navigation.state.params.refreshFunction(this.state.grade, this.state.questionnaire, this.state.groupID); this.props.navigation.goBack();}}>
+              הצטרף
             </Button>
-      </View>
+        </View>
       );
    }
 
-   save = () => {
-    // axios.post('http://geometrikit-ws.cfapps.io/api/gbkhjldsafhkjldfsahdsfajklhdfkjlhdas', {
-    //     grade: this.state.grade,
-    //     questionnaire: this.state.questionnaire,
-    //     teacherID: this.state.teacherID,
-    //     schoolID: this.state.schoolID
-    //   }
-    // );
-    Alert.alert('ברוך הבא לקבוצת לימוד');
-   }
+  save = () => {
+    axios.post('http://geometrikit-ws.cfapps.io/api/updateAssignToGroup', {
+        studentID: this.studentID,
+        groupID: this.state.groupID,
+      }
+      ).then((response) => {
+        if (response.data.Status == "true") {
+          this.userData.grade = this.state.grade;
+          this.userData.questionnaire = this.state.questionnaire;
+          this.userData.groupID = this.state.groupID;
+          AsyncStorage.setItem('userData', JSON.stringify(this.userData)); 
+          Alert.alert("", 'קבוצת לימוד עודכנה');
+        } else {
+          Alert.alert('','תקלה בלתי צפויה\nלא עודכנה קבוצת לימוד');
+        }
+      })
+      .catch(() => {
+        Alert.alert('', "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר")
+      })
+      .done();
+    }
 }

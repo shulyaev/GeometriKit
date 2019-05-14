@@ -18,6 +18,7 @@ export default class Login extends Component {
         groupID: '',
         loading: false
       }
+      this.errorList = '';
       this._loadInitialState().done();
     }
 
@@ -39,7 +40,7 @@ export default class Login extends Component {
       } else {
         return (
           <View>
-            <Button onPress={this.login}>
+            <Button onPress={() => {Keyboard.dismiss(); this.login()}}>
               התחבר/י
             </Button>
             <Button onPress={() => this.props.navigation.navigate('SignUp')}>
@@ -49,6 +50,17 @@ export default class Login extends Component {
         )
       }
     }
+
+    validateEmail = (username) => {
+      var re = /^[a-z0-9A-Z]{6,15}$/;
+      return re.test(username);
+    };
+    validatePassword = (password) => {
+      if (password.length < 6){
+        return false
+      }
+      return true;
+    };
 
     render() {
       return (
@@ -70,31 +82,41 @@ export default class Login extends Component {
         </TouchableWithoutFeedback>
       );
     }
+
     login = () => {
-      this.setState({loading: true})
-      axios.get(`http://geometrikit-ws.cfapps.io/api/auth?username=${this.state.username}&password=${this.state.password}`)
-        .then((response) => {
-          if (response.data.status === 'false') {
-            this.setState({loading: false});
-            Alert.alert('שם משתשמש או סיסמא שגויים');
-          } else if (response.data.permissionID === '1'){
-            AsyncStorage.setItem('userData', JSON.stringify(response.data) );
-            AsyncStorage.setItem('groupID', response.data.groupID );
-            AsyncStorage.setItem('userID', response.data.userID );
-            this.setState({loading: false});
-            this.props.navigation.navigate('StudentMenu'); 
-          } else if (response.data.permissionID === '2'){
-            AsyncStorage.setItem('userData', JSON.stringify(response.data) );
-            AsyncStorage.setItem('groupID', response.data.groupID );
-            AsyncStorage.setItem('userID', response.data.userID );
-            this.setState({loading: false});
-            this.props.navigation.navigate('TeacherMenu'); 
-          }
-        })
-        .catch(() => {
-          this.setState({loading: false})
-          Alert.alert('',"תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר");
-        })
-        .done();
+      this.errorList = '';
+      if (!this.validateEmail(this.state.username)) {
+        this.errorList = this.errorList + '◄שם משתמש אינו חוקי\n';
+      } if (!this.validatePassword(this.state.password)) {
+        this.errorList = this.errorList + '◄סיסמא אינה חוקית\n';
+      } if (this.errorList === '') {
+        this.setState({loading: true})
+        axios.get(`http://geometrikit-ws.cfapps.io/api/auth?username=${this.state.username}&password=${this.state.password}`)
+          .then((response) => {
+            if (response.data.status === 'false') {
+              this.setState({loading: false});
+              Alert.alert('שם משתשמש או סיסמא שגויים');
+            } else if (response.data.permissionID === '1'){
+              AsyncStorage.setItem('userData', JSON.stringify(response.data) );
+              AsyncStorage.setItem('groupID', response.data.groupID );
+              AsyncStorage.setItem('userID', response.data.userID );
+              this.setState({loading: false});
+              this.props.navigation.navigate('StudentMenu'); 
+            } else if (response.data.permissionID === '2'){
+              AsyncStorage.setItem('userData', JSON.stringify(response.data) );
+              AsyncStorage.setItem('groupID', response.data.groupID );
+              AsyncStorage.setItem('userID', response.data.userID );
+              this.setState({loading: false});
+              this.props.navigation.navigate('TeacherMenu'); 
+            }
+          })
+          .catch(() => {
+            this.setState({loading: false})
+            Alert.alert('',"תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר");
+          })
+          .done();
+      } else {
+        Alert.alert('', this.errorList)
+      }
     }
   }

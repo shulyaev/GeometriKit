@@ -29,7 +29,9 @@ const styles = {
     imageStyle: {
         flex: 1.4,
         height: 80,
-        width: 80
+        width: 80,
+        borderRadius: 10,
+        marginLeft: 20
     }
 };
 

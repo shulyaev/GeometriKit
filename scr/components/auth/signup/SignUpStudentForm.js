@@ -58,7 +58,7 @@ export default class SignUpStudentForm extends Component {
     return re.test(name);
   };
   validatePassword = (password) => {
-    if (password.length <= 3){
+    if (password.length < 6){
       return false
     }
     return true;
@@ -111,7 +111,7 @@ export default class SignUpStudentForm extends Component {
     } if (!this.validateName(this.state.lastName)) {
       this.errorList = this.errorList + '◄שם משפחה אינו בערית או מכיל תווים לא חוקיים\n';
     } if (!this.validatePassword(this.state.password)) {
-      this.errorList = this.errorList + '◄סיסמא חייבת להכיל 8 תווים לפחות\n';
+      this.errorList = this.errorList + '◄סיסמא חייבת להכיל 6 תווים לפחות\n';
     } if (this.errorList === '') {
       axios.post('http://geometrikit-ws.cfapps.io/api/register', {
       userName: this.state.userName,
@@ -122,12 +122,14 @@ export default class SignUpStudentForm extends Component {
       schoolID: this.state.schoolID,
       profilePicture: this.state.profilePicture
     }).then((response) => {
-        if (response.data.status !== 'true') {
-          Alert.alert('','שם משתשמש שבחרת כבר קיים במערכת');
-        } else {
-          AsyncStorage.setItem('userData', JSON.stringify(response.data) );
-          this.props.navigation.navigate('StudentMenu');
-        }
+      if (response.data.status === 'false') {
+        Alert.alert(response.data.message);
+      } else {
+        AsyncStorage.setItem('userData', JSON.stringify(response.data) );
+        AsyncStorage.setItem('userID', response.data.userID );
+        AsyncStorage.setItem('groupID', response.data.groupID );
+        this.props.navigation.navigate('StudentMenu');
+      }
       }).catch(() =>{
           Alert.alert('',"תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר");
       }).done();

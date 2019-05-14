@@ -71,7 +71,7 @@ export default class CreateGroup extends Component {
       }
     ).then((response) => {
       if (response.data.Status == "true") {
-        Alert.alert('קבוצה נוספה בהצלחה');
+        Alert.alert("",'קבוצה נוספה בהצלחה');
       } else {
         Alert.alert('','תקלה בלתי צפויה\nהקבוצה לא נוצרה!');
       }
@@ -85,6 +85,6 @@ export default class CreateGroup extends Component {
         ],
         {cancelable: false},);
     })
-    .done();;
+    .done();
    }
 }

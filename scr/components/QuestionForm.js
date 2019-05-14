@@ -81,7 +81,7 @@ export default class QuestionForm extends Component {
         if (this.index >= this.state.hints.length){
             this.index = 0;
             this.setState({picture: this.props.navigation.getParam('picture', 'X')})
-            Alert.alert("אזלו כל הרמזים לשאלה זו");
+            Alert.alert("", "אזלו כל הרמזים לשאלה זו");
         } else {
             switch(hint.type) {
                 case 'text':
@@ -94,7 +94,7 @@ export default class QuestionForm extends Component {
                 case 'voice':
                     break;
                 default:
-                    Alert.alert("שגיאה בזימון רמז, אנא נסה שוב");
+                    Alert.alert("", "שגיאה בזימון רמז, אנא נסה שוב");
             }
             ++this.index
         }

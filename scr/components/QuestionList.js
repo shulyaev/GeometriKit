@@ -76,7 +76,7 @@ export default class QuestionList extends Component {
                     style={styles.containerNew}
                     renderItem={({ item }) =>
                         <TouchableOpacity style={[styles.GridViewContainer, { backgroundColor: item.color }]} onPress={this.GetGridViewItem.bind(this, item)}>
-                            <Image source={{ uri: item.picture}} style={{ flex: 1.9, width: Dimensions.get('window').height / 7, margin: 5 }}/>
+                            <Image source={{ uri: item.picture}} style={{ flex: 1.9, width: Dimensions.get('window').height / 7, margin: 5, borderRadius: 10, borderWidth: 1, borderColor: "black" }}/>
                             <Text style={styles.GridViewTextLayout}>{item.bookName}{"\n"}עמוד {item.page}, שאלה {item.questionNumber}</Text>
                         </TouchableOpacity>}
                     numColumns={numColumns}

@@ -47,7 +47,7 @@ export default class SignUpTeacherVerification extends Component {
     }
 
     passwordCheck = () => {
-        if (this.state.password === "123") {
+        if (this.state.password === "Aa123456!") {
             this.props.navigation.navigate("SignUpTeacherForm");
         } else {
             Alert.alert(
