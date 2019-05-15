@@ -74,12 +74,12 @@ export default class QuestionForm extends Component {
         ).catch(() =>{});
     }
 
-    sendHintLog = async () => {
+    sendHintLog = async (index) => {
         axios.post('http://geometrikit-ws.cfapps.io/api/updateUserSatistic', {
             id: this.state.time.toString(),
             userID: this.userID,
             questionID: this.state.questionID,
-            hintID: this.state.hints[this.index].hintID
+            hintID: this.state.hints[index].hintID
           }
         ).catch(() =>{});
     }
@@ -117,7 +117,6 @@ export default class QuestionForm extends Component {
     }
 
     showHint = (hint) => {
-        this.sendHintLog().done();
         if (this.index >= this.state.hints.length){
             this.index = 0;
             this.setState({picture: this.props.navigation.getParam('picture', 'X')})
@@ -126,7 +125,7 @@ export default class QuestionForm extends Component {
             switch(hint.type) {
                 case 'text':
                     this.setState({picture: this.props.navigation.getParam('picture', 'X')})
-                    Alert.alert(hint.content);
+                    Alert.alert('', hint.content);
                     break;
                 case 'image':
                     this.setState({picture: hint.content})
@@ -136,6 +135,7 @@ export default class QuestionForm extends Component {
                 default:
                     Alert.alert("", "שגיאה בזימון רמז, אנא נסה שוב");
             }
+            this.sendHintLog(this.index).done();
             ++this.index
         }
         
