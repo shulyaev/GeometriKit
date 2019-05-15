@@ -35,6 +35,8 @@ const studentStackNavigator = createStackNavigator({
   defaultNavigationOptions: {
     headerStyle: {
       backgroundColor: '#f44444',
+      elevation: 0,
+      shadowOpacity: 0,
     },
     headerTintColor: '#fff',
     headerTitleStyle: {

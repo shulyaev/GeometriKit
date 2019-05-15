@@ -6,14 +6,16 @@ import statements from '../images/statements.png'
 import axios from 'axios';
 import { Button } from './common';
 
+let _this = null;
+
 export default class QuestionForm extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: 'עמוד ' + navigation.getParam('page', 'X') + ', שאלה ' + navigation.getParam('questionNumber', 'X'),
+            title: navigation.getParam('title', 'X'),
             headerRight: (
                 <Icon
                     style={{ paddingRight: 15, color: "#fff" }}
-                    onPress={() => navigation.goBack()}
+                    onPress={() => {_this.sendLastLog('false'); navigation.goBack()}}
                     name="arrow-forward"
                     size={30}
                 />
@@ -21,7 +23,7 @@ export default class QuestionForm extends Component {
             headerLeft: (
                 <Icon
                     style={{ paddingLeft: 15, color: "#fff" }}
-                    onPress={() => Alert.alert('כל הכבוד', '', [{ text: 'חזור', onPress: () => navigation.goBack()}],{cancelable: false})}
+                    onPress={() => Alert.alert('כל הכבוד', '', [{ text: 'חזור', onPress: () => {_this.sendLastLog('true'); navigation.goBack()}}],{cancelable: false})}
                     name="check"
                     size={30}
                 />
@@ -39,14 +41,51 @@ export default class QuestionForm extends Component {
             color: this.props.navigation.getParam('color', 'X'),
             content: this.props.navigation.getParam('content', 'X'),
             picture: this.props.navigation.getParam('picture', 'X'),
+            title: this.props.navigation.getParam('title', 'X'),
             hints: [],
             picWidth: 0,
-            picHeight: 0
+            picHeight: 0,
+            time: Date.now(),
         }
         this.index = 0;
+        this.userID = ''
+        this.sendFirstLog().done();
+    }
+
+    sendFirstLog = async () => {
+        var value = await AsyncStorage.getItem('userData');
+        this.userID = JSON.parse(value).userID;
+                
+        axios.post('http://geometrikit-ws.cfapps.io/api/updateUserSatistic', {
+            id: this.state.time.toString(),
+            userID: this.userID,
+            questionID: this.state.questionID
+          }
+        ).catch(() =>{});
+    }
+
+    sendLastLog = async (success) => {
+        axios.post('http://geometrikit-ws.cfapps.io/api/updateUserSatistic', {
+            id: this.state.time.toString(),
+            userID: this.userID,
+            questionID: this.state.questionID,
+            success: success
+          }
+        ).catch(() =>{});
+    }
+
+    sendHintLog = async () => {
+        axios.post('http://geometrikit-ws.cfapps.io/api/updateUserSatistic', {
+            id: this.state.time.toString(),
+            userID: this.userID,
+            questionID: this.state.questionID,
+            hintID: this.state.hints[this.index].hintID
+          }
+        ).catch(() =>{});
     }
 
     componentDidMount () {
+        _this = this;
         Image.getSize(this.state.picture, (width, height) => {
             if (width > height) {
                 const screenWidth = (Dimensions.get('window').width)
@@ -78,6 +117,7 @@ export default class QuestionForm extends Component {
     }
 
     showHint = (hint) => {
+        this.sendHintLog().done();
         if (this.index >= this.state.hints.length){
             this.index = 0;
             this.setState({picture: this.props.navigation.getParam('picture', 'X')})

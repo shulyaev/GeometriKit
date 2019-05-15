@@ -91,7 +91,7 @@ export default class AddQuestion3Form extends Component {
             picture: this.state.photo,
             hints: this.state.hints,
             subjects: this.state.selectedSubjects,
-            //title: this.state.title,
+            title: this.state.title,
             bookName: this.state.bookName,
             page: this.state.page,
             questionNumber: this.state.questionNumber,

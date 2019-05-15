@@ -85,7 +85,7 @@ export default class AssignQuestionToClass extends Component {
       }
 
     saveAssignment(){
-        // axios.post('http://geometrikit-ws.cfapps.io/api/updateAssignedClasses', {
+        // axios.post('http://geometrikit-ws.cfapps.io/api/updateAssignClasses', {
         //     questionID: this.props.navigation.getParam('questionID', 'X'),
         //     groupID: this.props.navigation.getParam('questionID', 'X'),
         //   }

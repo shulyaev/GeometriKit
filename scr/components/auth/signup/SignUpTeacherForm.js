@@ -116,16 +116,8 @@ export default class SignUpTeacherForm extends Component {
         if (response.data.status === 'false') {
           Alert.alert(response.data.message);
         } else {
-          axios.get(`http://geometrikit-ws.cfapps.io/api/auth?username=${this.state.username}&password=${this.state.password}`)
-          .then((response) => {
-              AsyncStorage.setItem('userData', JSON.stringify(response.data) );
-              AsyncStorage.setItem('groupID', response.data.groupID );
-              AsyncStorage.setItem('userID', response.data.userID );
-          })
-          .catch(() => {
-            Alert.alert('',"תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר");
-          })
-          .done();
+          AsyncStorage.setItem('userData', JSON.stringify(response.data) );
+          AsyncStorage.setItem('userID', response.data.userID );
           this.props.navigation.navigate('TeacherMenu');
         }
       }).catch(() =>{

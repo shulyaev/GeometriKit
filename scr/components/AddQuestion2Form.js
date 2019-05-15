@@ -44,7 +44,7 @@ export default class AddQuestion2Form extends Component {
             text: this.props.navigation.getParam('text', 'X'),
             hintType: "text",
             hints: [],
-            hint: "",
+            hint: "\u202B",
             selectedIndex: 0
         };
         this.index = 0;
@@ -124,13 +124,13 @@ export default class AddQuestion2Form extends Component {
                             }}
                             editable = {true}
                             multiline={true}
-                            onChangeText={(hint) => this.setState({hint})}
+                            onChangeText={(hint) => {if (hint[hint.length -1] == '\n'){this.setState({hint: hint + "\u202B"});}else{this.setState({hint});}}}
                             value={this.state.hint}
                             placeholder='הקלד כאן את הרמז'
                         />
                         <Button onPress = {() => {
                             this.setState({hints: [...this.state.hints, {id: this.index++, type: 'text', content: this.state.hint, shortContent: this.shortTextCreate(this.state.hint)}]});
-                            this.setState({hint: ''});}}
+                            this.setState({hint: '\u202B'});}}
                             borderColor="grey"
                             backgroundColor="grey"
                             textColor="white"

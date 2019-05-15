@@ -7,26 +7,26 @@ const MathKeyboard = (props) => {
     return (
         <View>
             <View style={{flexDirection: 'row', justifyContent: 'space-around', marginTop: 10}}>
-                <Key onPress={props.onPress}>&#8206;°&#8206;</Key>
-                <Key onPress={props.onPress}>&#8206;∡&#8206;</Key>
-                <Key onPress={props.onPress}>&#8206;∆&#8206;</Key>   
-                <Key onPress={props.onPress}>&#8206;∥&#8206;</Key>
-                <Key onPress={props.onPress}>&#8206;∦&#8206;</Key>
-                <Key onPress={props.onPress}>&#8206;⊥&#8206;</Key>
-                <Key onPress={props.onPress}>&#8206;≠&#8206;</Key>
-                <Key onPress={props.onPress}>&#8206;~&#8206;</Key>
-                <Key onPress={props.onPress}>&#8206;≅&#8206;</Key>
+                <Key onPress={props.onPress} show="°">&#8206;°&#8206;</Key>
+                <Key onPress={props.onPress} show="∡">&#8206;∡&#8206;</Key>
+                <Key onPress={props.onPress} show="∆">&#8206;∆&#8206;</Key>   
+                <Key onPress={props.onPress} show="∥">&#8206;∥&#8206;</Key>
+                <Key onPress={props.onPress} show="∦">&#8206;∦&#8206;</Key>
+                <Key onPress={props.onPress} show="⊥">&#8206;⊥&#8206;</Key>
+                <Key onPress={props.onPress} show="≠">&#8206;≠&#8206;</Key>
+                <Key onPress={props.onPress} show="~">&#8206;~&#8206;</Key>
+                <Key onPress={props.onPress} show="≅">&#8206;≅&#8206;</Key>
             </View>
             <View style={{flexDirection: 'row', justifyContent: 'space-around', marginTop: 10}}>
-                <Key onPress={props.onPress}>&#8206;⋅&#8206;</Key>
-                <Key onPress={props.onPress}>&#8206;π&#8206;</Key>
-                <Key onPress={props.onPress}>&#8206;√&#8206;</Key>
-                <Key onPress={props.onPress}>&#8206;α&#8206;</Key>
-                <Key onPress={props.onPress}>&#8206;β&#8206;</Key>
-                <Key onPress={props.onPress}>&#8206;γ&#8206;</Key>
-                <Key onPress={props.onPress}>&#8206;δ&#8206;</Key>
-                <Key onPress={props.onPress}>&#8206;≥&#8206;</Key>
-                <Key onPress={props.onPress}>&#8206;≤&#8206;</Key>
+                <Key onPress={props.onPress} show="⋅">&#8206;⋅&#8206;</Key>
+                <Key onPress={props.onPress} show="π">&#8206;π&#8206;</Key>
+                <Key onPress={props.onPress} show="√">&#8206;√&#8206;</Key>
+                <Key onPress={props.onPress} show="α">&#8206;α&#8206;</Key>
+                <Key onPress={props.onPress} show="β">&#8206;β&#8206;</Key>
+                <Key onPress={props.onPress} show="γ">&#8206;γ&#8206;</Key>
+                <Key onPress={props.onPress} show="δ">&#8206;δ&#8206;</Key>
+                <Key onPress={props.onPress} show="≥">&#8206;≥&#8206;</Key>
+                <Key onPress={props.onPress} show="≤">&#8206;≤&#8206;</Key>
             </View>
         </View>
     );

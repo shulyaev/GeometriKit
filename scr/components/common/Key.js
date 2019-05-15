@@ -4,7 +4,7 @@ import Dimensions from 'Dimensions';
 
 const Key = (props) => {
     const { buttonStyle, textStyle } = style;
-    const { onPress, children } = props;
+    const { onPress, children, show } = props;
 
     return (
         <TouchableOpacity
@@ -12,7 +12,7 @@ const Key = (props) => {
             style={buttonStyle}
         >
             <Text style={textStyle}>
-                {children}
+                {show}
             </Text>
         </TouchableOpacity>
     );
