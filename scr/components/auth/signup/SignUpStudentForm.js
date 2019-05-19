@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, View, TouchableWithoutFeedback, Keyboard, TouchableOpacity, AsyncStorage, Picker } from 'react-native';
 import axios from 'axios';
-import Icon from '@expo/vector-icons/Ionicons'
+import Icon from '@expo/vector-icons/MaterialIcons'
 import { Input, Button } from '../../common';
 
 export default class SignUpStudentForm extends Component {
@@ -12,7 +12,7 @@ export default class SignUpStudentForm extends Component {
         <Icon
           style={{ paddingRight: 15, color: "#fff" }}
           onPress={() => navigation.goBack()}
-          name="ios-arrow-forward"
+          name="arrow-forward"
           size={30}
         />
       ),

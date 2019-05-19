@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, Picker, AsyncStorage, Alert } from 'react-native';
-import Icon from '@expo/vector-icons/Ionicons';
+import Icon from '@expo/vector-icons/MaterialIcons';
 import { Button } from './common';
 import axios from 'axios';
 
@@ -12,7 +12,7 @@ export default class CreateGroup extends Component {
             <Icon
               style={{ paddingRight: 15, color: "#fff" }}
               onPress={() => navigation.goBack()}
-              name="ios-arrow-forward"
+              name="arrow-forward"
               size={30}
             />
           ),
@@ -26,7 +26,6 @@ export default class CreateGroup extends Component {
             grade: 'ט',
             questionnaire: '4',
             teacherID: '',
-            schoolID: ''
         }
         this._loadInitialState().done();
     }
@@ -56,7 +55,7 @@ export default class CreateGroup extends Component {
             <Picker.Item label="4" value="4"/>
             <Picker.Item label="5" value="5"/>
         </Picker>
-        <Button onPress={() => {this.save(); this.props.navigation.navigate("TeacherHome");}}>
+        <Button onPress={() => {this.save(); this.props.navigation.state.params.loadData(); this.props.navigation.navigate("TeacherHome");}}>
           צור
         </Button>
       </View>

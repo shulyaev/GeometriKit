@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Keyboard, Text, TouchableOpacity, AsyncStorage, TouchableWithoutFeedback, Alert, Dimensions, ScrollView, TextInput, KeyboardAvoidingView } from 'react-native';
-import Icon1 from '@expo/vector-icons/Ionicons';
+import Icon1 from '@expo/vector-icons/MaterialIcons';
 import { Button, Input } from './common';
 import MultiSelectEX from './common/MultiSelectEX'
 import { ImagePicker, Permissions } from 'expo';
@@ -16,19 +16,19 @@ export default class AddQuestion3Form extends Component {
                 <Icon1
                     style={{ paddingRight: 15, color: "#fff" }}
                     onPress={() => navigation.goBack()}
-                    name="ios-arrow-forward"
+                    name="arrow-forward"
                     size={30}
                 />
             ),
             headerLeft: (
-                <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => {_this.saveQuestion();navigation.navigate('TeacherHome')}}>
-                    <Text style={{paddingLeft: 15, color: '#fff', paddingTop: 17, fontSize: 25}}>
+                <TouchableOpacity style={{paddingLeft: 15, flexDirection: 'row'}} onPress={() => {_this.saveQuestion();navigation.navigate('TeacherHome')}}>
+                    <Text style={{color: '#fff', fontSize: 25}}>
                         סיום
                     </Text>
                     <Icon1
-                        style={{ paddingLeft: 10, paddingBottom: 53, color: "#fff" }}
-                        name="ios-checkmark"
-                        size={53}
+                        style={{ color: "#fff",  }}
+                        name="check"
+                        size={30}
                     />
                 </TouchableOpacity>
             ),

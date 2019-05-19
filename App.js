@@ -63,6 +63,8 @@ const teacherStackNavigator = createStackNavigator({
   defaultNavigationOptions: {
     headerStyle: {
       backgroundColor: 'grey',
+      elevation: 0,
+      shadowOpacity: 0,
     },
     headerTintColor: '#fff',
     headerTitleStyle: {
@@ -85,10 +87,14 @@ const authStachNavigator = createStackNavigator({
   defaultNavigationOptions: {
     headerStyle: {
       backgroundColor: '#f44444',
+      elevation: 0,
+      shadowOpacity: 0,
     },
     headerTintColor: '#fff',
     headerTitleStyle: {
-      fontSize: 30
+      fontSize: 30,
+      textAlign: 'center',
+      flex: 1
     },
   }
 })

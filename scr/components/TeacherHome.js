@@ -5,7 +5,8 @@ import {
     ScrollView,
     AsyncStorage,
     TouchableOpacity,
-    Image
+    Image,
+    ActivityIndicator
 } from 'react-native';
 import { Button, TeacherView, ClassView } from './common';
 import axios from 'axios';
@@ -38,15 +39,19 @@ class TeacherHome extends Component {
             subjects: [],
             selectedIndex: 2,
             teacherID: '',
-            groups: []
+            groups: [],
+            loading: true,
+            subjectsFiltered: []
         }
+        this.teacherID = '';
         this.updateIndex = this.updateIndex.bind(this);
         this._loadInitialState().done();
     }
 
     _loadInitialState = async () => {
         var value = await AsyncStorage.getItem('userData');
-            this.setState({teacherID: JSON.parse(value).userID, schoolName: JSON.parse(value).schoolName});
+        this.setState({teacherID: JSON.parse(value).userID, schoolName: JSON.parse(value).schoolName});
+        this.loadData();
     }
 
     updateIndex (selectedIndex) {
@@ -58,10 +63,22 @@ class TeacherHome extends Component {
             this.setState({selectedIndex: selectedIndex});
     }
 
-    componentDidMount(){
-        axios.get(`http://geometrikit-ws.cfapps.io/api/getsubjects?filtered=false&classID=1&groupID=1`)
+    loadData(){
+        axios.post(`http://geometrikit-ws.cfapps.io/api/getTeacherSubjects`, {
+            filtered: 'false',
+            teacherID: this.state.teacherID
+        })
         .then((response) => {
-            this.setState({subjects: response.data})
+            this.setState({subjects: response.data, loading: false})
+        })
+        .done();
+
+        axios.post(`http://geometrikit-ws.cfapps.io/api/getTeacherSubjects`, {
+            filtered: 'true',
+            teacherID: this.state.teacherID
+        })
+        .then((response) => {
+            this.setState({subjectsFiltered: response.data})
         })
         .done();
 
@@ -77,43 +94,81 @@ class TeacherHome extends Component {
         .done();
     }
 
+    deleteGroup(gid){
+        axios.post(`http://geometrikit-ws.cfapps.io/api/deleteTeacherGroup`, {
+            groupID: gid
+        })
+        .then((response) => {
+            if (response.data.Status == 'true'){
+                for( var i = 0; i < this.state.groups.length; i++) { 
+                    if (this.state.groups[i].groupID === gid) {
+                        var temp = this.state.groups;
+                        temp.splice(i, 1);
+                        this.setState({groups: temp});
+                        break;
+                    }
+                }
+            }
+        })
+        .done();
+    }
+
     renderContent() {
-        if (this.state.selectedIndex == "2"){
-            return <View style={{flex: 1}}>
-                        <ScrollView>
-                            {this.state.subjects.map((s) => {
-                                return <TeacherView key={s.subjectID} subject={s.subjectName} image={s.picture} onPress={()=>this.props.navigation.navigate('TeacherQuestionListView', { subjectID: s.subjectID, subjectName: s.subjectName, teacherID: this.state.teacherID, filtered: this.state.filtered })}/>
-                            })}
-                        </ScrollView>
-                        <TouchableOpacity
-                            onPress={() => this.props.navigation.navigate('AddQuestion1Form')}
-                            style={{position: 'absolute', left: 15, bottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.5, shadowRadius: 5}}
-                        >
-                            <Image source={addQuestion} style={{ height: 60, width: 60}}/>
-                        </TouchableOpacity>
-                    </View>
-        } else if (this.state.selectedIndex == '1') {
-            return <View><Text>אפשרות זו אינה זמינה</Text></View>
-        } else if (this.state.selectedIndex == '0') {
-            return  <View style={{flex: 1}}>
-                        <ScrollView>
-                            {this.state.groups.map((g) => {
-                                return <ClassView key={g.groupID} grade={g.grade} questionnaire={g.questionnaire} schoolName={this.state.schoolName}/>
-                            })}
-                        </ScrollView>
-                        <TouchableOpacity
-                            onPress={() => this.props.navigation.navigate('CreateGroup')}
-                            style={{position: 'absolute', left: 15, bottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.5, shadowRadius: 5}}
-                        >
-                            <Image source={addGroup} style={{ height: 60, width: 60}}/>
-                        </TouchableOpacity>
-                   </View>
+        if (this.state.loading){
+            return (
+                <View style={{justifyContent: 'center', flex: 1}}>
+                    <ActivityIndicator size="large" color="grey" />
+                </View>
+            )
+        } else {
+            if (this.state.selectedIndex == "2"){
+                return <View style={{flex: 1}}>
+                            <ScrollView>
+                                {this.state.subjects.map((s) => {
+                                    return <TeacherView key={s.subjectID} subject={s.subjectName} image={s.picture} onPress={()=>this.props.navigation.navigate('TeacherQuestionListView', { subjectID: s.subjectID, subjectName: s.subjectName, teacherID: this.state.teacherID, filtered: this.state.filtered })}/>
+                                })}
+                            </ScrollView>
+                            <TouchableOpacity
+                                onPress={() => this.props.navigation.navigate('AddQuestion1Form', {filtered: false})}
+                                style={{position: 'absolute', left: 15, bottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.5, shadowRadius: 5}}
+                            >
+                                <Image source={addQuestion} style={{ height: 60, width: 60}}/>
+                            </TouchableOpacity>
+                        </View>
+            } else if (this.state.selectedIndex == '1') {
+                return  <View style={{flex: 1}}>
+                            <ScrollView>
+                                {this.state.subjectsFiltered.map((s) => {
+                                    return <TeacherView key={s.subjectID} subject={s.subjectName} image={s.picture} onPress={()=>this.props.navigation.navigate('TeacherQuestionListView', { subjectID: s.subjectID, subjectName: s.subjectName, teacherID: this.state.teacherID, filtered: this.state.filtered })}/>
+                                })}
+                            </ScrollView>
+                            <TouchableOpacity
+                                onPress={() => this.props.navigation.navigate('AddQuestion1Form', {filtered: true})}
+                                style={{position: 'absolute', left: 15, bottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.5, shadowRadius: 5}}
+                            >
+                                <Image source={addQuestion} style={{ height: 60, width: 60}}/>
+                            </TouchableOpacity>
+                        </View>
+            } else if (this.state.selectedIndex == '0') {
+                return  <View style={{flex: 1}}>
+                            <ScrollView>
+                                {this.state.groups.map((g) => {
+                                    return <ClassView key={g.groupID} onPress={(gid)=>this.deleteGroup(gid)} gid={g.groupID} grade={g.grade} questionnaire={g.questionnaire} schoolName={this.state.schoolName}/>
+                                })}
+                            </ScrollView>
+                            <TouchableOpacity
+                                onPress={() => this.props.navigation.navigate('CreateGroup', {loadData: this.loadData.bind(this)})}
+                                style={{position: 'absolute', left: 15, bottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.5, shadowRadius: 5}}
+                            >
+                                <Image source={addGroup} style={{ height: 60, width: 60}}/>
+                            </TouchableOpacity>
+                       </View>
+            }
         }
     }
 
     render() { 
         const buttons = ['כיתות שלי', 'שאלות שחיברתי', 'מאגר שאלות'];
-
         return (
             <View style={{flex: 1}}>
                 <ButtonGroup

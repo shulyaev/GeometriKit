@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage, Image, Alert, Dimensions, ScrollView } from 'react-native';
-import Icon from '@expo/vector-icons/Ionicons';
+import Icon from '@expo/vector-icons/MaterialIcons';
 import assignToClass from '../images/assignToClass.png'
 import statements from '../images/statements.png'
 import axios from 'axios';
@@ -12,24 +12,24 @@ let _this = null;
 export default class TeacherQuestionView extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: 'עמוד ' + navigation.getParam('page', 'X') + ', שאלה ' + navigation.getParam('questionNumber', 'X'),
+            title: navigation.getParam('title', 'X'),
             headerRight: (
                 <Icon
                     style={{ paddingRight: 15, color: "#fff" }}
                     onPress={() => navigation.goBack()}
-                    name="ios-arrow-forward"
+                    name="arrow-forward"
                     size={30}
                 />
             ),
             headerLeft: (
                 <TouchableOpacity style={{flexDirection: 'row', paddingLeft: 1}} onPress={() => navigation.navigate('AddQuestion3Form', {text: navigation.getParam('text', 'X'), photo: navigation.getParam('photo', 'X'), hints: _this.hintsToPass(_this.state.hints)})}>
-                    <Text style={{color: '#fff', fontSize: 20, paddingTop: 15}}>
+                    <Text style={{color: '#fff', fontSize: 25, paddingLeft: 15, paddingRight: 5}}>
                         שמור
                     </Text>
                     <Icon
-                        style={{ color: "#fff" }}
-                        name="ios-checkmark"
-                        size={53}
+                        style={{ paddingRight: 15, color: "#fff" }}
+                        name="check"
+                        size={30}
                     />
                 </TouchableOpacity>
             ),
@@ -58,10 +58,10 @@ export default class TeacherQuestionView extends Component {
     saveButtonRender = () => {
         if (true){
             <Icon
-                style={{ paddingLeft: 15, paddingBottom: 53, color: "#fff" }}
+                style={{ paddingLeft: 15, color: "#fff" }}
                 onPress={() => Alert.alert('כל הכבוד', '', [{ text: 'חזור', onPress: () => navigation.goBack()}],{cancelable: false})}
-                name="ios-checkmark"
-                size={53}
+                name="check"
+                size={30}
             />
         }
     }
@@ -140,7 +140,7 @@ export default class TeacherQuestionView extends Component {
                     <View style={{height: Dimensions.get('window').height / 1.7, justifyContent: 'center', alignItems: 'center'}}>
                         <Image source={{ uri: this.state.picture}} style={{ height: this.state.picHeight, width: this.state.picWidth, borderRadius: 10 }}/>
                         <TouchableOpacity
-                            onPress={() => this.props.navigation.navigate('AssignQuestionToClass', {questionID: this.props.navigation.getParam('questionID', 'X')})}
+                            onPress={() => this.props.navigation.navigate('AssignQuestionToClass', {questionID: this.props.navigation.getParam('questionID', 'X'), teacherID: this.props.navigation.getParam('teacherID', 'X')})}
                             style={{position: 'absolute', left: 15, bottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.5, shadowRadius: 5}}
                         >
                             <Image source={assignToClass} style={{ height: 60, width: 60}}/>

@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Image, Text } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
 
 const ClassView = (props) => {
     return (
             <View style={styles.containerStyle}>
+                <TouchableOpacity onPress={()=>props.onPress(props.gid)}><Text>X</Text></TouchableOpacity>
                 <Text style={styles.textStyle}> 
                     כיתה {props.grade}', {props.questionnaire} יח"ל, {props.schoolName}, תשע"ט
                 </Text>

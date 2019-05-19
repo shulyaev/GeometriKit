@@ -113,7 +113,7 @@ export default class AddQuestion1Form extends Component {
                     }}
                     editable = {true}
                     multiline={true}
-                    onChangeText={(text) => {if (text.length == 1){text = "\u200F" + text}; if (text[text.length -1] == '\n'){this.setState({text: text + "\u200F"});}else{this.setState({text});} this.props.navigation.setParams({text});}}
+                    onChangeText={(text) => {if (text.length == 1){text = "\u200F" + text}; if (text[text.length -1] == '\n' || text[text.length -1] == ',' || text[text.length -1] == '.'){this.setState({text: text + "\u200F"});}else{this.setState({text});} this.props.navigation.setParams({text});}}
                     value={this.state.text}
                     placeholder='הקלד כאן את השאלה'
                 />

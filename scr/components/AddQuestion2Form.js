@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage, Image, Alert, Dimensions, ScrollView, TextInput, KeyboardAvoidingView } from 'react-native';
-import Icon1 from '@expo/vector-icons/Ionicons';
+import Icon1 from '@expo/vector-icons/MaterialIcons';
 import { Button, MathKeyboard} from './common';
 import HintPreview from './common/HintPreview';
 import { ImagePicker, Permissions, ImageManipulator } from 'expo';
@@ -18,19 +18,19 @@ export default class AddQuestion2Form extends Component {
                 <Icon1
                     style={{ paddingRight: 15, color: "#fff" }}
                     onPress={() => navigation.goBack()}
-                    name="ios-arrow-forward"
+                    name="arrow-forward"
                     size={30}
                 />
             ),
             headerLeft: (
-                <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => navigation.navigate('AddQuestion3Form', {text: navigation.getParam('text', 'X'), photo: navigation.getParam('photo', 'X'), hints: _this.hintsToPass(_this.state.hints)})}>
-                    <Text style={{paddingLeft: 15, color: '#fff', paddingTop: 17, fontSize: 25}}>
+                <TouchableOpacity style={{paddingLeft: 15, flexDirection: 'row'}} onPress={() => navigation.navigate('AddQuestion3Form', {text: navigation.getParam('text', 'X'), photo: navigation.getParam('photo', 'X'), hints: _this.hintsToPass(_this.state.hints)})}>
+                    <Text style={{color: '#fff', fontSize: 25}}>
                         הבא
                     </Text>
                     <Icon1
-                        style={{ paddingLeft: 10, paddingBottom: 53, color: "#fff" }}
-                        name="ios-checkmark"
-                        size={53}
+                        style={{ color: "#fff",  }}
+                        name="check"
+                        size={30}
                     />
                 </TouchableOpacity>
             ),
@@ -44,7 +44,7 @@ export default class AddQuestion2Form extends Component {
             text: this.props.navigation.getParam('text', 'X'),
             hintType: "text",
             hints: [],
-            hint: "\u202B",
+            hint: "",
             selectedIndex: 0
         };
         this.index = 0;
@@ -124,7 +124,7 @@ export default class AddQuestion2Form extends Component {
                             }}
                             editable = {true}
                             multiline={true}
-                            onChangeText={(hint) => {if (hint[hint.length -1] == '\n'){this.setState({hint: hint + "\u202B"});}else{this.setState({hint});}}}
+                            onChangeText={(hint) => {if (text.length == 1){text = "\u200F" + text}; if (hint[hint.length -1] == '\n'  || text[text.length -1] == ',' || text[text.length -1] == '.'){this.setState({hint: hint + "\u202B"});}else{this.setState({hint});}}}
                             value={this.state.hint}
                             placeholder='הקלד כאן את הרמז'
                         />

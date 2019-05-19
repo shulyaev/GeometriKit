@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage, Image, Alert, Dimensions, ScrollView, TextInput, KeyboardAvoidingView } from 'react-native';
-import Icon1 from '@expo/vector-icons/Ionicons';
+import Icon1 from '@expo/vector-icons/MaterialIcons';
 import { Button, Input } from './common';
 import { ImagePicker, Permissions } from 'expo';
 import axios from 'axios';
@@ -17,19 +17,19 @@ export default class AssignQuestionToClass extends Component {
                 <Icon1
                     style={{ paddingRight: 15, color: "#fff" }}
                     onPress={() => navigation.goBack()}
-                    name="ios-arrow-forward"
+                    name="arrow-forward"
                     size={30}
                 />
             ),
             headerLeft: (
                 <TouchableOpacity style={{flexDirection: 'row'}} onPress={() => {_this.saveAssignment();navigation.goBack()}}>
-                    <Text style={{paddingLeft: 15, color: '#fff', paddingTop: 17, fontSize: 25}}>
+                    <Text style={{paddingLeft: 15, color: '#fff', fontSize: 25}}>
                         סיום
                     </Text>
                     <Icon1
-                        style={{ paddingLeft: 10, paddingBottom: 53, color: "#fff" }}
-                        name="ios-checkmark"
-                        size={53}
+                        style={{color: "#fff", paddingLeft: 5}}
+                        name="check"
+                        size={30}
                     />
                 </TouchableOpacity>
             ),
@@ -48,7 +48,7 @@ export default class AssignQuestionToClass extends Component {
 
     componentDidMount () {
         // axios.post('http://geometrikit-ws.cfapps.io/api/getAssignedClasses', {
-        //     questionID: this.props.navigation.getParam('questionID', '1'),
+        //     questionID: this.props.navigation.getParam('questionID', 'X'),
         //     teacherID: this.props.navigation.getParam('teacherID', 'X'),
         //   }
         // ).then((response) => {

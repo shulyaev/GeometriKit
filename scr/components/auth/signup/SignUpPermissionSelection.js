@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
-import Icon from '@expo/vector-icons/Ionicons'
+import Icon from '@expo/vector-icons/MaterialIcons'
 import { Button } from '../../common';
 
 export default class SignUpPermissionSelection extends Component {
@@ -11,7 +11,7 @@ export default class SignUpPermissionSelection extends Component {
         <Icon
           style={{ paddingRight: 15, color: "#fff" }}
           onPress={() => navigation.goBack()}
-          name="ios-arrow-forward"
+          name="arrow-forward"
           size={30}
         />
       ),

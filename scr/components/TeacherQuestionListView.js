@@ -5,13 +5,14 @@ import {
     ScrollView,
     AsyncStorage,
     TouchableOpacity,
-    Image
+    Image,
+    ActivityIndicator
 } from 'react-native';
 import { Button, TeacherView, ClassView } from './common';
 import axios from 'axios';
 import {ButtonGroup} from 'react-native-elements';
 import hints from '../images/hints.png'
-import Icon from '@expo/vector-icons/Ionicons';
+import Icon from '@expo/vector-icons/MaterialIcons';
 
 class TeacherQuestionListView extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -21,7 +22,7 @@ class TeacherQuestionListView extends Component {
                 <Icon
                     style={{ paddingRight: 15, color: "#fff" }}
                     onPress={() => navigation.goBack()}
-                    name="ios-arrow-forward"
+                    name="arrow-forward"
                     size={30}
                 />
             ),
@@ -36,25 +37,35 @@ class TeacherQuestionListView extends Component {
             teacherID: this.props.navigation.getParam('teacherID', 'X'),
             filtered: this.props.navigation.getParam('filtered', 'X'),
             questions: [],
-            
+            loading: true,
         }
     }
 
     componentDidMount () {
-        axios.get(`http://geometrikit-ws.cfapps.io/api/getquestions?filtered=${this.state.filtered}&groupID=1&subjectID=${this.state.subjectID}`)
+        axios.post(`http://geometrikit-ws.cfapps.io/api/getTeacherQuestions`,{
+            filtered: this.state.filtered,
+            teacherID: this.state.teacherID,
+            subjectID: this.state.subjectID,
+        })
         .then((response) => {
-          this.setState({questions: response.data})
+          this.setState({questions: response.data, loading: false})
         })
         .done();
     }
-    render() { 
 
-        return (
-            <ScrollView style={{flex: 1}}>
+    renderContent() {
+        if (this.state.loading){
+            return (
+                <View style={{justifyContent: 'center', flex: 1}}>
+                    <ActivityIndicator size="large" color="grey" />
+                </View>
+            )
+        } else {
+            return (<ScrollView style={{flex: 1}}>
                 {this.state.questions.map((q) => {
                     return <TeacherView
                                 key={q.questionID}
-                                subject={`${q.bookName}\nעמוד ${q.page}, שאלה ${q.questionNumber}`}
+                                subject={`${q.title}`}
                                 image={q.picture}
                                 onPress={()=>{this.props.navigation.navigate('TeacherQuestionView', { questionID: q.questionID,
                                                                                                 bookName: q.bookName,
@@ -63,11 +74,17 @@ class TeacherQuestionListView extends Component {
                                                                                                 color: q.color,
                                                                                                 content: q.content,
                                                                                                 picture: q.picture,
-                                                                                                enabled: q.authorID === this.state.teacherID
+                                                                                                enabled: q.authorID === this.state.teacherID,
+                                                                                                title: q.title,
+                                                                                                teacherID: this.state.teacherID
                             })}}/>
                     })}
-            </ScrollView>      
-        );
+            </ScrollView>)
+        }
+    }
+
+    render() { 
+        return this.renderContent();
     }
 }
  

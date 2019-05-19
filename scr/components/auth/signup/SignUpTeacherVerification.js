@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Alert, View, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import keyIcon from '../../../images/key.png';
-import Icon from '@expo/vector-icons/Ionicons';
+import Icon from '@expo/vector-icons/MaterialIcons';
 import { Input, Button } from '../../common';
 
 export default class SignUpTeacherVerification extends Component {
@@ -12,7 +12,7 @@ export default class SignUpTeacherVerification extends Component {
             <Icon
                 style={{ paddingRight: 15, color: "#fff" }}
                 onPress={() => navigation.goBack()}
-                name="ios-arrow-forward"
+                name="arrow-forward"
                 size={30}
             />
         ),
