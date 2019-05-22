@@ -23,7 +23,7 @@ export default class AddQuestion2Form extends Component {
                 />
             ),
             headerLeft: (
-                <TouchableOpacity style={{paddingLeft: 15, flexDirection: 'row'}} onPress={() => navigation.navigate('AddQuestion3Form', {text: navigation.getParam('text', 'X'), photo: navigation.getParam('photo', 'X'), hints: _this.hintsToPass(_this.state.hints)})}>
+                <TouchableOpacity style={{paddingLeft: 15, flexDirection: 'row'}} onPress={() => {if(_this.state.hints.length>0){navigation.navigate('AddQuestion3Form', {text: navigation.getParam('text', 'X'), photo: navigation.getParam('photo', 'X'), hints: _this.hintsToPass(_this.state.hints)})}else{Alert.alert('', 'יש להזין רמז אחד לפחות');}}}>
                     <Text style={{color: '#fff', fontSize: 25}}>
                         הבא
                     </Text>

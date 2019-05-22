@@ -56,9 +56,9 @@ class TeacherHome extends Component {
 
     updateIndex (selectedIndex) {
         if(selectedIndex=="2"){
-            this.setState({filtered: false, selectedIndex: selectedIndex});
+            this.setState({filtered: 'false', selectedIndex: selectedIndex});
         } else if(selectedIndex=="1"){
-            this.setState({filtered: true, selectedIndex: selectedIndex});
+            this.setState({filtered: 'true', selectedIndex: selectedIndex});
         } else
             this.setState({selectedIndex: selectedIndex});
     }
@@ -129,7 +129,7 @@ class TeacherHome extends Component {
                                 })}
                             </ScrollView>
                             <TouchableOpacity
-                                onPress={() => this.props.navigation.navigate('AddQuestion1Form', {filtered: false})}
+                                onPress={() => this.props.navigation.navigate('AddQuestion1Form')}
                                 style={{position: 'absolute', left: 15, bottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.5, shadowRadius: 5}}
                             >
                                 <Image source={addQuestion} style={{ height: 60, width: 60}}/>
@@ -143,7 +143,7 @@ class TeacherHome extends Component {
                                 })}
                             </ScrollView>
                             <TouchableOpacity
-                                onPress={() => this.props.navigation.navigate('AddQuestion1Form', {filtered: true})}
+                                onPress={() => this.props.navigation.navigate('AddQuestion1Form')}
                                 style={{position: 'absolute', left: 15, bottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.5, shadowRadius: 5}}
                             >
                                 <Image source={addQuestion} style={{ height: 60, width: 60}}/>

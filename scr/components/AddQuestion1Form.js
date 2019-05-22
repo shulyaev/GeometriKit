@@ -8,6 +8,8 @@ import axios from 'axios';
 import { Button, Key ,MathKeyboard} from './common';
 import { ImagePicker, Permissions, ImageManipulator } from 'expo';
 
+let _this = null;
+
 export default class AddQuestion1Form extends Component {
     static navigationOptions = ({ navigation }) => {
         return {
@@ -21,7 +23,7 @@ export default class AddQuestion1Form extends Component {
                 />
             ),
             headerLeft: (
-                <TouchableOpacity style={{paddingLeft: 15, flexDirection: 'row'}} onPress={() => navigation.navigate('AddQuestion2Form', {text: navigation.getParam('text', 'X'), photo: navigation.getParam('photo', 'X')})}>
+                <TouchableOpacity style={{paddingLeft: 15, flexDirection: 'row'}} onPress={() => {if(_this.state.text.length > 1 || _this.state.photo != undefined){navigation.navigate('AddQuestion2Form', {text: navigation.getParam('text', 'X'), photo: navigation.getParam('photo', 'X')})}else{Alert.alert('', 'יש להזין שאלה או להעלות תמונה');}}}>
                     <Text style={{color: '#fff', fontSize: 25}}>
                         הבא
                     </Text>
@@ -43,6 +45,10 @@ export default class AddQuestion1Form extends Component {
             picWidth: 0,
             picHeight: 0
         }
+    }
+
+    componentDidMount () {
+        _this = this;
     }
 
     selectPicture = async () => {

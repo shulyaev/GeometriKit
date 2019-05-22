@@ -55,7 +55,12 @@ export default class CreateGroup extends Component {
             <Picker.Item label="4" value="4"/>
             <Picker.Item label="5" value="5"/>
         </Picker>
-        <Button onPress={() => {this.save(); this.props.navigation.state.params.loadData(); this.props.navigation.navigate("TeacherHome");}}>
+        <Button
+          onPress={() => {this.save(); this.props.navigation.state.params.loadData(); this.props.navigation.navigate("TeacherHome");}}
+          borderColor="grey"
+          backgroundColor="grey"
+          textColor="white"
+        >
           צור
         </Button>
       </View>

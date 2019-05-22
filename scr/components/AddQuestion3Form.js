@@ -21,7 +21,7 @@ export default class AddQuestion3Form extends Component {
                 />
             ),
             headerLeft: (
-                <TouchableOpacity style={{paddingLeft: 15, flexDirection: 'row'}} onPress={() => {_this.saveQuestion();navigation.navigate('TeacherHome')}}>
+                <TouchableOpacity style={{paddingLeft: 15, flexDirection: 'row'}} onPress={() => {_this.saveQuestion()}}>
                     <Text style={{color: '#fff', fontSize: 25}}>
                         סיום
                     </Text>
@@ -44,12 +44,13 @@ export default class AddQuestion3Form extends Component {
             allSubjects: [],
             selectedSubjects: [],
             title: '',
-            bookName: 'שפ הספר',
+            bookName: 'שם הספר',
             page: '0',
             questionNumber: '0',
             authorID: ''
         };
         this.index = 0;
+        this.errorList = '';
         this._loadInitialState().done();
     }
 
@@ -86,19 +87,31 @@ export default class AddQuestion3Form extends Component {
     };
 
     saveQuestion(){
-        axios.post('http://geometrikit-ws.cfapps.io/api/insertquestion', {
-            content: this.state.text,
-            picture: this.state.photo,
-            hints: this.state.hints,
-            subjects: this.state.selectedSubjects,
-            title: this.state.title,
-            bookName: this.state.bookName,
-            page: this.state.page,
-            questionNumber: this.state.questionNumber,
-            authorID: this.state.authorID
-          }
+        this.errorList = '';
+        if (!this.validateTitle(this.state.title)) {
+            this.errorList = this.errorList + '◄לא הוזן שם לשאלה\n';
+        }
+        if (!this.validateSubjects(this.state.selectedSubjects)) {
+            this.errorList = this.errorList + '◄חובה לחור 2 נושאים לפחות\n';
+        }
+        if (this.errorList === '') {
+            axios.post('http://geometrikit-ws.cfapps.io/api/insertquestion', {
+                content: this.state.text,
+                picture: this.state.photo,
+                hints: this.state.hints,
+                subjects: this.state.selectedSubjects,
+                title: this.state.title,
+                bookName: this.state.bookName,
+                page: this.state.page,
+                questionNumber: this.state.questionNumber,
+                authorID: this.state.authorID
+            }
         );
-        Alert.alert('שאלה נוספה בהצלחה');
+            Alert.alert('שאלה נוספה בהצלחה');
+            this.props.navigation.navigate('TeacherHome')
+        } else {
+            Alert.alert('', this.errorList);
+        }
     }
 
     takePicture = async () => {
@@ -108,6 +121,20 @@ export default class AddQuestion3Form extends Component {
         });
         this.setState({ photo: `data:${type};base64,${base64}` });
     };
+
+    validateTitle = (title) => {
+        if (title.length < 1){
+          return false
+        }
+        return true;
+      };
+
+      validateSubjects = (subjects) => {
+        if (subjects.length < 2){
+          return false
+        }
+        return true;
+      };
 
     render() {
         return (

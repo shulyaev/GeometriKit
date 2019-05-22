@@ -39,41 +39,31 @@ export default class AssignQuestionToClass extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            selectedClasses : [],
-            allClasses: [{groupID: '1', grade: 'ט', questionnaire: '4', schoolName: 'םןו', assigned: false},
-                        {groupID: '2', grade: 'י', questionnaire: '5', schoolName: 'לחי', assigned: true},
-                        {groupID: '3', grade: 'יא', questionnaire: '6', schoolName: 'מנה', assigned: false}]
+            allClasses: []
         }
     }
 
     componentDidMount () {
-        // axios.post('http://geometrikit-ws.cfapps.io/api/getAssignedClasses', {
-        //     questionID: this.props.navigation.getParam('questionID', 'X'),
-        //     teacherID: this.props.navigation.getParam('teacherID', 'X'),
-        //   }
-        // ).then((response) => {
-        //     this.setState({allClasses: response.data})
-        // }).done();
-        
-        this.state.allClasses.forEach(element => {
-            if (element.assigned){
-              this.state.selectedClasses.push(element.groupID);
-            }    
-          });
+        axios.post('http://geometrikit-ws.cfapps.io/api/getAssignedClasses', {
+            questionID: this.props.navigation.getParam('questionID', 'X'),
+            teacherID: this.props.navigation.getParam('teacherID', 'X'),
+          }
+        ).then((response) => {
+            for (var i in response.data) {
+                if (response.data[i].assigned == 'true') {
+                  response.data[i].assigned = true;
+                  this.setState({groupID: response.data[i].groupID, questionnaire: response.data[i].questionnaire, grade: response.data[i].grade})
+                } else if (response.data[i].assigned == 'false') {
+                  response.data[i].assigned = false;
+                }
+            }
+            this.setState({allClasses: response.data})
+        }).done();
+
         _this = this;
     }
 
     updateSelectedClasses = (groupID) => {
-        if (this.state.selectedClasses.includes(groupID)){
-          for( var i = 0; i < this.state.selectedClasses.length; i++){ 
-            if ( this.state.selectedClasses[i] === groupID) {
-              this.state.selectedClasses.splice(i, 1); 
-              break;
-            }
-          }
-        } else {
-          this.state.selectedClasses.push(groupID);
-        }
         var newArr = [];
         this.state.allClasses.forEach(e => {
             if (e.groupID === groupID){
@@ -85,13 +75,13 @@ export default class AssignQuestionToClass extends Component {
       }
 
     saveAssignment(){
-        // axios.post('http://geometrikit-ws.cfapps.io/api/updateAssignClasses', {
-        //     questionID: this.props.navigation.getParam('questionID', 'X'),
-        //     groupID: this.props.navigation.getParam('questionID', 'X'),
-        //   }
-        // ).then((response) => {
-        //     this.setState({allClasses: response.data})
-        // }).done();
+        var data = [];
+        this.state.allClasses.forEach(e => {
+            let groups = (({ groupID, assigned }) => ({ groupID, assigned }))(e);
+            data.push({...groups, questionID: this.props.navigation.getParam('questionID', 'X')})
+        });
+        axios.post('http://geometrikit-ws.cfapps.io/api/updateAssignClasses', data).done();
+        console.log(data);
     }
 
     render() {

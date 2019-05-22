@@ -16,7 +16,8 @@ export default class Login extends Component {
         username: '',
         password: '',
         groupID: '',
-        loading: false
+        loading: false,
+        initLoading: true,
       }
       this.errorList = '';
       this._loadInitialState().done();
@@ -24,6 +25,7 @@ export default class Login extends Component {
 
     _loadInitialState = async () => {
       var value = await AsyncStorage.getItem('userData');
+      this.setState({initLoading: false})
       if (value !== null) {
         if (JSON.parse(value).permissionID === "1")
           this.props.navigation.navigate('StudentMenu');
@@ -62,25 +64,35 @@ export default class Login extends Component {
       return true;
     };
 
+    renderContent = () => {
+      if (this.state.initLoading){
+        return <View style={{flex: 1, justifyContent: 'center'}}>
+                  <ActivityIndicator size="large" color="#f44444" />
+                </View>
+      } else {
+        return (
+          <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
+            <View style={{flex: 1, justifyContent: 'center'}}>
+              <Input
+                onChangeText= {(username) => this.setState({username})}
+                placeholder='שם משתמש'
+                imageSource={userIcon}
+              />
+              <Input
+                onChangeText= {(password) => this.setState({password})}
+                placeholder='סיסמא'
+                secureTextEntry
+                imageSource={keyIcon}
+              />
+              {this.renderButtons()}
+            </View>
+          </TouchableWithoutFeedback>
+        );
+      }
+    }
+
     render() {
-      return (
-        <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
-          <View style={{flex: 1, justifyContent: 'center'}}>
-            <Input
-              onChangeText= {(username) => this.setState({username})}
-              placeholder='שם משתמש'
-              imageSource={userIcon}
-            />
-            <Input
-              onChangeText= {(password) => this.setState({password})}
-              placeholder='סיסמא'
-              secureTextEntry
-              imageSource={keyIcon}
-            />
-            {this.renderButtons()}
-          </View>
-        </TouchableWithoutFeedback>
-      );
+      return <View style={{flex: 1}}>{this.renderContent()}</View>
     }
 
     login = () => {

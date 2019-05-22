@@ -71,7 +71,7 @@ export default class AddHint extends Component {
         });
  
         if (!cancelled) {
-            this.setState({hints: [...this.state.hints, {id: this.index++, type: 'image', content: `data:${type};base64,${base64}`, shortContent: `data:${type};base64,${base64}`}]});
+            this.setState({hints: [...this.state.hints, {hintID: this.index++, type: 'image', content: `data:${type};base64,${base64}`, shortContent: `data:${type};base64,${base64}`}]});
         }
     };
 
@@ -82,7 +82,7 @@ export default class AddHint extends Component {
         });
 
         if (!cancelled) {
-            this.setState({hints: [...this.state.hints, {id: this.index++, type: 'image', content: `data:${type};base64,${base64}`, shortContent: `data:${type};base64,${base64}`}]});
+            this.setState({hints: [...this.state.hints, {hintID: this.index++, type: 'image', content: `data:${type};base64,${base64}`, shortContent: `data:${type};base64,${base64}`}]});
         }
     };
 
@@ -103,9 +103,13 @@ export default class AddHint extends Component {
                             value={this.state.hint}
                             placeholder='הקלד כאן את הרמז'
                         />
-                        <Button onPress = {() => {
-                            this.setState({hints: [...this.state.hints, {id: this.index++, type: 'text', content: this.state.hint, shortContent: this.shortTextCreate(this.state.hint)}]});
-                            this.setState({hint: ''});}}
+                        <Button
+                            onPress = {() => {
+                                this.setState({hints: [...this.state.hints, {hintID: this.index++, type: 'text', content: this.state.hint, shortContent: this.shortTextCreate(this.state.hint)}]});
+                                this.setState({hint: ''});}}
+                            borderColor="grey"
+                            backgroundColor="grey"
+                            textColor="white"
                         >
                             שמור רמז
                         </Button>
@@ -148,8 +152,8 @@ export default class AddHint extends Component {
 
     hintsToPass = (hnt) => {
         hnt.forEach(h => {
-            delete h["id"];
             delete h["shortContent"];
+            delete h["hintID"];
         });
         return hnt;
     };
@@ -157,14 +161,14 @@ export default class AddHint extends Component {
     renderHintsPreview = () => {
         return this.state.hints.map((c) => {
             return (
-                <HintPreview id={c.id} type={c.type} removeHint={this.removeHint} shortContent={c.shortContent}/>
+                <HintPreview key={c.hintID} id={c.hintID} type={c.type} removeHint={this.removeHint} shortContent={c.shortContent}/>
             )
         });
     };
 
     removeHint = (id) => {
         for( var i = 0; i < this.state.hints.length; i++) { 
-            if (this.state.hints[i].id === id) {
+            if (this.state.hints[i].hintID === id) {
                 var temp = this.state.hints;
                 temp.splice(i, 1);
                 this.setState({hints: temp});

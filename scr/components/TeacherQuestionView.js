@@ -22,7 +22,7 @@ export default class TeacherQuestionView extends Component {
                 />
             ),
             headerLeft: (
-                <TouchableOpacity style={{flexDirection: 'row', paddingLeft: 1}} onPress={() => navigation.navigate('AddQuestion3Form', {text: navigation.getParam('text', 'X'), photo: navigation.getParam('photo', 'X'), hints: _this.hintsToPass(_this.state.hints)})}>
+                <TouchableOpacity style={{flexDirection: 'row', paddingLeft: 1}} onPress={() => {_this.saveChanges(); navigation.goBack()}}>
                     <Text style={{color: '#fff', fontSize: 25, paddingLeft: 15, paddingRight: 5}}>
                         שמור
                     </Text>
@@ -107,29 +107,41 @@ export default class TeacherQuestionView extends Component {
         return str;
     }
 
-    removeHint = (id) => {
-        for( var i = 0; i < this.state.hints.length; i++) { 
-            if (this.state.hints[i].id === id) {
-                var temp = this.state.hints;
-                temp.splice(i, 1);
-                if (this.state.hints[i].id > 0){
-                    this.setState({hints: temp, deletedHintsIDs: [...this.state.deletedHintsIDs, this.state.hints[i].id]});
-                    break;
+    removeHint (id) {
+        var tempOld = [];
+        var tempNew = [];
+        this.state.hints.forEach(e => {
+            if (e.hintID != id){
+                tempOld.push(e);
+                if(e.hintID < 0 && id != e.hintID){
+                    tempNew.push(e);
                 }
-                this.setState({hints: temp});
-                break;
             }
+        });
+
+        if (parseInt(id) > 0){
+            this.setState({hints: tempOld, deletedHintsIDs: [...this.state.deletedHintsIDs, id]});
+        } else {
+            this.setState({hints: tempOld, newHints: tempNew});
         }
     };
 
     addNewHints (hnt){
         for (var i=hnt.length-1; i>=0; i--) {
-            hnt[i].id = --this.index;
+            hnt[i].hintID = (--this.index).toString();
         }
-        this.setState({newHints: hnt, hints: [...this.state.hints, ...hnt]});
+        this.setState({newHints: [...this.state.newHints, ...hnt], hints: [...this.state.hints, ...hnt]});
     }
 
     saveChanges = () => {
+        var hintsToAdd = [];
+        this.state.newHints.forEach(e => {
+            let slice = (({ type, content }) => ({ type, content }))(e);
+            hintsToAdd.push({...slice, questionID: this.props.navigation.getParam('questionID', 'X')})
+        });
+        axios.post('http://geometrikit-ws.cfapps.io/api/addHints', hintsToAdd).done();
+        axios.post('http://geometrikit-ws.cfapps.io/api/deleteHints', this.state.deletedHintsIDs).done();
+        
         alert("השאלה נשמרה בהצלחה")
     }
 
@@ -160,10 +172,11 @@ export default class TeacherQuestionView extends Component {
                     <View>
                         { this.state.hints.map((c) => {
                             return (
-                                <HintPreview key={c.id} id={c.id} type={c.type} removeHint={this.removeHint} shortContent={c.content}/>
+                                <HintPreview key={c.hintID} id={c.hintID} type={c.type} removeHint={this.removeHint.bind(this)} shortContent={c.content}/>
                             )
                         })}
                     </View>
+                    <TouchableOpacity onPress={()=>console.log(this.state.newHints)}><Text>test</Text></TouchableOpacity>
                 </ScrollView>
             </View>
         );
