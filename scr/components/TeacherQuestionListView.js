@@ -65,6 +65,9 @@ class TeacherQuestionListView extends Component {
                 {this.state.questions.map((q) => {
                     return <TeacherView
                                 key={q.questionID}
+                                id={q.questionID}
+                                refresh={() => {this.setState({loading: true}); this.componentDidMount(); this.props.navigation.state.params.loadData();}}
+                                delete={q.authorID === this.props.navigation.getParam('teacherID', 'X')}
                                 subject={`${q.title}`}
                                 image={q.picture}
                                 onPress={()=>{this.props.navigation.navigate('TeacherQuestionView', { questionID: q.questionID,

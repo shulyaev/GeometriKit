@@ -77,11 +77,10 @@ export default class AssignQuestionToClass extends Component {
     saveAssignment(){
         var data = [];
         this.state.allClasses.forEach(e => {
-            let groups = (({ groupID, assigned }) => ({ groupID, assigned }))(e);
+            let groups = (({ groupID, assigned }) => ({ groupID, assigned: assigned.toString() }))(e);
             data.push({...groups, questionID: this.props.navigation.getParam('questionID', 'X')})
         });
         axios.post('http://geometrikit-ws.cfapps.io/api/updateAssignClasses', data).done();
-        console.log(data);
     }
 
     render() {

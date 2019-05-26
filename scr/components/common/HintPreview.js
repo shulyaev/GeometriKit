@@ -3,12 +3,24 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Dimensions from 'Dimensions';
 
 export default class HintPreview extends Component {
+    renderDeleteButton = () => {
+        if (this.props.delete != false){
+            return (
+                <TouchableOpacity onPress={() => {this.props.removeHint(this.props.id)}}>
+                    <Text style={styles.buttonStyle}>X</Text>
+                </TouchableOpacity>
+            )
+        } else {
+            return <View></View>
+        }
+    }
+
     renderContent = () => {
         if (this.props.type === "text"){
             return (<View
                         style={styles.viewStyle}
                     >
-                        <TouchableOpacity onPress={() => {this.props.removeHint(this.props.id)}}><Text style={styles.buttonStyle}>X</Text></TouchableOpacity>
+                        {this.renderDeleteButton()}
                         <Text style={styles.textStyle}>
                             {this.props.shortContent}
                         </Text>
@@ -19,7 +31,7 @@ export default class HintPreview extends Component {
                     <View
                         style={styles.viewStyle}
                     >
-                        <TouchableOpacity onPress={() => {this.props.removeHint(this.props.id)}}><Text style={styles.buttonStyle}>X</Text></TouchableOpacity>
+                        {this.renderDeleteButton()}
                         <Image source={{uri: this.props.shortContent}} style={{ width: Dimensions.get('window').width / 1.4, height: Dimensions.get('window').width / 3,borderRadius: 10, flex: 1}}/>
                     </View>
             );

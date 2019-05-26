@@ -23,7 +23,7 @@ export default class AddQuestion1Form extends Component {
                 />
             ),
             headerLeft: (
-                <TouchableOpacity style={{paddingLeft: 15, flexDirection: 'row'}} onPress={() => {if(_this.state.text.length > 1 || _this.state.photo != undefined){navigation.navigate('AddQuestion2Form', {text: navigation.getParam('text', 'X'), photo: navigation.getParam('photo', 'X')})}else{Alert.alert('', 'יש להזין שאלה או להעלות תמונה');}}}>
+                <TouchableOpacity style={{paddingLeft: 15, flexDirection: 'row'}} onPress={() => {if(_this.state.text.length > 1 || _this.state.photo != undefined){navigation.navigate('AddQuestion2Form', {loadData: () => navigation.state.params.loadData(), text: navigation.getParam('text', 'X'), photo: navigation.getParam('photo', 'X')})}else{Alert.alert('', 'יש להזין שאלה או להעלות תמונה');}}}>
                     <Text style={{color: '#fff', fontSize: 25}}>
                         הבא
                     </Text>

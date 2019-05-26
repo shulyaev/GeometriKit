@@ -8,7 +8,12 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 export default class Login extends Component {
     static navigationOptions = {
-      title: 'גיאומטריקיט'
+      title: 'גיאומטריקיט',
+      headerTitleStyle: {
+        fontSize: 30,
+        textAlign: 'center',
+        flex: 1
+      },
     };
     constructor(props) {
       super(props);

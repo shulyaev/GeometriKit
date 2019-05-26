@@ -23,7 +23,7 @@ export default class AddQuestion2Form extends Component {
                 />
             ),
             headerLeft: (
-                <TouchableOpacity style={{paddingLeft: 15, flexDirection: 'row'}} onPress={() => {if(_this.state.hints.length>0){navigation.navigate('AddQuestion3Form', {text: navigation.getParam('text', 'X'), photo: navigation.getParam('photo', 'X'), hints: _this.hintsToPass(_this.state.hints)})}else{Alert.alert('', 'יש להזין רמז אחד לפחות');}}}>
+                <TouchableOpacity style={{paddingLeft: 15, flexDirection: 'row'}} onPress={() => {if(_this.state.hints.length>0){navigation.navigate('AddQuestion3Form', {loadData: () => navigation.state.params.loadData(), text: navigation.getParam('text', 'X'), photo: navigation.getParam('photo', 'X'), hints: _this.state.hints})}else{Alert.alert('', 'יש להזין רמז אחד לפחות');}}}>
                     <Text style={{color: '#fff', fontSize: 25}}>
                         הבא
                     </Text>
@@ -174,31 +174,25 @@ export default class AddQuestion2Form extends Component {
         return str;
     }
 
-    hintsToPass = (hnt) => {
-        hnt.forEach(h => {
-            delete h["id"];
-            delete h["shortContent"];
-        });
-        return hnt;
-    };
-
     renderHintsPreview = () => {
         return this.state.hints.map((c) => {
             return (
-                <HintPreview id={c.id} type={c.type} removeHint={this.removeHint} shortContent={c.shortContent}/>
+                <HintPreview key={c.id} id={c.id} type={c.type} removeHint={this.removeHint} shortContent={c.shortContent}/>
             )
         });
     };
 
     removeHint = (id) => {
-        for( var i = 0; i < this.state.hints.length; i++) { 
-            if (this.state.hints[i].id === id) {
-                var temp = this.state.hints;
-                temp.splice(i, 1);
-                this.setState({hints: temp});
-                break;
+        console.log(this.state.hints);
+        var temp = [];
+        for( var i = 0; i < this.state.hints.length; i++) {
+            console.log(this.state.hints[i].id + '    ' + id);
+            if (this.state.hints[i].id != id) {
+                temp.push(this.state.hints[i]);
             }
         }
+        this.setState({hints: temp});
+        console.log(temp);
     };
 
     render() {

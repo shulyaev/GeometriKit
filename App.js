@@ -41,7 +41,7 @@ const studentStackNavigator = createStackNavigator({
     headerTintColor: '#fff',
     headerTitleStyle: {
       fontSize: 25,
-      textAlign: 'center',
+      textAlign: 'right',
       flex: 1
     },
   }
@@ -69,7 +69,7 @@ const teacherStackNavigator = createStackNavigator({
     headerTintColor: '#fff',
     headerTitleStyle: {
       fontSize: 25,
-      textAlign: 'center',
+      textAlign: 'right',
       flex: 1
     },
   }
@@ -93,7 +93,7 @@ const authStachNavigator = createStackNavigator({
     headerTintColor: '#fff',
     headerTitleStyle: {
       fontSize: 30,
-      textAlign: 'center',
+      textAlign: 'right',
       flex: 1
     },
   }

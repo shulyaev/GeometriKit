@@ -67,7 +67,8 @@ export default class HamburgerMenu extends Component {
     }
 
     refreshFunction = (q, g, gID) => {
-        this.setState({grade: g, questionnaire: q, groupID: gID})
+        this.setState({grade: g, questionnaire: q, groupID: gID, switched: true})
+        this.props.navigation.state.params.onValueChange(false);
     }
 
 

@@ -98,21 +98,31 @@ export default class AddQuestion3Form extends Component {
             axios.post('http://geometrikit-ws.cfapps.io/api/insertquestion', {
                 content: this.state.text,
                 picture: this.state.photo,
-                hints: this.state.hints,
+                hints: this.hintsToPass(this.state.hints),
                 subjects: this.state.selectedSubjects,
                 title: this.state.title,
                 bookName: this.state.bookName,
                 page: this.state.page,
                 questionNumber: this.state.questionNumber,
                 authorID: this.state.authorID
-            }
-        );
-            Alert.alert('שאלה נוספה בהצלחה');
-            this.props.navigation.navigate('TeacherHome')
+            }).then(() => {
+                Alert.alert('שאלה נוספה בהצלחה');
+                this.props.navigation.navigate('TeacherHome');
+                this.props.navigation.state.params.loadData();
+            })
+            .done();
         } else {
             Alert.alert('', this.errorList);
         }
     }
+
+    hintsToPass = (hnt) => {
+        hnt.forEach(h => {
+            delete h["id"];
+            delete h["shortContent"];
+        });
+        return hnt;
+    };
 
     takePicture = async () => {
         await Permissions.askAsync(Permissions.CAMERA);

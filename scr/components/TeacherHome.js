@@ -64,6 +64,7 @@ class TeacherHome extends Component {
     }
 
     loadData(){
+        this.setState({loading: true});
         axios.post(`http://geometrikit-ws.cfapps.io/api/getTeacherSubjects`, {
             filtered: 'false',
             teacherID: this.state.teacherID
@@ -125,11 +126,11 @@ class TeacherHome extends Component {
                 return <View style={{flex: 1}}>
                             <ScrollView>
                                 {this.state.subjects.map((s) => {
-                                    return <TeacherView key={s.subjectID} subject={s.subjectName} image={s.picture} onPress={()=>this.props.navigation.navigate('TeacherQuestionListView', { subjectID: s.subjectID, subjectName: s.subjectName, teacherID: this.state.teacherID, filtered: this.state.filtered })}/>
+                                    return <TeacherView key={s.subjectID} subject={s.subjectName} image={s.picture} onPress={()=>this.props.navigation.navigate('TeacherQuestionListView', { loadData: this.loadData.bind(this), subjectID: s.subjectID, subjectName: s.subjectName, teacherID: this.state.teacherID, filtered: this.state.filtered })}/>
                                 })}
                             </ScrollView>
                             <TouchableOpacity
-                                onPress={() => this.props.navigation.navigate('AddQuestion1Form')}
+                                onPress={() => this.props.navigation.navigate('AddQuestion1Form', {loadData: this.loadData.bind(this)})}
                                 style={{position: 'absolute', left: 15, bottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.5, shadowRadius: 5}}
                             >
                                 <Image source={addQuestion} style={{ height: 60, width: 60}}/>
@@ -139,11 +140,11 @@ class TeacherHome extends Component {
                 return  <View style={{flex: 1}}>
                             <ScrollView>
                                 {this.state.subjectsFiltered.map((s) => {
-                                    return <TeacherView key={s.subjectID} subject={s.subjectName} image={s.picture} onPress={()=>this.props.navigation.navigate('TeacherQuestionListView', { subjectID: s.subjectID, subjectName: s.subjectName, teacherID: this.state.teacherID, filtered: this.state.filtered })}/>
+                                    return <TeacherView key={s.subjectID} subject={s.subjectName} image={s.picture} onPress={()=>this.props.navigation.navigate('TeacherQuestionListView', { loadData: this.loadData.bind(this), subjectID: s.subjectID, subjectName: s.subjectName, teacherID: this.state.teacherID, filtered: this.state.filtered })}/>
                                 })}
                             </ScrollView>
                             <TouchableOpacity
-                                onPress={() => this.props.navigation.navigate('AddQuestion1Form')}
+                                onPress={() => this.props.navigation.navigate('AddQuestion1Form', {loadData: this.loadData.bind(this)})}
                                 style={{position: 'absolute', left: 15, bottom: 20, shadowColor: '#000', shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.5, shadowRadius: 5}}
                             >
                                 <Image source={addQuestion} style={{ height: 60, width: 60}}/>

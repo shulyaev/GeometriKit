@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage, Image, Alert, Dimensions, ScrollView } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, TextInput, Image, Alert, Dimensions, ScrollView } from 'react-native';
 import Icon from '@expo/vector-icons/MaterialIcons';
 import assignToClass from '../images/assignToClass.png'
 import statements from '../images/statements.png'
 import axios from 'axios';
-import { Button } from './common';
+import { MathKeyboard, Button} from './common';
 import HintPreview from './common/HintPreview';
+import { ImagePicker, Permissions, ImageManipulator } from 'expo';
+import Icon1 from '@expo/vector-icons/MaterialCommunityIcons';
+import Icon2 from '@expo/vector-icons/Feather';
 
 let _this = null;
 
@@ -46,6 +49,7 @@ export default class TeacherQuestionView extends Component {
             color: this.props.navigation.getParam('color', 'X'),
             content: this.props.navigation.getParam('content', 'X'),
             picture: this.props.navigation.getParam('picture', 'X'),
+            editingMode: false,
             hints: [],
             newHints: [],
             deletedHintsIDs: [],
@@ -56,14 +60,12 @@ export default class TeacherQuestionView extends Component {
     }
 
     saveButtonRender = () => {
-        if (true){
-            <Icon
-                style={{ paddingLeft: 15, color: "#fff" }}
-                onPress={() => Alert.alert('כל הכבוד', '', [{ text: 'חזור', onPress: () => navigation.goBack()}],{cancelable: false})}
-                name="check"
-                size={30}
-            />
-        }
+        <Icon
+            style={{ paddingLeft: 15, color: "#fff" }}
+            onPress={() => Alert.alert('כל הכבוד', '', [{ text: 'חזור', onPress: () => navigation.goBack()}],{cancelable: false})}
+            name="check"
+            size={30}
+        />
     }
 
     componentDidMount () {
@@ -139,10 +141,107 @@ export default class TeacherQuestionView extends Component {
             let slice = (({ type, content }) => ({ type, content }))(e);
             hintsToAdd.push({...slice, questionID: this.props.navigation.getParam('questionID', 'X')})
         });
-        axios.post('http://geometrikit-ws.cfapps.io/api/addHints', hintsToAdd).done();
-        axios.post('http://geometrikit-ws.cfapps.io/api/deleteHints', this.state.deletedHintsIDs).done();
+        if (hintsToAdd.length){
+            axios.post('http://geometrikit-ws.cfapps.io/api/addHints', hintsToAdd).done();
+        }
+        if (this.state.deletedHintsIDs.length){
+            axios.post('http://geometrikit-ws.cfapps.io/api/deleteHints', this.state.deletedHintsIDs).done();
+        }
         
         alert("השאלה נשמרה בהצלחה")
+    }
+
+    renderTextPreview = () => {
+        if (!this.state.editingMode){
+            return (
+                <View contentContainerStyle={{alignSelf: 'flex-end', width: Dimensions.get('window').width * 0.8}}>
+                    <Text style={{ fontSize: 25, color: 'black', textAlign: 'right', padding: 20}}>
+                        {this.state.content}
+                    </Text>
+                </View>
+            )
+        } else {
+            return (
+                <View contentContainerStyle={{alignSelf: 'flex-end', width: Dimensions.get('window').width * 0.8}}>
+                    <MathKeyboard onPress={(k)=>{this.props.navigation.setParams({text: this.state.text + k}); this.setState({text: this.state.text + k});}}/>
+                    <TextInput
+                        style={{
+                            textAlign: "right",
+                            fontSize: 25
+                        }}
+                        editable = {true}
+                        multiline={true}
+                        onChangeText={(content) => {if (content.length == 1){content = "\u200F" + text}; if (content[content.length -1] == '\n' || content[content.length -1] == ',' || content[content.length -1] == '.'){this.setState({content: content + "\u200F"});}else{this.setState({content});}}}
+                        value={this.state.content}
+                        placeholder='הקלד כאן את השאלה'
+                    />
+                </View>
+            )
+        }
+    }
+
+    selectPicture = async () => {
+        await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        const { cancelled, uri, type, height, width } = await ImagePicker.launchImageLibraryAsync({
+            quality: 1,
+        });
+        if (!cancelled) {
+            var ratio = 1;
+            if (height > 600 || width > 600){
+                if (height > width){
+                    ratio = height / 600;
+                } else {
+                    ratio = width / 600;
+                }
+            }
+            var manipResult = await ImageManipulator.manipulateAsync(
+                uri, 
+                [{ resize: { height: height /ratio, width: width /ratio} }],
+                { compress: 0.5, base64: true }
+              );
+            this.setState({ picture: `data:${type};base64,${manipResult.base64}`});
+        }
+    };
+
+    takePicture = async () => {
+        await Permissions.askAsync(Permissions.CAMERA);
+        const { cancelled, uri, type, height, width } = await ImagePicker.launchCameraAsync({
+          quality: 1,
+        });
+        if (!cancelled) {
+            var ratio = 1;
+            if (height > 600 || width > 600){
+                if (height > width){
+                    ratio = height / 600;
+                } else {
+                    ratio = width / 600;
+                }
+            }
+            var manipResult = await ImageManipulator.manipulateAsync(
+                uri, 
+                [{ resize: { height: height /ratio, width: width /ratio} }],
+                { compress: 0.5, base64: true }
+              );
+            this.setState({ picture: `data:${type};base64,${manipResult.base64}`});
+        }
+    };
+
+    renderEditSaveButton () {
+        if (this.state.editingMode){
+            return (
+                <Icon1
+                    name="arrow-collapse"
+                    size={25}
+                />
+            )
+        } else {
+            return (
+                <Icon2
+                    name="edit"
+                    size={25}
+                />
+            )
+        }
     }
 
     render() {
@@ -158,25 +257,38 @@ export default class TeacherQuestionView extends Component {
                             <Image source={assignToClass} style={{ height: 60, width: 60}}/>
                         </TouchableOpacity>
                     </View>
-                    <View contentContainerStyle={{alignSelf: 'flex-end', width: Dimensions.get('window').width * 0.8}}>
-                        <Text style={{ fontSize: 25, color: 'black', textAlign: 'right', padding: 20}}>
-                            {this.state.content}
-                        </Text>
-                    </View>
-                    <TouchableOpacity
-                            onPress={() => this.props.navigation.navigate('AddHint', {questionID: this.props.navigation.getParam('questionID', 'X'), addNewHints: this.addNewHints.bind(this)})}
-                            style={{alignItems: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 5 }, shadowOpacity: 0.5, shadowRadius: 5}}
+                    <View style={{flexDirection: 'row'}}> 
+                        <TouchableOpacity onPress={() => this.setState({editingMode: !this.state.editingMode})}>
+                            {this.renderEditSaveButton()}
+                        </TouchableOpacity>  
+                        <TouchableOpacity onPress={() => this.selectPicture()}>
+                            <Icon2
+                                name="paperclip"
+                                size={25}
+                            />
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.takePicture()}>
+                            <Icon2
+                                name="camera"
+                                size={25}
+                            />
+                        </TouchableOpacity>
+                    </View> 
+                    {this.renderTextPreview()}
+                    <Button onPress={() => this.props.navigation.navigate('AddHint', {questionID: this.props.navigation.getParam('questionID', 'X'), addNewHints: this.addNewHints.bind(this)})}
+                            borderColor="grey"
+                            backgroundColor="grey"
+                            textColor="white"
                         >
-                            <Text>הוסף רמז</Text>
-                    </TouchableOpacity>
+                            הוסף רמז
+                    </Button>
                     <View>
                         { this.state.hints.map((c) => {
                             return (
-                                <HintPreview key={c.hintID} id={c.hintID} type={c.type} removeHint={this.removeHint.bind(this)} shortContent={c.content}/>
+                                <HintPreview key={c.hintID} id={c.hintID} delete={c.teacherID == this.props.navigation.getParam('teacherID', 'X') || this.props.navigation.getParam('enabled', 'X')} type={c.type} removeHint={this.removeHint.bind(this)} shortContent={c.content}/>
                             )
                         })}
                     </View>
-                    <TouchableOpacity onPress={()=>console.log(this.state.newHints)}><Text>test</Text></TouchableOpacity>
                 </ScrollView>
             </View>
         );

@@ -1,9 +1,36 @@
 import React from 'react';
-import { TouchableOpacity, Image, Text } from 'react-native';
+import { TouchableOpacity, Image, Text, Alert } from 'react-native';
+import axios from 'axios';
 
 const TeacherView = (props) => {
+    deleteQuestion = () => {
+        Alert.alert(
+            '',
+            'האם את/ה בטוח שאת/ה רוצה למחוק את השאלה?',
+            [
+              {text: 'אישור', onPress: () => axios.post('http://geometrikit-ws.cfapps.io/api/removeQuestion', {questionID: props.id}).then(()=>props.refresh()).done()},
+              {
+                text: 'ביטול',
+                style: 'cancel',
+              },
+            ],
+            {cancelable: false},
+        );
+        
+    }
+
+    renderDeleteButton = () => {
+        if (props.delete)
+            return (
+                <TouchableOpacity onPress={() => deleteQuestion()}>
+                    <Text style={styles.buttonStyle}>X</Text>
+                </TouchableOpacity>
+            )
+    }
+
     return (
             <TouchableOpacity style={styles.containerStyle} onPress={props.onPress}>
+                {renderDeleteButton()}
                 <Text style={styles.textStyle}>{props.subject}</Text>
                 <Image source={{ uri: props.image }} style={styles.imageStyle}/>
             </TouchableOpacity>
@@ -32,6 +59,17 @@ const styles = {
         width: 80,
         borderRadius: 10,
         marginLeft: 20
+    },
+    buttonStyle: {
+        flex: 1,
+        textAlign: 'left',
+        color: 'white',
+        fontSize: 18,
+        fontWeight: '600',
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingLeft: 20,
+        paddingRight: 20,
     }
 };
 
