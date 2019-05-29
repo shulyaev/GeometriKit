@@ -37,7 +37,8 @@ export default class HamburgerMenu extends Component {
             schoolName: '',
             studentID: '',
             switched: false,
-            groupID: ''
+            groupID: '',
+            HebrowYear: ''
         }
         this._loadInitialState().done();
     }
@@ -47,7 +48,7 @@ export default class HamburgerMenu extends Component {
 
     _loadInitialState = async () => {
         var value = await AsyncStorage.getItem('userData');
-        this.setState({groupID: JSON.parse(value).groupID, grade: JSON.parse(value).grade, questionnaire: JSON.parse(value).questionnaire, studentID: JSON.parse(value).userID, firstName: JSON.parse(value).firstName, lastName: JSON.parse(value).lastName, schoolName: JSON.parse(value).schoolName});
+        this.setState({HebrowYear: JSON.parse(value).HebrowYear, groupID: JSON.parse(value).groupID, grade: JSON.parse(value).grade, questionnaire: JSON.parse(value).questionnaire, studentID: JSON.parse(value).userID, firstName: JSON.parse(value).firstName, lastName: JSON.parse(value).lastName, schoolName: JSON.parse(value).schoolName});
     }
 
 
@@ -66,8 +67,8 @@ export default class HamburgerMenu extends Component {
         
     }
 
-    refreshFunction = (q, g, gID) => {
-        this.setState({grade: g, questionnaire: q, groupID: gID, switched: true})
+    refreshFunction = (hy, q, g, gID) => {
+        this.setState({HebrowYear: hy, grade: g, questionnaire: q, groupID: gID, switched: true})
         this.props.navigation.state.params.onValueChange(false);
     }
 
@@ -78,7 +79,7 @@ export default class HamburgerMenu extends Component {
                 <View style={{flex:1, backgroundColor: '#f44444', flexDirection: 'row'}}>
                     <View style={{flex: 4, flexDirection: 'column', justifyContent: 'flex-start', alignContent: 'flex-end'}}>
                         <Text style={{fontSize: 30, textAlign: 'right', color: 'white', marginRight: 35, marginTop: 10, fontWeight: 'bold'}}>{this.state.firstName + ' ' + this.state.lastName}</Text>
-                        <Text style={{fontSize: 16, textAlign: 'right', color: 'white', marginRight: 35}}>כיתה {this.state.grade}', {this.state.questionnaire} יח"ל, {this.state.schoolName}</Text>
+                        <Text style={{fontSize: 16, textAlign: 'right', color: 'white', marginRight: 35}}>כיתה {this.state.grade}', {this.state.questionnaire} יח"ל, {this.state.HebrowYear}, {this.state.schoolName}</Text>
                     </View>
                     <View style={{flex:1.5, justifyContent: 'flex-start', alignContent: 'center'}}>
                         <Image source={avatar} style={{ height: 100, width: 100, borderRadius: 50 }}></Image>

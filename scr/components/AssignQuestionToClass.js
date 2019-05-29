@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage, Image, Alert, Dimensions, ScrollView, TextInput, KeyboardAvoidingView } from 'react-native';
 import Icon1 from '@expo/vector-icons/MaterialIcons';
-import { Button, Input } from './common';
-import { ImagePicker, Permissions } from 'expo';
 import axios from 'axios';
 import MyCheckBox from './common/MyCheckBox';
 
@@ -52,7 +50,6 @@ export default class AssignQuestionToClass extends Component {
             for (var i in response.data) {
                 if (response.data[i].assigned == 'true') {
                   response.data[i].assigned = true;
-                  this.setState({groupID: response.data[i].groupID, questionnaire: response.data[i].questionnaire, grade: response.data[i].grade})
                 } else if (response.data[i].assigned == 'false') {
                   response.data[i].assigned = false;
                 }
@@ -92,6 +89,7 @@ export default class AssignQuestionToClass extends Component {
                         groupID={c.groupID}
                         grade={c.grade}
                         questionnaire={c.questionnaire}
+                        HebrowYear={c.HebrowYear}
                         schoolName={c.schoolName}
                         checked={c.assigned}
                         updateSelectedClasses={this.updateSelectedClasses}

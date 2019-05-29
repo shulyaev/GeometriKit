@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, AsyncStorage, Image, Alert, Dimensions, ScrollView, TextInput, KeyboardAvoidingView } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, TouchableWithoutFeedback, Image, Alert, Dimensions, ScrollView, TextInput, Keyboard } from 'react-native';
 import Icon1 from '@expo/vector-icons/MaterialIcons';
 import { Button, MathKeyboard} from './common';
 import HintPreview from './common/HintPreview';
@@ -66,7 +66,7 @@ export default class AddQuestion2Form extends Component {
     }
 
     selectPicture = async () => {
-        await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        await Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA);
         const { cancelled, uri, type, height, width } = await ImagePicker.launchImageLibraryAsync({
             quality: 1,
         });
@@ -90,7 +90,7 @@ export default class AddQuestion2Form extends Component {
     };
 
     takePicture = async () => {
-        await Permissions.askAsync(Permissions.CAMERA);
+        await Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA);
         const { cancelled, uri, type, height, width } = await ImagePicker.launchCameraAsync({
             quality: 1,
         });
@@ -124,13 +124,31 @@ export default class AddQuestion2Form extends Component {
                             }}
                             editable = {true}
                             multiline={true}
-                            onChangeText={(hint) => {if (text.length == 1){text = "\u200F" + text}; if (hint[hint.length -1] == '\n'  || text[text.length -1] == ',' || text[text.length -1] == '.'){this.setState({hint: hint + "\u202B"});}else{this.setState({hint});}}}
+                            onChangeText={(text) => {
+                                var specialChars = ['°', '∡', '∆', '∥' ,'∦' ,'⊥', '≠', '~','≅','⋅','π','√','α','β','γ','δ','≥','≤']                                    
+                                if(specialChars.includes(text[text.length - 1])){
+                                    text = text.substring(0, text.length-2);
+                                }
+
+                                if(text[text.length - 1] == '\u200F'){
+                                    text = text.substring(0, text.length-1);
+                                }
+
+                                if (text.length == 1){
+                                    text = "\u200F" + text
+                                }
+                                if (text[text.length - 2] == '\n' || text[text.length -2] == ',' || text[text.length -2] == '.'){
+                                    text = text.substring(0, text.length-1) + "\u200F"  + text[text.length-1]
+                                }
+                                
+                                this.setState({hint: text});
+                            }}
                             value={this.state.hint}
                             placeholder='הקלד כאן את הרמז'
                         />
                         <Button onPress = {() => {
                             this.setState({hints: [...this.state.hints, {id: this.index++, type: 'text', content: this.state.hint, shortContent: this.shortTextCreate(this.state.hint)}]});
-                            this.setState({hint: '\u202B'});}}
+                            this.setState({hint: ''});}}
                             borderColor="grey"
                             backgroundColor="grey"
                             textColor="white"
@@ -199,23 +217,25 @@ export default class AddQuestion2Form extends Component {
         const buttons = ['רמז מילולי', 'רמז ויזואלי', 'רמז קולי'];
 
         return (
-            <View style={styles.container}>
-                <View style>
-                    <ButtonGroup
-                        onPress={this.updateIndex}
-                        selectedIndex={this.state.selectedIndex}
-                        buttons={buttons}
-                        containerStyle={{height: 40}}
-                        selectedButtonStyle={{borderColor: 'grey',backgroundColor: 'grey'}}
-                    />
+            <TouchableWithoutFeedback onPress={()=>Keyboard.dismiss()}>
+                <View style={styles.container}>
+                    <View>
+                        <ButtonGroup
+                            onPress={this.updateIndex}
+                            selectedIndex={this.state.selectedIndex}
+                            buttons={buttons}
+                            containerStyle={{height: 40}}
+                            selectedButtonStyle={{borderColor: 'grey',backgroundColor: 'grey'}}
+                        />
+                    </View>
+                    <View>
+                        {this.renderContent()}
+                    </View>
+                    <ScrollView>
+                        {this.renderHintsPreview()}
+                    </ScrollView>
                 </View>
-                <View>
-                    {this.renderContent()}
-                </View>
-                <ScrollView>
-                    {this.renderHintsPreview()}
-                </ScrollView>
-            </View>
+            </TouchableWithoutFeedback>
         );
     }
 }

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Alert, View, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import axios from 'axios';
 import keyIcon from '../../../images/key.png';
 import Icon from '@expo/vector-icons/MaterialIcons';
 import { Input, Button } from '../../common';
@@ -23,9 +24,28 @@ export default class SignUpTeacherVerification extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            password: ''
+            password: '',
+            tPassword: undefined
         }
     }
+
+    componentDidMount(){
+        axios.post('http://geometrikit-ws.cfapps.io/api/getTpassword', {
+            InternalPassword: 'ASOBAT'
+        }).then((response) => {
+            this.setState({tPassword: response.data.tpassword})
+        })
+        .catch(() => {
+          Alert.alert(
+            '',
+            "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",
+            [
+              {text: 'נסה שוב', onPress: () => this.componentDidMount()},
+            ],
+            {cancelable: false},);
+        })
+        .done();
+      }
   
 
     render() {
@@ -47,7 +67,7 @@ export default class SignUpTeacherVerification extends Component {
     }
 
     passwordCheck = () => {
-        if (this.state.password === "Aa123456!") {
+        if (this.state.password === this.state.tPassword) {
             this.props.navigation.navigate("SignUpTeacherForm");
         } else {
             Alert.alert(

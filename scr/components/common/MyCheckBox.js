@@ -8,7 +8,7 @@ export default class MyCheckBox extends Component {
       this.state = {
         checked: this.props.checked,
         groupID: this.props.groupID,
-        title: `כיתה ${this.props.grade}', ${this.props.questionnaire} יח"ל, ${this.props.schoolName}, תשע"ט`
+        title: `כיתה ${this.props.grade}', ${this.props.questionnaire} יח"ל, ${this.props.schoolName}, ${this.props.HebrowYear}`
       }
     }
     

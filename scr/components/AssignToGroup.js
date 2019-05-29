@@ -28,6 +28,7 @@ export default class AssignToGroup extends Component {
             groups: [],
             questionnaire: '',
             grade: '',
+            HebrowYear: '',
         }
         this.userData = ''
         this.studentID = this.props.navigation.getParam('studentID', '0')
@@ -46,7 +47,7 @@ export default class AssignToGroup extends Component {
           for (var i in response.data) {
             if (response.data[i].assigned == 'true') {
               response.data[i].assigned = true;
-              this.setState({groupID: response.data[i].groupID, questionnaire: response.data[i].questionnaire, grade: response.data[i].grade})
+              this.setState({HebrowYear: response.data[i].HebrowYear, groupID: response.data[i].groupID, questionnaire: response.data[i].questionnaire, grade: response.data[i].grade})
             } else if (response.data[i].assigned == 'false') {
               response.data[i].assigned = false;
             }
@@ -72,9 +73,9 @@ export default class AssignToGroup extends Component {
         this.state.groups.forEach(e => {
             if (e.groupID === gID){
                 if (!e.assigned){
-                  this.setState({groupID: gID, questionnaire: e.questionnaire, grade: e.grade})
+                  this.setState({HebrowYear: e.HebrowYear, groupID: gID, questionnaire: e.questionnaire, grade: e.grade})
                 } else if (e.assigned){
-                  this.setState({groupID: '', questionnaire: '', grade: ''})
+                  this.setState({groupID: '', questionnaire: '', grade: '', HebrowYear: ''})
                 }
                 e.assigned = !e.assigned;
             } else {
@@ -95,6 +96,7 @@ export default class AssignToGroup extends Component {
                         key={c.groupID}
                         groupID={c.groupID}
                         grade={c.grade}
+                        HebrowYear={c.HebrowYear}
                         questionnaire={c.questionnaire}
                         schoolName={c.teacherName}
                         checked={c.assigned}
@@ -102,7 +104,7 @@ export default class AssignToGroup extends Component {
                     />
                 )}
             </ScrollView>
-            <Button onPress={() => {this.save(); this.props.navigation.state.params.refreshFunction(this.state.grade, this.state.questionnaire, this.state.groupID); this.props.navigation.goBack();}}>
+            <Button onPress={() => {this.save(); this.props.navigation.state.params.refreshFunction(this.state.HebrowYear, this.state.grade, this.state.questionnaire, this.state.groupID); this.props.navigation.goBack();}}>
               הצטרף
             </Button>
         </View>
@@ -119,6 +121,7 @@ export default class AssignToGroup extends Component {
           this.userData.grade = this.state.grade;
           this.userData.questionnaire = this.state.questionnaire;
           this.userData.groupID = this.state.groupID;
+          this.userData.HebrowYear = this.state.HebrowYear;
           AsyncStorage.setItem('userData', JSON.stringify(this.userData)); 
           Alert.alert("", 'קבוצת לימוד עודכנה');
         } else {

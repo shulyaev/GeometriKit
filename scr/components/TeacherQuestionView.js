@@ -139,7 +139,7 @@ export default class TeacherQuestionView extends Component {
         var hintsToAdd = [];
         this.state.newHints.forEach(e => {
             let slice = (({ type, content }) => ({ type, content }))(e);
-            hintsToAdd.push({...slice, questionID: this.props.navigation.getParam('questionID', 'X')})
+            hintsToAdd.push({...slice, questionID: this.props.navigation.getParam('questionID', 'X'), teacherID: this.props.navigation.getParam('teacherID', 'X')})
         });
         if (hintsToAdd.length){
             axios.post('http://geometrikit-ws.cfapps.io/api/addHints', hintsToAdd).done();
