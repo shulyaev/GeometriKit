@@ -53,77 +53,85 @@ export default class AddQuestion1Form extends Component {
     }
 
     selectPicture = async () => {
-        await Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA);
-        const { cancelled, uri, type, height, width } = await ImagePicker.launchImageLibraryAsync({
-            quality: 1,
-        });
-        if (!cancelled) {
-            var ratio = 1;
-            if (height > 600 || width > 600){
-                if (height > width){
-                    ratio = height / 600;
-                } else {
-                    ratio = width / 600;
+        var status = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        if (status.status == 'denied'){
+            Alert.alert('נא ניתן לגשת לגלריה תמונה', 'נא לאפשר גישה לגלריה בהגדרות המכשיר')
+        } else {
+            const { cancelled, uri, type, height, width } = await ImagePicker.launchImageLibraryAsync({
+                quality: 1,
+            }).catch();
+            if (!cancelled) {
+                var ratio = 1;
+                if (height > 600 || width > 600){
+                    if (height > width){
+                        ratio = height / 600;
+                    } else {
+                        ratio = width / 600;
+                    }
                 }
+                var manipResult = await ImageManipulator.manipulateAsync(
+                    uri, 
+                    [{ resize: { height: height /ratio, width: width /ratio} }],
+                    { compress: 0.5, base64: true }
+                  );
+                Image.getSize(`data:${type};base64,${manipResult.base64}`, (width, height) => {
+                    if (width > height) {
+                        const screenWidth = (Dimensions.get('window').width)
+                        const scaleFactor = width / screenWidth
+                        const imageHeight = height / scaleFactor
+                        this.setState({picWidth: screenWidth, picHeight: imageHeight})
+                    } else {
+                        const screenHeight = (Dimensions.get('window').height / 2.4)
+                        const scaleFactor = height / screenHeight
+                        const imageWidth = width / scaleFactor
+                        this.setState({picWidth: imageWidth, picHeight: screenHeight})
+                    }
+                })
+                this.setState({ photo: `data:${type};base64,${manipResult.base64}`});
+                this.props.navigation.setParams({photo: this.state.photo});
             }
-            var manipResult = await ImageManipulator.manipulateAsync(
-                uri, 
-                [{ resize: { height: height /ratio, width: width /ratio} }],
-                { compress: 0.5, base64: true }
-              );
-            Image.getSize(`data:${type};base64,${manipResult.base64}`, (width, height) => {
-                if (width > height) {
-                    const screenWidth = (Dimensions.get('window').width)
-                    const scaleFactor = width / screenWidth
-                    const imageHeight = height / scaleFactor
-                    this.setState({picWidth: screenWidth, picHeight: imageHeight})
-                } else {
-                    const screenHeight = (Dimensions.get('window').height / 2.4)
-                    const scaleFactor = height / screenHeight
-                    const imageWidth = width / scaleFactor
-                    this.setState({picWidth: imageWidth, picHeight: screenHeight})
-                }
-            })
-            this.setState({ photo: `data:${type};base64,${manipResult.base64}`});
-            this.props.navigation.setParams({photo: this.state.photo});
         }
     };
 
     takePicture = async () => {
-        await Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA);
-        const { cancelled, uri, type, height, width } = await ImagePicker.launchCameraAsync({
-          quality: 1,
-        });
-        if (!cancelled) {
-            var ratio = 1;
-            if (height > 600 || width > 600){
-                if (height > width){
-                    ratio = height / 600;
-                } else {
-                    ratio = width / 600;
-                }
-            }
-            var manipResult = await ImageManipulator.manipulateAsync(
-                uri, 
-                [{ resize: { height: height /ratio, width: width /ratio} }],
-                { compress: 0.5, base64: true }
-              );
-            Image.getSize(`data:${type};base64,${manipResult.base64}`, (width, height) => {
-                if (width > height) {
-                    const screenWidth = (Dimensions.get('window').width)
-                    const scaleFactor = width / screenWidth
-                    const imageHeight = height / scaleFactor
-                    this.setState({picWidth: screenWidth, picHeight: imageHeight})
-                } else {
-                    const screenHeight = (Dimensions.get('window').height / 2.4)
-                    const scaleFactor = height / screenHeight
-                    const imageWidth = width / scaleFactor
-                    this.setState({picWidth: imageWidth, picHeight: screenHeight})
-                }
-            })
-            this.setState({ photo: `data:${type};base64,${manipResult.base64}`});
-            this.props.navigation.setParams({photo: this.state.photo});
-        }
+        var status = await Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA);
+        if (status.status == 'denied'){
+            Alert.alert('נא ניתן לגשת למצלמה תמונה', 'נא לאפשר גישה למצלמה ולגלריה בהגדרות המכשיר')
+        } else {
+            const { cancelled, uri, type, height, width } = await ImagePicker.launchCameraAsync({
+                quality: 1,
+              }).catch();
+              if (!cancelled) {
+                  var ratio = 1;
+                  if (height > 600 || width > 600){
+                      if (height > width){
+                          ratio = height / 600;
+                      } else {
+                          ratio = width / 600;
+                      }
+                  }
+                  var manipResult = await ImageManipulator.manipulateAsync(
+                      uri, 
+                      [{ resize: { height: height /ratio, width: width /ratio} }],
+                      { compress: 0.5, base64: true }
+                    );
+                  Image.getSize(`data:${type};base64,${manipResult.base64}`, (width, height) => {
+                      if (width > height) {
+                          const screenWidth = (Dimensions.get('window').width)
+                          const scaleFactor = width / screenWidth
+                          const imageHeight = height / scaleFactor
+                          this.setState({picWidth: screenWidth, picHeight: imageHeight})
+                      } else {
+                          const screenHeight = (Dimensions.get('window').height / 2.4)
+                          const scaleFactor = height / screenHeight
+                          const imageWidth = width / scaleFactor
+                          this.setState({picWidth: imageWidth, picHeight: screenHeight})
+                      }
+                  })
+                  this.setState({ photo: `data:${type};base64,${manipResult.base64}`});
+                  this.props.navigation.setParams({photo: this.state.photo});
+              }
+        }  
     };
 
     render() {
