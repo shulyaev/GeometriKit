@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
     View,
-    Text,
+    Alert,
     ScrollView,
     AsyncStorage,
     TouchableOpacity,
@@ -71,6 +71,14 @@ class TeacherHome extends Component {
         })
         .then((response) => {
             this.setState({subjects: response.data, loading: false})
+        }).catch(() => {
+            Alert.alert(
+              '',
+              "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",
+              [
+                {text: 'נסה שוב', onPress: () => this.loadData()},
+              ],
+              {cancelable: false},);
         })
         .done();
 
@@ -80,6 +88,14 @@ class TeacherHome extends Component {
         })
         .then((response) => {
             this.setState({subjectsFiltered: response.data})
+        }).catch(() => {
+            Alert.alert(
+              '',
+              "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",
+              [
+                {text: 'נסה שוב', onPress: () => this.loadData()},
+              ],
+              {cancelable: false},);
         })
         .done();
 
@@ -90,7 +106,13 @@ class TeacherHome extends Component {
             this.setState({groups: response.data})
         })
         .catch(() => {
-            Alert.alert('', "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר")
+            Alert.alert(
+              '',
+              "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",
+              [
+                {text: 'נסה שוב', onPress: () => this.loadData()},
+              ],
+              {cancelable: false},);
         })
         .done();
     }
@@ -110,6 +132,14 @@ class TeacherHome extends Component {
                     }
                 }
             }
+        }).catch(() => {
+            Alert.alert(
+              '',
+              "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",
+              [
+                {text: 'נסה שוב', onPress: () => this.deleteGroup()},
+              ],
+              {cancelable: false},);
         })
         .done();
     }

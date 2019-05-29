@@ -55,6 +55,14 @@ export default class AssignQuestionToClass extends Component {
                 }
             }
             this.setState({allClasses: response.data})
+        }).catch(() => {
+            Alert.alert(
+              '',
+              "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",
+              [
+                {text: 'נסה שוב', onPress: () => this.componentDidMount()},
+              ],
+              {cancelable: false},);
         }).done();
 
         _this = this;

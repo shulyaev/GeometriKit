@@ -63,6 +63,14 @@ export default class AddQuestion3Form extends Component {
         axios.get(`http://geometrikit-ws.cfapps.io/api/getallsubjects`)
         .then((response) => {
           this.setState({allSubjects: response.data})
+        }).catch(() => {
+            Alert.alert(
+              '',
+              "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",
+              [
+                {text: 'נסה שוב', onPress: () => this.componentDidMount()},
+              ],
+              {cancelable: false},);
         })
         .done();
         _this = this;
@@ -109,6 +117,14 @@ export default class AddQuestion3Form extends Component {
                 Alert.alert('שאלה נוספה בהצלחה');
                 this.props.navigation.navigate('TeacherHome');
                 this.props.navigation.state.params.loadData();
+            }).catch(() => {
+                Alert.alert(
+                  '',
+                  "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",
+                  [
+                    {text: 'נסה שוב', onPress: () => this.componentDidMount()},
+                  ],
+                  {cancelable: false},);
             })
             .done();
         } else {

@@ -89,7 +89,15 @@ export default class TeacherQuestionView extends Component {
           }
         ).then((response) => {
             this.setState({hints: response.data})
-        });
+        }).catch(() => {
+            Alert.alert(
+              '',
+              "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",
+              [
+                {text: 'נסה שוב', onPress: () => this.componentDidMount()},
+              ],
+              {cancelable: false},);
+        }).done();
     }
 
     shortTextCreate = (str, type) => {
@@ -142,10 +150,26 @@ export default class TeacherQuestionView extends Component {
             hintsToAdd.push({...slice, questionID: this.props.navigation.getParam('questionID', 'X'), teacherID: this.props.navigation.getParam('teacherID', 'X')})
         });
         if (hintsToAdd.length){
-            axios.post('http://geometrikit-ws.cfapps.io/api/addHints', hintsToAdd).done();
+            axios.post('http://geometrikit-ws.cfapps.io/api/addHints', hintsToAdd).catch(() => {
+                Alert.alert(
+                  '',
+                  "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",
+                  [
+                    {text: 'נסה שוב', onPress: () => this.saveChanges()},
+                  ],
+                  {cancelable: false},);
+            }).done();
         }
         if (this.state.deletedHintsIDs.length){
-            axios.post('http://geometrikit-ws.cfapps.io/api/deleteHints', this.state.deletedHintsIDs).done();
+            axios.post('http://geometrikit-ws.cfapps.io/api/deleteHints', this.state.deletedHintsIDs).catch(() => {
+                Alert.alert(
+                  '',
+                  "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",
+                  [
+                    {text: 'נסה שוב', onPress: () => this.saveChanges()},
+                  ],
+                  {cancelable: false},);
+            }).done();
         }
         
         alert("השאלה נשמרה בהצלחה")
