@@ -42,7 +42,7 @@ export default class AssignQuestionToClass extends Component {
     }
 
     componentDidMount () {
-        axios.post('http://geometrikit-ws.cfapps.io/api/getAssignedClasses', {
+        axios.post('https://geometrikit.azurewebsites.net/api/getAssignedClasses', {
             questionID: this.props.navigation.getParam('questionID', 'X'),
             teacherID: this.props.navigation.getParam('teacherID', 'X'),
           }
@@ -85,7 +85,7 @@ export default class AssignQuestionToClass extends Component {
             let groups = (({ groupID, assigned }) => ({ groupID, assigned: assigned.toString() }))(e);
             data.push({...groups, questionID: this.props.navigation.getParam('questionID', 'X')})
         });
-        axios.post('http://geometrikit-ws.cfapps.io/api/updateAssignClasses', data).done();
+        axios.post('https://geometrikit.azurewebsites.net/api/updateAssignClasses', data).done();
     }
 
     render() {

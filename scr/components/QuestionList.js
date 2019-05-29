@@ -34,7 +34,7 @@ export default class QuestionList extends Component {
     }
 
     componentDidMount () {
-        axios.get(`http://geometrikit-ws.cfapps.io/api/getquestions?filtered=${this.state.filtered}&groupID=${this.state.groupID}&subjectID=${this.state.subjectID}`)
+        axios.get(`https://geometrikit.azurewebsites.net/api/getquestions?filtered=${this.state.filtered}&groupID=${this.state.groupID}&subjectID=${this.state.subjectID}`)
         .then((response) => {
           this.setState({questions: response.data, loading: false})
         })

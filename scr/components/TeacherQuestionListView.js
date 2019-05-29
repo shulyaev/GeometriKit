@@ -42,13 +42,21 @@ class TeacherQuestionListView extends Component {
     }
 
     componentDidMount () {
-        axios.post(`http://geometrikit-ws.cfapps.io/api/getTeacherQuestions`,{
+        axios.post(`https://geometrikit.azurewebsites.net/api/getTeacherQuestions`,{
             filtered: this.state.filtered,
             teacherID: this.state.teacherID,
             subjectID: this.state.subjectID,
         })
         .then((response) => {
           this.setState({questions: response.data, loading: false})
+        }).catch(() => {
+            Alert.alert(
+              '',
+              "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",
+              [
+                {text: 'נסה שוב', onPress: () => this.componentDidMount()},
+              ],
+              {cancelable: false},);
         })
         .done();
     }

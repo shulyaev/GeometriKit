@@ -60,7 +60,7 @@ export default class AddQuestion3Form extends Component {
     }
 
     componentDidMount () {
-        axios.get(`http://geometrikit-ws.cfapps.io/api/getallsubjects`)
+        axios.get(`https://geometrikit.azurewebsites.net/api/getallsubjects`)
         .then((response) => {
           this.setState({allSubjects: response.data})
         }).catch(() => {
@@ -103,7 +103,7 @@ export default class AddQuestion3Form extends Component {
             this.errorList = this.errorList + '◄חובה לחור 2 נושאים לפחות\n';
         }
         if (this.errorList === '') {
-            axios.post('http://geometrikit-ws.cfapps.io/api/insertquestion', {
+            axios.post('https://geometrikit.azurewebsites.net/api/insertquestion', {
                 content: this.state.text,
                 picture: this.state.photo,
                 hints: this.hintsToPass(this.state.hints),

@@ -8,7 +8,7 @@ const TeacherView = (props) => {
             '',
             'האם את/ה בטוח שאת/ה רוצה למחוק את השאלה?',
             [
-              {text: 'אישור', onPress: () => axios.post('http://geometrikit-ws.cfapps.io/api/removeQuestion', {questionID: props.id}).then(()=>props.refresh()).done()},
+              {text: 'אישור', onPress: () => axios.post('https://geometrikit.azurewebsites.net/api/removeQuestion', {questionID: props.id}).then(()=>props.refresh()).done()},
               {
                 text: 'ביטול',
                 style: 'cancel',

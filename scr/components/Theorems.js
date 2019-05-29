@@ -35,7 +35,7 @@ export default class CreateGroup extends Component {
     }
 
     componentDidMount(){
-      axios.post('http://geometrikit-ws.cfapps.io/api/getTheorems', {
+      axios.post('https://geometrikit.azurewebsites.net/api/getTheorems', {
       }).then((response) => {
           this.setState({theorems: response.data, loading: false})
       }).catch(() =>{

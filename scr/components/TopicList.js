@@ -38,7 +38,7 @@ export default class TopicList extends Component {
     _this = this;
     AsyncStorage.getItem('userData').then((value) => {
       this.setState({groupID: JSON.parse(value).groupID });
-      axios.get(`http://geometrikit-ws.cfapps.io/api/getsubjects?filtered=${this.state.filtered}&groupID=${this.state.groupID}`)
+      axios.get(`https://geometrikit.azurewebsites.net/api/getsubjects?filtered=${this.state.filtered}&groupID=${this.state.groupID}`)
       .then((response) => {
         this.setState({subjects: response.data, loading: false})
       })

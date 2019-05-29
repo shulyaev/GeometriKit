@@ -84,7 +84,7 @@ export default class TeacherQuestionView extends Component {
             }
         })
         
-        axios.post('http://geometrikit-ws.cfapps.io/api/getHint', {
+        axios.post('https://geometrikit.azurewebsites.net/api/getHint', {
             questionID: this.state.questionID
           }
         ).then((response) => {
@@ -150,7 +150,7 @@ export default class TeacherQuestionView extends Component {
             hintsToAdd.push({...slice, questionID: this.props.navigation.getParam('questionID', 'X'), teacherID: this.props.navigation.getParam('teacherID', 'X')})
         });
         if (hintsToAdd.length){
-            axios.post('http://geometrikit-ws.cfapps.io/api/addHints', hintsToAdd).catch(() => {
+            axios.post('https://geometrikit.azurewebsites.net/api/addHints', hintsToAdd).catch(() => {
                 Alert.alert(
                   '',
                   "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",
@@ -161,7 +161,7 @@ export default class TeacherQuestionView extends Component {
             }).done();
         }
         if (this.state.deletedHintsIDs.length){
-            axios.post('http://geometrikit-ws.cfapps.io/api/deleteHints', this.state.deletedHintsIDs).catch(() => {
+            axios.post('https://geometrikit.azurewebsites.net/api/deleteHints', this.state.deletedHintsIDs).catch(() => {
                 Alert.alert(
                   '',
                   "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",

@@ -2,7 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="08aa4033-1674-46f7-80d3-a7a19a567569" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scr/components/AddQuestion3Form.js" beforeDir="false" afterPath="$PROJECT_DIR$/scr/components/AddQuestion3Form.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scr/components/AssignQuestionToClass.js" beforeDir="false" afterPath="$PROJECT_DIR$/scr/components/AssignQuestionToClass.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scr/components/AssignToGroup.js" beforeDir="false" afterPath="$PROJECT_DIR$/scr/components/AssignToGroup.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scr/components/CreateGroup.js" beforeDir="false" afterPath="$PROJECT_DIR$/scr/components/CreateGroup.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scr/components/QuestionForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/scr/components/QuestionForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scr/components/QuestionList.js" beforeDir="false" afterPath="$PROJECT_DIR$/scr/components/QuestionList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scr/components/TeacherHome.js" beforeDir="false" afterPath="$PROJECT_DIR$/scr/components/TeacherHome.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scr/components/TeacherQuestionListView.js" beforeDir="false" afterPath="$PROJECT_DIR$/scr/components/TeacherQuestionListView.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scr/components/TeacherQuestionView.js" beforeDir="false" afterPath="$PROJECT_DIR$/scr/components/TeacherQuestionView.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scr/components/Theorems.js" beforeDir="false" afterPath="$PROJECT_DIR$/scr/components/Theorems.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scr/components/TopicList.js" beforeDir="false" afterPath="$PROJECT_DIR$/scr/components/TopicList.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scr/components/auth/signup/SignUpStudentForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/scr/components/auth/signup/SignUpStudentForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scr/components/auth/signup/SignUpTeacherForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/scr/components/auth/signup/SignUpTeacherForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scr/components/auth/signup/SignUpTeacherVerification.js" beforeDir="false" afterPath="$PROJECT_DIR$/scr/components/auth/signup/SignUpTeacherVerification.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scr/components/common/TeacherView.js" beforeDir="false" afterPath="$PROJECT_DIR$/scr/components/common/TeacherView.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -25,8 +39,8 @@
     </navigator>
     <panes>
       <pane id="ProjectPane" />
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">

@@ -108,7 +108,7 @@ export default class Login extends Component {
         this.errorList = this.errorList + '◄סיסמא אינה חוקית\n';
       } if (this.errorList === '') {
         this.setState({loading: true})
-        axios.get(`http://geometrikit-ws.cfapps.io/api/auth?username=${this.state.username}&password=${this.state.password}`)
+        axios.get(`https://geometrikit.azurewebsites.net/api/auth?username=${this.state.username}&password=${this.state.password}`)
           .then((response) => {
             if (response.data.status === 'false') {
               this.setState({loading: false});

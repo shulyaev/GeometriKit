@@ -56,7 +56,7 @@ export default class QuestionForm extends Component {
         var value = await AsyncStorage.getItem('userData');
         this.userID = JSON.parse(value).userID;
                 
-        axios.post('http://geometrikit-ws.cfapps.io/api/updateUserSatistic', {
+        axios.post('https://geometrikit.azurewebsites.net/api/updateUserSatistic', {
             id: this.state.time.toString(),
             userID: this.userID,
             questionID: this.state.questionID
@@ -65,7 +65,7 @@ export default class QuestionForm extends Component {
     }
 
     sendLastLog = async (success) => {
-        axios.post('http://geometrikit-ws.cfapps.io/api/updateUserSatistic', {
+        axios.post('https://geometrikit.azurewebsites.net/api/updateUserSatistic', {
             id: this.state.time.toString(),
             userID: this.userID,
             questionID: this.state.questionID,
@@ -75,7 +75,7 @@ export default class QuestionForm extends Component {
     }
 
     sendHintLog = async (index) => {
-        axios.post('http://geometrikit-ws.cfapps.io/api/updateUserSatistic', {
+        axios.post('https://geometrikit.azurewebsites.net/api/updateUserSatistic', {
             id: this.state.time.toString(),
             userID: this.userID,
             questionID: this.state.questionID,
@@ -100,7 +100,7 @@ export default class QuestionForm extends Component {
             }
         })
         
-        axios.post('http://geometrikit-ws.cfapps.io/api/getHint', {
+        axios.post('https://geometrikit.azurewebsites.net/api/getHint', {
             questionID: this.state.questionID
           }
         ).then((response) => {

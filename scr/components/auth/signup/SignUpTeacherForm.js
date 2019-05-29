@@ -33,7 +33,7 @@ export default class SignUpTeacherForm extends Component {
   }
 
   componentDidMount(){
-    axios.post('http://geometrikit-ws.cfapps.io/api/getSchools', {
+    axios.post('https://geometrikit.azurewebsites.net/api/getSchools', {
     }).then((response) => {
         this.setState({schoolList: response.data, schoolID: response.data[0].schoolID});
     })
@@ -105,7 +105,7 @@ export default class SignUpTeacherForm extends Component {
     } if (!this.validatePassword(this.state.password)) {
       this.errorList = this.errorList + '◄סיסמא חייבת להכיל 6 תווים לפחות\n';
     } if (this.errorList === '') {
-      axios.post('http://geometrikit-ws.cfapps.io/api/register', {
+      axios.post('https://geometrikit.azurewebsites.net/api/register', {
         userName: this.state.userName,
         password: this.state.password,
         firstName: this.state.firstName,
