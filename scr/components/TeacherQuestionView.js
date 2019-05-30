@@ -171,6 +171,21 @@ export default class TeacherQuestionView extends Component {
                   {cancelable: false},);
             }).done();
         }
+        if (this.state.content != this.props.navigation.getParam('content', 'X') || this.state.picture != this.props.navigation.getParam('picture', 'X')){
+            axios.post('https://geometrikit.azurewebsites.net/api/editQuestion', {
+                questionID: this.state.questionID,
+                content: this.state.content,
+                picture: this.state.picture
+            }).catch(() => {
+                Alert.alert(
+                  '',
+                  "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",
+                  [
+                    {text: 'נסה שוב', onPress: () => this.saveChanges()},
+                  ],
+                  {cancelable: false},);
+            }).done();
+        }
         
         alert("השאלה נשמרה בהצלחה")
     }
@@ -195,7 +210,25 @@ export default class TeacherQuestionView extends Component {
                         }}
                         editable = {true}
                         multiline={true}
-                        onChangeText={(content) => {if (content.length == 1){content = "\u200F" + text}; if (content[content.length -1] == '\n' || content[content.length -1] == ',' || content[content.length -1] == '.'){this.setState({content: content + "\u200F"});}else{this.setState({content});}}}
+                        onChangeText={(text) => {
+                            var specialChars = ['°', '∡', '∆', '∥' ,'∦' ,'⊥', '≠', '~','≅','⋅','π','√','α','β','γ','δ','≥','≤']                                    
+                            if(specialChars.includes(text[text.length - 1])){
+                                text = text.substring(0, text.length-2);
+                            }
+
+                            if(text[text.length - 1] == '\u200F'){
+                                text = text.substring(0, text.length-1);
+                            }
+
+                            if (text.length == 1){
+                                text = "\u200F" + text
+                            }
+                            if (text[text.length - 2] == '\n' || text[text.length -2] == ',' || text[text.length -2] == '.'){
+                                text = text.substring(0, text.length-1) + "\u200F"  + text[text.length-1]
+                            }
+                            
+                            this.setState({content: text});
+                        }}
                         value={this.state.content}
                         placeholder='הקלד כאן את השאלה'
                     />
@@ -205,48 +238,80 @@ export default class TeacherQuestionView extends Component {
     }
 
     selectPicture = async () => {
-        await Permissions.askAsync(Permissions.CAMERA_ROLL);
-        const { cancelled, uri, type, height, width } = await ImagePicker.launchImageLibraryAsync({
-            quality: 1,
-        });
-        if (!cancelled) {
-            var ratio = 1;
-            if (height > 600 || width > 600){
-                if (height > width){
-                    ratio = height / 600;
-                } else {
-                    ratio = width / 600;
+        var status = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+        if (status.status == 'denied'){
+            Alert.alert('נא ניתן לגשת לגלריה תמונה', 'נא לאפשר גישה לגלריה בהגדרות המכשיר')
+        } else {
+            const { cancelled, uri, type, height, width } = await ImagePicker.launchImageLibraryAsync({
+                quality: 1,
+            });
+            if (!cancelled) {
+                var ratio = 1;
+                if (height > 600 || width > 600){
+                    if (height > width){
+                        ratio = height / 600;
+                    } else {
+                        ratio = width / 600;
+                    }
                 }
+                var manipResult = await ImageManipulator.manipulateAsync(
+                    uri, 
+                    [{ resize: { height: height /ratio, width: width /ratio} }],
+                    { compress: 0.5, base64: true }
+                  );
+                Image.getSize(`data:${type};base64,${manipResult.base64}`, (width, height) => {
+                    if (width > height) {
+                        const screenWidth = (Dimensions.get('window').width)
+                        const scaleFactor = width / screenWidth
+                        const imageHeight = height / scaleFactor
+                        this.setState({picWidth: screenWidth, picHeight: imageHeight, picture: `data:${type};base64,${manipResult.base64}`})
+                    } else {
+                        const screenHeight = (Dimensions.get('window').height / 1.7)
+                        const scaleFactor = height / screenHeight
+                        const imageWidth = width / scaleFactor
+                        this.setState({picWidth: imageWidth, picHeight: screenHeight, picture: `data:${type};base64,${manipResult.base64}`})
+                    }
+                })
             }
-            var manipResult = await ImageManipulator.manipulateAsync(
-                uri, 
-                [{ resize: { height: height /ratio, width: width /ratio} }],
-                { compress: 0.5, base64: true }
-              );
-            this.setState({ picture: `data:${type};base64,${manipResult.base64}`});
         }
     };
 
     takePicture = async () => {
-        await Permissions.askAsync(Permissions.CAMERA);
-        const { cancelled, uri, type, height, width } = await ImagePicker.launchCameraAsync({
-          quality: 1,
-        });
-        if (!cancelled) {
-            var ratio = 1;
-            if (height > 600 || width > 600){
-                if (height > width){
-                    ratio = height / 600;
-                } else {
-                    ratio = width / 600;
-                }
+        var status = await Permissions.askAsync(Permissions.CAMERA_ROLL, Permissions.CAMERA);
+        if (status.status == 'denied'){
+            Alert.alert('נא ניתן לגשת למצלמה תמונה', 'נא לאפשר גישה למצלמה ולגלריה בהגדרות המכשיר')
+        } else {
+            const { cancelled, uri, type, height, width } = await ImagePicker.launchCameraAsync({
+                quality: 1,
+              });
+              if (!cancelled) {
+                  var ratio = 1;
+                  if (height > 600 || width > 600){
+                      if (height > width){
+                          ratio = height / 600;
+                      } else {
+                          ratio = width / 600;
+                      }
+                  }
+                  var manipResult = await ImageManipulator.manipulateAsync(
+                      uri, 
+                      [{ resize: { height: height /ratio, width: width /ratio} }],
+                      { compress: 0.5, base64: true }
+                    );
+                Image.getSize(`data:${type};base64,${manipResult.base64}`, (width, height) => {
+                    if (width > height) {
+                        const screenWidth = (Dimensions.get('window').width)
+                        const scaleFactor = width / screenWidth
+                        const imageHeight = height / scaleFactor
+                        this.setState({picWidth: screenWidth, picHeight: imageHeight, picture: `data:${type};base64,${manipResult.base64}`})
+                    } else {
+                        const screenHeight = (Dimensions.get('window').height / 1.7)
+                        const scaleFactor = height / screenHeight
+                        const imageWidth = width / scaleFactor
+                        this.setState({picWidth: imageWidth, picHeight: screenHeight, picture: `data:${type};base64,${manipResult.base64}`})
+                    }
+                })
             }
-            var manipResult = await ImageManipulator.manipulateAsync(
-                uri, 
-                [{ resize: { height: height /ratio, width: width /ratio} }],
-                { compress: 0.5, base64: true }
-              );
-            this.setState({ picture: `data:${type};base64,${manipResult.base64}`});
         }
     };
 
