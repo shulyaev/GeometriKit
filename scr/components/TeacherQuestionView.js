@@ -176,6 +176,8 @@ export default class TeacherQuestionView extends Component {
                 questionID: this.state.questionID,
                 content: this.state.content,
                 picture: this.state.picture
+            }).then(() => {
+                this.props.navigation.state.params.refresh();
             }).catch(() => {
                 Alert.alert(
                   '',
@@ -191,15 +193,7 @@ export default class TeacherQuestionView extends Component {
     }
 
     renderTextPreview = () => {
-        if (!this.state.editingMode){
-            return (
-                <View contentContainerStyle={{alignSelf: 'flex-end', width: Dimensions.get('window').width * 0.8}}>
-                    <Text style={{ fontSize: 25, color: 'black', textAlign: 'right', padding: 20}}>
-                        {this.state.content}
-                    </Text>
-                </View>
-            )
-        } else {
+        if (this.state.editingMode && this.props.navigation.getParam('enabled', false)){
             return (
                 <View contentContainerStyle={{alignSelf: 'flex-end', width: Dimensions.get('window').width * 0.8}}>
                     <MathKeyboard onPress={(k)=>{this.props.navigation.setParams({text: this.state.text + k}); this.setState({text: this.state.text + k});}}/>
@@ -232,6 +226,14 @@ export default class TeacherQuestionView extends Component {
                         value={this.state.content}
                         placeholder='הקלד כאן את השאלה'
                     />
+                </View>
+            )
+        } else{
+            return (
+                <View contentContainerStyle={{alignSelf: 'flex-end', width: Dimensions.get('window').width * 0.8}}>
+                    <Text style={{ fontSize: 25, color: 'black', textAlign: 'right', padding: 20}}>
+                        {this.state.content}
+                    </Text>
                 </View>
             )
         }
@@ -316,21 +318,25 @@ export default class TeacherQuestionView extends Component {
     };
 
     renderEditSaveButton () {
-        if (this.state.editingMode){
-            return (
-                <Icon1
-                    name="arrow-collapse"
-                    size={25}
-                />
-            )
+        if (this.props.navigation.getParam('enabled', false)){
+            if (this.state.editingMode){
+                return (
+                    <Icon1
+                        name="arrow-collapse"
+                        size={25}
+                    />
+                )
+            } else {
+                return (
+                    <Icon2
+                        name="edit"
+                        size={25}
+                    />
+                )
+            }
         } else {
-            return (
-                <Icon2
-                    name="edit"
-                    size={25}
-                />
-            )
-        }
+            return <View></View>
+        }        
     }
 
     render() {

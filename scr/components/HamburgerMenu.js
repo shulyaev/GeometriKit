@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, StyleSheet, View, Text, TouchableOpacity, AsyncStorage, Image } from 'react-native';
+import axios from 'axios';
 import Icon from '@expo/vector-icons/Ionicons';
 import avatar from '../images/avatar.png'
 import assignToGroup from '../images/assignToGroup.png';
@@ -49,6 +50,34 @@ export default class HamburgerMenu extends Component {
     _loadInitialState = async () => {
         var value = await AsyncStorage.getItem('userData');
         this.setState({HebrowYear: JSON.parse(value).HebrowYear, groupID: JSON.parse(value).groupID, grade: JSON.parse(value).grade, questionnaire: JSON.parse(value).questionnaire, studentID: JSON.parse(value).userID, firstName: JSON.parse(value).firstName, lastName: JSON.parse(value).lastName, schoolName: JSON.parse(value).schoolName});
+        axios.post(`https://geometrikit.azurewebsites.net/api/isAssigned`,{
+            studentID: JSON.parse(value).userID
+        })
+        .then(async(response) => {
+            console.log(response.data);
+            console.log(JSON.parse(value).grade);
+            if (response.data.assigned == 'false' && JSON.parse(value).groupID != ''){
+                alert('','קבוצת הלימוד שלך הוסרה מהמערכת');
+                this.setState({HebrowYear: '', groupID: '', grade: '', questionnaire: ''});
+                value = JSON.parse(value);
+                value.grade = '';
+                value.questionnaire = '';
+                value.groupID = '';
+                value.HebrowYear = '';
+                AsyncStorage.setItem('userData', JSON.stringify(value));
+                this.props.navigation.state.params.onValueChange(false)
+                this.props.navigation.state.params.updateSubjects();        
+            }
+        }).catch(() => {
+            Alert.alert(
+              '',
+              "תקלה בחיבור לשרת, אנא נסה שוב מאוחר יותר",
+              [
+                {text: 'נסה שוב', onPress: () => this.componentDidMount()},
+              ],
+              {cancelable: false},);
+        })
+        .done();
     }
 
 

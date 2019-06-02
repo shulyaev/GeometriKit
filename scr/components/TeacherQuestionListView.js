@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
     View,
-    Text,
+    Alert,
     ScrollView,
     AsyncStorage,
     TouchableOpacity,
@@ -42,6 +42,7 @@ class TeacherQuestionListView extends Component {
     }
 
     componentDidMount () {
+        this.setState({loading: true});
         axios.post(`https://geometrikit.azurewebsites.net/api/getTeacherQuestions`,{
             filtered: this.state.filtered,
             teacherID: this.state.teacherID,
@@ -87,7 +88,8 @@ class TeacherQuestionListView extends Component {
                                                                                                 picture: q.picture,
                                                                                                 enabled: q.authorID === this.state.teacherID,
                                                                                                 title: q.title,
-                                                                                                teacherID: this.state.teacherID
+                                                                                                teacherID: this.state.teacherID,
+                                                                                                refresh: this.componentDidMount.bind(this)
                             })}}/>
                     })}
             </ScrollView>)
