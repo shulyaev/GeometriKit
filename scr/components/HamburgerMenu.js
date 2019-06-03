@@ -54,8 +54,6 @@ export default class HamburgerMenu extends Component {
             studentID: JSON.parse(value).userID
         })
         .then(async(response) => {
-            console.log(response.data);
-            console.log(JSON.parse(value).grade);
             if (response.data.assigned == 'false' && JSON.parse(value).groupID != ''){
                 alert('','קבוצת הלימוד שלך הוסרה מהמערכת');
                 this.setState({HebrowYear: '', groupID: '', grade: '', questionnaire: ''});
@@ -96,7 +94,7 @@ export default class HamburgerMenu extends Component {
         
     }
 
-    refreshFunction = (hy, q, g, gID) => {
+    refreshFunction = (hy, g, q, gID) => {
         this.setState({HebrowYear: hy, grade: g, questionnaire: q, groupID: gID, switched: true})
         this.props.navigation.state.params.onValueChange(false);
     }
