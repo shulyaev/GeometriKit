@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RptDataSource xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="geometricIT">
+  <ConnectionProperties>
+    <Extension>SQL</Extension>
+    <ConnectString>Data Source=tcp:geometrikit.database.windows.net,1433;Initial Catalog=geometrikit</ConnectString>
+  </ConnectionProperties>
+  <DataSourceID>7e08c6a2-a0f4-45cd-844c-c57e6fa186ac</DataSourceID>
+</RptDataSource>

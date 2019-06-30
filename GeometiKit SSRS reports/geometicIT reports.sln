@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.271
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F14B399A-7131-4C87-9E4B-1186C45EF12D}") = "geometicIT reports", "geometicIT reports\geometicIT reports.rptproj", "{D22D6D2C-A137-4B78-B8E2-0102D5730116}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Default = Debug|Default
+		DebugLocal|Default = DebugLocal|Default
+		Release|Default = Release|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D22D6D2C-A137-4B78-B8E2-0102D5730116}.Debug|Default.ActiveCfg = Debug
+		{D22D6D2C-A137-4B78-B8E2-0102D5730116}.Debug|Default.Build.0 = Debug
+		{D22D6D2C-A137-4B78-B8E2-0102D5730116}.Debug|Default.Deploy.0 = Debug
+		{D22D6D2C-A137-4B78-B8E2-0102D5730116}.DebugLocal|Default.ActiveCfg = DebugLocal
+		{D22D6D2C-A137-4B78-B8E2-0102D5730116}.DebugLocal|Default.Build.0 = DebugLocal
+		{D22D6D2C-A137-4B78-B8E2-0102D5730116}.Release|Default.ActiveCfg = Release
+		{D22D6D2C-A137-4B78-B8E2-0102D5730116}.Release|Default.Build.0 = Release
+		{D22D6D2C-A137-4B78-B8E2-0102D5730116}.Release|Default.Deploy.0 = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {280BB0BB-BBF9-43F2-8F21-BA74CFA9B88D}
+	EndGlobalSection
+EndGlobal
