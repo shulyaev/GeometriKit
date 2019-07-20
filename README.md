@@ -1,1 +1,1 @@
-<img src="mainlogo.png">
+<img src="mainlogo.png" aling='center'>
