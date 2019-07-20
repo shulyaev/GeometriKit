@@ -1,2 +1,1 @@
-# GeometriKit
-![](Picture2.png)
+![](mainlogo.png)
