@@ -1,1 +1,1 @@
-![](mainlogo.png)
+<img src="mainlogo.png">
