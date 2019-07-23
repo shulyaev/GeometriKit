@@ -1,4 +1,4 @@
-[LINK](https://drive.google.com/open?id=1wflm_h9IFhIMgZib7P98D4XZ3Btcj3A1)
+[Download APK file](https://drive.google.com/open?id=1wflm_h9IFhIMgZib7P98D4XZ3Btcj3A1)
  <p align="center"> 
   <img src="mainlogo.png">
  </p>
